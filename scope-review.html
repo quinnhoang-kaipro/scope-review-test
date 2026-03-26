@@ -24,7 +24,7 @@
       --badge-red-bg:  #ffe6e6;
       --badge-red-bdr: #8c1a1a;
       --badge-red-txt: #8c1a1a;
-      --sidebar-w:     380px;
+      --sidebar-w:     285px;
     }
 
     body {
@@ -115,6 +115,55 @@
     }
     .icon-btn:hover { background: var(--gray-bg); }
 
+    .view-mode-control {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0;
+    }
+
+    .view-mode-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gray-text-mid);
+      padding-left: 4px;
+      white-space: nowrap;
+    }
+
+    .view-mode-segments {
+      display: inline-flex;
+      border: 1px solid var(--gray-border);
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .view-mode-option {
+      border: none;
+      background: transparent;
+      color: var(--gray-text-mid);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 10px;
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+
+    .view-mode-option + .view-mode-option {
+      border-left: 1px solid var(--gray-border);
+    }
+
+    .view-mode-option:hover {
+      background: #f3f4f6;
+      color: var(--dark);
+    }
+
+    .view-mode-option.active {
+      background: #f4f9f6;
+      color: #1f6f45;
+    }
+
     .btn-primary {
       background: var(--green);
       color: #fff;
@@ -173,14 +222,15 @@
       overflow-y: auto;
       min-width: 0;
       min-height: 0;
+      position: relative;
     }
 
     /* ── Group header ── */
     .group-header {
       display: flex;
       align-items: center;
-      padding: 20px 32px 16px;
-      gap: 12px;
+      padding: 14px 32px 10px;
+      gap: 10px;
       border-bottom: 1px solid var(--gray-border);
       flex-shrink: 0;
     }
@@ -323,14 +373,14 @@
       text-transform: uppercase;
       letter-spacing: .05em;
       color: var(--gray-text);
-      padding: 9px 8px;
+      padding: 6px 8px;
       white-space: nowrap;
     }
     .scope-table thead th:first-child { padding-left: 16px; width: 30px; }
     .scope-table thead th.col-id     { width: 54px; }
     .scope-table thead th.col-desc   { min-width: 320px; width: 36%; }
     .scope-table thead th.col-contr  { width: 170px; }
-    .scope-table thead th.col-modifier { width: 160px; }
+    .scope-table thead th.col-modifier { width: 220px; }
     .scope-table thead th.col-qty    { width: 100px; }
     .scope-table thead th.col-price  { width: 90px; }
     .scope-table thead th.col-total  { width: 100px; }
@@ -356,7 +406,7 @@
     /* Task rows */
     .scope-table .task-row td {
       border-bottom: 1px solid var(--gray-border);
-      padding: 10px 8px;
+      padding: 8px 8px;
       vertical-align: top;
     }
     .scope-table .task-row td:first-child { padding-left: 16px; }
@@ -493,10 +543,12 @@
     .photo-tag {
       display: inline-flex;
       align-items: center;
-      font-size: 10px;
+      font-size: 11px;
+      line-height: 1;
       font-weight: 700;
       letter-spacing: .04em;
       padding: 3px 8px;
+      min-height: 18px;
       border-radius: 4px;
       text-transform: uppercase;
       white-space: nowrap;
@@ -504,6 +556,7 @@
       border-style: solid;
     }
     .photo-tag.unassigned  { background: #ffe6e6; border-color: #8c1a1a; color: #8c1a1a; }
+    .photo-tag.not-started { background: #f3f4f6; border-color: #9ca3af; color: #4b5563; }
     .photo-tag.in-progress { background: #fff3cd; border-color: #c47f00; color: #8a5a00; }
     .photo-tag.rework      { background: #e8eeff; border-color: #3b5bdb; color: #2d44a8; }
     .photo-tag.completed   { background: #e6f4ea; border-color: #30803d; color: #1e5a2a; }
@@ -543,16 +596,36 @@
     }
     .contractor-select svg { margin-left: auto; flex-shrink: 0; }
 
+    .task-group-cell-value {
+      display: none;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray-text-mid);
+      line-height: 1.35;
+    }
+
     .modifier-cell {
-      min-width: 120px;
+      min-width: 180px;
       vertical-align: top;
     }
 
     .modifier-pill-area {
       display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
+      flex-direction: column;
+      gap: 6px;
       align-items: flex-start;
+    }
+
+    .modifier-pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      column-gap: 4px;
+      row-gap: 6px;
+      align-items: flex-start;
+    }
+
+    .modifier-pill-list:empty {
+      display: none;
     }
 
     .modifier-pill {
@@ -563,7 +636,7 @@
       border: 1px solid #d1d5db;
       border-radius: 20px;
       padding: 2px 6px 2px 8px;
-      font-size: 11px;
+      font-size: 13px;
       color: #374151;
       position: relative;
       cursor: default;
@@ -604,7 +677,7 @@
       box-shadow: 0 4px 12px rgba(0,0,0,.15);
     }
 
-    .modifier-add-dropdown { position: relative; font-size: 11px; }
+    .modifier-add-dropdown { position: relative; font-size: 15px; }
 
     .modifier-add-btn {
       list-style: none;
@@ -613,6 +686,7 @@
       border: 1px dashed #d1d5db;
       border-radius: 20px;
       padding: 2px 8px;
+      font-size: 15px;
       white-space: nowrap;
       background: transparent;
     }
@@ -624,6 +698,7 @@
       position: absolute;
       top: calc(100% + 4px);
       left: 0;
+      font-size: 15px;
       min-width: 150px;
       z-index: 20;
       background: #fff;
@@ -680,6 +755,13 @@
       font-family: inherit;
     }
 
+    .scope-table .contractor-select,
+    .scope-table .qty-input,
+    .scope-table .price-input,
+    .scope-table .qty-unit {
+      font-size: 12px !important;
+    }
+
     .total-val {
       font-size: 14px;
       font-weight: 500;
@@ -699,26 +781,31 @@
       object-fit: contain;
     }
 
+    .photo-wrap img {
+      width: 18px;
+      height: 15px;
+    }
+
     /* scroll indicator - now a draggable divider */
     .scroll-indicator {
       text-align: center;
-      padding: 5px 10px;
-      color: var(--gray-text);
+      padding: 3px 10px;
+      color: #5f6f86;
       font-size: 12px;
       letter-spacing: 1px;
-      border-top: 1px solid var(--gray-border);
-      border-bottom: 1px solid var(--gray-border);
+      border-top: 1px solid #c7d5e3;
+      border-bottom: 1px solid #c7d5e3;
       cursor: ns-resize;
       user-select: none;
       flex-shrink: 0;
-      background: #fff;
+      background: #eaf1f8;
       transition: background 0.15s;
     }
     .scroll-indicator:hover {
-      background: var(--gray-bg);
+      background: #dde8f3;
     }
     .scroll-indicator.dragging {
-      background: var(--gray-mid);
+      background: #d1deeb;
     }
 
     /* ── Date picker + Photos ── */
@@ -744,7 +831,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
     }
 
     /* Date picker input — matches Figma spec */
@@ -756,7 +843,7 @@
       background: var(--gray-bg);
       border: 1px solid var(--gray-border);
       border-radius: 3px;
-      padding: 5px 8px;
+      padding: 3px 8px;
       width: 160px;
       cursor: pointer;
       position: relative;
@@ -768,7 +855,7 @@
       border: none;
       background: transparent;
       font-family: inherit;
-      font-size: 12px;
+      font-size: 11px;
       color: #1f2937;
       cursor: pointer;
       outline: none;
@@ -777,20 +864,60 @@
       appearance: none;
       -webkit-appearance: none;
     }
+    .date-picker input[type="date"]:disabled {
+      color: #9ca3af;
+      cursor: not-allowed;
+    }
     .date-picker input[type="date"]::-webkit-calendar-picker-indicator {
       display: none;
     }
 
+    .date-picker.disabled {
+      opacity: .45;
+      cursor: not-allowed;
+      border-color: #d1d5db;
+      background: #f3f4f6;
+    }
+
+    .date-picker.disabled:hover {
+      border-color: #d1d5db;
+    }
+
+    .date-picker.disabled .date-picker__icon {
+      opacity: .65;
+    }
+
+    .date-group.no-photos .date-group-label {
+      color: #9ca3af;
+    }
+
     .date-picker__icon {
-      width: 20px; height: 20px;
+      width: 18px; height: 18px;
       flex-shrink: 0;
       pointer-events: none;
     }
 
     .date-group-label {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       color: var(--gray-text);
+    }
+
+    .date-photo-count {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      color: var(--gray-text-mid);
+      font-weight: 500;
+      white-space: nowrap;
+      margin-left: auto;
+    }
+
+    .date-photo-count img {
+      width: 18px;
+      height: 15px;
+      object-fit: contain;
     }
 
     .date-remove-btn {
@@ -870,7 +997,7 @@
     .photo-grid {
       display: flex;
       flex-wrap: nowrap;
-      gap: 14px;
+      gap: calc(var(--photo-size, 200px) * 0.05);
     }
 
     .photo-card {
@@ -900,6 +1027,16 @@
       top: 8px;
       left: 8px;
       white-space: nowrap;
+    }
+    .photos-section.two-date-rows .photo-thumb .photo-tag {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .16s ease, visibility .16s ease;
+    }
+    .photos-section.two-date-rows .photo-card:hover .photo-thumb .photo-tag,
+    .photos-section.two-date-rows .photo-card:focus-within .photo-thumb .photo-tag {
+      opacity: 1;
+      visibility: visible;
     }
     .photo-thumb .rework-badge {
       position: absolute;
@@ -988,6 +1125,21 @@
       flex-shrink: 0;
     }
 
+    .sidebar-see-more {
+      display: none;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--green);
+      cursor: pointer;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .sidebar-section.collapsed .sidebar-see-more {
+      display: inline-flex;
+      align-items: center;
+    }
+
     .sidebar-section-content {
       flex: 1;
       min-height: 0;
@@ -1029,7 +1181,7 @@
     .activity-detail-row {
       display: flex;
       justify-content: space-between;
-      font-size: 11px;
+      font-size: 15px;
       color: var(--gray-text-mid);
     }
     .activity-detail-row .val { font-weight: 600; }
@@ -1169,6 +1321,48 @@
       padding: 8px 12px;
       border-radius: 6px;
       display: none;
+    }
+
+    .modal-photo-status-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      z-index: 4;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      padding: 5px 10px;
+      white-space: nowrap;
+    }
+
+    .modal-photo-status-badge.hidden {
+      display: none;
+    }
+
+    .modal-photo-status-badge.not-started {
+      background: #f3f4f6;
+      border-color: #9ca3af;
+      color: #4b5563;
+    }
+
+    .modal-photo-status-badge.in-progress {
+      background: #fff3cd;
+      border-color: #c47f00;
+      color: #8a5a00;
+    }
+
+    .modal-photo-status-badge.rework {
+      background: #e8eeff;
+      border-color: #3b5bdb;
+      color: #2d44a8;
+    }
+
+    .modal-photo-status-badge.completed {
+      background: #e6f4ea;
+      border-color: #30803d;
+      color: #1e5a2a;
     }
 
     .modal-photo-nav-btn {
@@ -1384,13 +1578,18 @@
       font-size: 24px;
       font-weight: 700;
       color: var(--dark);
-      margin-bottom: 8px;
+      margin-bottom: 0;
     }
 
     .modal-subtitle {
       font-size: 14px;
       color: var(--gray-text);
-      margin-bottom: 0;
+      margin-bottom: 8px;
+    }
+
+    .modal-subtitle-group {
+      font-weight: 700;
+      color: var(--dark);
     }
 
     .modal-task-actions {
@@ -1436,6 +1635,40 @@
     .modal-task-action-btn.approved-locked {
       background: #1f6f45;
       opacity: 1;
+    }
+
+    .bulk-action-bar {
+      display: none;
+      position: absolute;
+      left: 24px;
+      bottom: 16px;
+      z-index: 20;
+      background: #fff;
+      border: 1px solid var(--gray-border);
+      border-radius: 12px;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+      padding: 10px 12px;
+      align-items: center;
+      gap: 12px;
+      width: fit-content;
+      max-width: 100%;
+    }
+
+    .bulk-action-bar.active {
+      display: inline-flex;
+    }
+
+    .bulk-action-count {
+      font-size: 12px;
+      color: var(--gray-text-mid);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .bulk-action-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     .confirm-overlay {
@@ -1515,7 +1748,7 @@
 
     .details-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 16px 24px;
     }
 
@@ -1523,6 +1756,7 @@
       display: flex;
       flex-direction: column;
       gap: 4px;
+      min-width: 0;
     }
 
     .detail-item.editable {
@@ -1535,6 +1769,10 @@
       text-transform: uppercase;
       letter-spacing: 0.04em;
       font-weight: 600;
+    }
+
+    .modal-details .detail-label {
+      font-size: 11px !important;
     }
 
     .detail-value {
@@ -1620,12 +1858,38 @@
 
     .detail-edit-row.modifier-row {
       align-items: flex-start;
-      padding-top: 6px;
-      padding-bottom: 6px;
+      border: none;
+      background: transparent;
+      border-radius: 0;
+      padding: 0;
+      min-height: 0;
+      gap: 0;
     }
 
     .detail-edit-row.modifier-row .detail-edit-btn {
-      margin-top: 6px;
+      margin-top: 0;
+    }
+
+    .detail-edit-row.modifier-row .detail-multi-select {
+      flex: 0 0 auto;
+      min-width: auto;
+    }
+
+    .detail-edit-row.modifier-row .detail-multi-select summary {
+      display: inline-flex;
+      align-items: center;
+      border: 1px dashed #d1d5db;
+      border-radius: 20px;
+      padding: 4px 10px;
+      font-size: 13px;
+      line-height: 1;
+      color: #6b7280;
+      white-space: nowrap;
+    }
+
+    .detail-edit-row.modifier-row .detail-multi-select summary:hover {
+      background: #f3f4f6;
+      color: #374151;
     }
 
     .detail-multi-select summary::-webkit-details-marker {
@@ -1651,6 +1915,7 @@
       flex: 1;
       display: flex;
       flex-direction: column;
+      align-items: flex-start;
       gap: 6px;
     }
 
@@ -1659,6 +1924,14 @@
       flex-wrap: wrap;
       gap: 4px;
       min-height: 0;
+    }
+
+    .detail-modifier-pills:empty {
+      display: none;
+    }
+
+    .detail-modifier-pills:not(:empty) {
+      margin-bottom: 6px;
     }
 
     .detail-modifier-option {
@@ -1777,6 +2050,22 @@
       color: var(--green);
     }
 
+    .activity-card-detail-value.status-not-started {
+      color: #6b7280;
+    }
+
+    .activity-card-detail-value.status-in-progress {
+      color: #c28a00;
+    }
+
+    .activity-card-detail-value.status-rework {
+      color: #2563eb;
+    }
+
+    .activity-card-detail-value.status-completed {
+      color: var(--green);
+    }
+
     .activity-card-photos {
       display: flex;
       gap: 8px;
@@ -1844,6 +2133,105 @@
       font-weight: 500;
     }
 
+    /* Typography harmonization: 4-size scale with 15px body baseline */
+    :root {
+      --fs-xs: 13px;
+      --fs-sm: 13px;
+      --fs-body: 15px;
+      --fs-lg: 21px;
+    }
+
+    body,
+    button,
+    input,
+    select,
+    textarea,
+    .scope-table td,
+    .scope-table th,
+    .activity-item,
+    .note-item,
+    .detail-item,
+    .modal-details,
+    .modal-photo-overlay-content {
+      font-size: var(--fs-body) !important;
+    }
+
+    .topnav__tab,
+    .topnav__back,
+    .view-mode-label,
+    .view-mode-option,
+    .detail-label,
+    .sidebar-see-all,
+    .sidebar-see-more,
+    .activity-time,
+    .note-meta,
+    .photo-tag,
+    .modal-photo-thumb-date,
+    .bulk-action-count,
+    .task-status-text,
+    .detail-input-unit,
+    .activity-card-time,
+    .modal-photo-upload-source {
+      font-size: var(--fs-xs) !important;
+    }
+
+    .topnav__address,
+    .cost-label,
+    .sidebar-section-title,
+    .activity-title,
+    .note-badge,
+    .details-section-title,
+    .confirm-copy,
+    .modal-subtitle,
+    .group-dropdown-item,
+    .btn-primary,
+    .btn-approve,
+    .modal-task-action-btn,
+    .confirm-btn,
+    .modal-photo-date,
+    .modal-photo-photographer,
+    .detail-value,
+    .detail-input,
+    .detail-select {
+      font-size: var(--fs-sm) !important;
+    }
+
+    .group-title,
+    .cost-value,
+    .modal-title,
+    .confirm-title {
+      font-size: var(--fs-lg) !important;
+    }
+
+    .scope-table thead th {
+      font-size: 12px !important;
+    }
+
+    .photos-section .photo-tag {
+      font-size: 11px !important;
+    }
+
+    .photos-section .photo-label {
+      font-size: 13px !important;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .activity-detail-row {
+      font-size: 13px !important;
+    }
+
+    .note-text {
+      font-size: 13px !important;
+    }
+
+    .note-meta {
+      font-size: 12px !important;
+    }
+
   </style>
 </head>
 <body>
@@ -1864,11 +2252,12 @@
   </div>
   <div class="topnav__right">
     <!-- AI badge -->
-    <div class="icon-btn" style="border-color:#30803d;background:#f4f9f6;">
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-        <circle cx="9" cy="9" r="7" stroke="#30803d" stroke-width="1.5"/>
-        <path d="M6 9l2 2 4-4" stroke="#30803d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+    <div class="view-mode-control" aria-label="Table view mode">
+      <span class="view-mode-label">View by:</span>
+      <div class="view-mode-segments" role="tablist" aria-label="View by mode">
+        <button class="view-mode-option active" id="viewModeGroupBtn" type="button" role="tab" aria-selected="true">Group</button>
+        <button class="view-mode-option" id="viewModeTradeBtn" type="button" role="tab" aria-selected="false">Trade</button>
+      </div>
     </div>
     <div class="icon-btn">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -1915,7 +2304,7 @@
         <div class="group-header__right">
           <span class="cost-label">Cost</span>
           <span class="cost-value">$12,504.00</span>
-          <button class="btn-approve">Approve Group</button>
+          <button class="btn-approve">Approve Tasks</button>
           <button class="nav-arrow">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
               <path d="M11 13L7 9l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1947,6 +2336,15 @@
       </thead>
       <tbody id="scopeTableBody"></tbody>
     </table>
+
+    <div class="bulk-action-bar" id="bulkActionBar" aria-live="polite">
+      <div class="bulk-action-count" id="bulkActionCount">0 selected</div>
+      <div class="bulk-action-buttons">
+        <button class="modal-task-action-btn approve" id="bulkApproveBtn" type="button">Approve Tasks</button>
+        <button class="modal-task-action-btn request-edit" id="bulkRequestEditBtn" type="button">Request Edit</button>
+        <button class="modal-task-action-btn delete" id="bulkDeleteBtn" type="button">Delete Tasks</button>
+      </div>
+    </div>
     </div><!-- /table-container -->
 
     <div class="scroll-indicator">≡</div>
@@ -1957,7 +2355,7 @@
       <!-- Date group 1 — Jan 20 (shown by default) -->
       <div class="date-group" id="group-0">
         <div class="date-group-header">
-          <div class="date-picker" onclick="this.querySelector('input').showPicker()">
+          <div class="date-picker" onclick="if(this.querySelector('input') && !this.querySelector('input').disabled) this.querySelector('input').showPicker();">
             <input type="date" value="2025-01-20" aria-label="Select date"/>
             <img class="date-picker__icon" src="https://www.figma.com/api/mcp/asset/9315f051-52b4-45a3-a710-d9b796f3e8f6" alt="calendar"/>
           </div>
@@ -1968,18 +2366,79 @@
           <button class="carousel-btn prev" onclick="carouselScroll(this,-1)" disabled>&#8249;</button>
           <div class="photo-scroll-container">
             <div class="photo-grid">
-              <div class="photo-card" data-task-id="10003"><div class="photo-thumb" style="background:#c9d8e8;"></div><div class="photo-label">Counter</div></div>
-              <div class="photo-card" data-task-id="10003"><div class="photo-thumb" style="background:#d4e8d4;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Appliances</div></div>
-              <div class="photo-card" data-task-id="10003"><div class="photo-thumb" style="background:#e8d4c9;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Flooring</div></div>
-              <div class="photo-card" data-task-id="10003"><div class="photo-thumb" style="background:#d4cce8;"><span class="photo-badge photo-tag rework">Rework</span></div><div class="photo-label">Cabinets</div></div>
-              <div class="photo-card" data-task-id="10005"><div class="photo-thumb" style="background:#e8e4c9;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Electrical</div></div>
-              <div class="photo-card" data-task-id="10005"><div class="photo-thumb" style="background:#c9e8e2;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Plumbing</div></div>
-              <div class="photo-card" data-task-id="10004"><div class="photo-thumb" style="background:#e8c9d4;"></div><div class="photo-label">Drywall</div></div>
-              <div class="photo-card" data-task-id="10004"><div class="photo-thumb" style="background:#ccd8e8;"><span class="photo-badge photo-tag rework">Rework</span></div><div class="photo-label">Window</div></div>
-              <div class="photo-card" data-task-id="10004"><div class="photo-thumb" style="background:#e8d9c9;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Backsplash</div></div>
-              <div class="photo-card" data-task-id="10003"><div class="photo-thumb" style="background:#d4e8c9;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Lighting</div></div>
-              <div class="photo-card" data-task-id="10005"><div class="photo-thumb" style="background:#e8c9e4;"></div><div class="photo-label">Sink</div></div>
-              <div class="photo-card" data-task-id="10003"><div class="photo-thumb" style="background:#c9e8d0;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Trim</div></div>
+              <!-- Task 50048: Paint Cabinet Base (Multiple angles & stages) -->
+              <div class="photo-card" data-task-id="50048"><div class="photo-thumb" style="background:#c9d8e8;"></div><div class="photo-label">Cabinet Base - Front</div></div>
+              <div class="photo-card" data-task-id="50048"><div class="photo-thumb" style="background:#d4e8d4;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Cabinet Base - Side</div></div>
+              <div class="photo-card" data-task-id="50048"><div class="photo-thumb" style="background:#e8d4c9;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Cabinet Base - Detail</div></div>
+              <div class="photo-card" data-task-id="50048"><div class="photo-thumb" style="background:#d4cce8;"><span class="photo-badge photo-tag rework">Rework</span></div><div class="photo-label">Base Color Match</div></div>
+              <div class="photo-card" data-task-id="50048"><div class="photo-thumb" style="background:#d4e8c9;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Base Paint Coat 1</div></div>
+              <div class="photo-card" data-task-id="50048"><div class="photo-thumb" style="background:#c9e8d0;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Base Paint Coat 2</div></div>
+              <div class="photo-card" data-task-id="50048"><div class="photo-thumb" style="background:#c9dce8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Base Finish Check</div></div>
+              <div class="photo-card" data-task-id="50048"><div class="photo-thumb" style="background:#e8d4e8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Base Approved</div></div>
+              <div class="photo-card" data-task-id="50048"><div class="photo-thumb" style="background:#d4c9e8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Final Walkthrough</div></div>
+              
+              <!-- Task 50049: Repair Cabinets -->
+              <div class="photo-card" data-task-id="50049"><div class="photo-thumb" style="background:#e8c9d4;"></div><div class="photo-label">Cabinet Repair - Before</div></div>
+              <div class="photo-card" data-task-id="50049"><div class="photo-thumb" style="background:#ccd8e8;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Cabinet - Inspection</div></div>
+              <div class="photo-card" data-task-id="50049"><div class="photo-thumb" style="background:#e8d9c9;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Cabinet - Repair Work</div></div>
+              <div class="photo-card" data-task-id="50049"><div class="photo-thumb" style="background:#e4cce8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Cabinet - After Repair</div></div>
+              <div class="photo-card" data-task-id="50049"><div class="photo-thumb" style="background:#d9e8c9;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Cabinet - Finished</div></div>
+              <div class="photo-card" data-task-id="50049"><div class="photo-thumb" style="background:#e8d9d4;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Cabinet Detail</div></div>
+              
+              <!-- Task 50050: Replace door hardware -->
+              <div class="photo-card" data-task-id="50050"><div class="photo-thumb" style="background:#cce8d4;"></div><div class="photo-label">Hardware - Before</div></div>
+              <div class="photo-card" data-task-id="50050"><div class="photo-thumb" style="background:#e8d4cc;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Hardware - Install 1</div></div>
+              <div class="photo-card" data-task-id="50050"><div class="photo-thumb" style="background:#d4e4e8;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Hardware - Install 2</div></div>
+              <div class="photo-card" data-task-id="50050"><div class="photo-thumb" style="background:#e8e2cc;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Hardware - After</div></div>
+              <div class="photo-card" data-task-id="50050"><div class="photo-thumb" style="background:#e8cce4;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Hinges - Installed</div></div>
+              
+              <!-- Task 50051: GFCI Outlet Replacement -->
+              <div class="photo-card" data-task-id="50051"><div class="photo-thumb" style="background:#e8e4c9;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">GFCI - Outlet 1</div></div>
+              <div class="photo-card" data-task-id="50051"><div class="photo-thumb" style="background:#c9e8e2;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">GFCI - Outlet 2</div></div>
+              <div class="photo-card" data-task-id="50051"><div class="photo-thumb" style="background:#e8c9e4;"></div><div class="photo-label">GFCI - Testing</div></div>
+              <div class="photo-card" data-task-id="50051"><div class="photo-thumb" style="background:#e8d4d4;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">GFCI - Approved</div></div>
+              
+              <!-- Task 50052: Replace Outlet and Plate -->
+              <div class="photo-card" data-task-id="50052"><div class="photo-thumb" style="background:#cce8e8;"></div><div class="photo-label">Outlets - Install Start</div></div>
+              <div class="photo-card" data-task-id="50052"><div class="photo-thumb" style="background:#e8e4d4;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Outlets - Install 1</div></div>
+              <div class="photo-card" data-task-id="50052"><div class="photo-thumb" style="background:#e8cce4;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Outlets - Install 2</div></div>
+              <div class="photo-card" data-task-id="50052"><div class="photo-thumb" style="background:#cce8cc;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Plates - Installed</div></div>
+              <div class="photo-card" data-task-id="50052"><div class="photo-thumb" style="background:#d4e2e8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Outlets - Complete</div></div>
+              <div class="photo-card" data-task-id="50052"><div class="photo-thumb" style="background:#e8d4cc;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Final Check</div></div>
+              
+              <!-- Task 50053: Electrical Switch Replacement -->
+              <div class="photo-card" data-task-id="50053"><div class="photo-thumb" style="background:#ccd8c9;"></div><div class="photo-label">Switches - Install 1</div></div>
+              <div class="photo-card" data-task-id="50053"><div class="photo-thumb" style="background:#e8ccd8;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Switches - Install 2</div></div>
+              <div class="photo-card" data-task-id="50053"><div class="photo-thumb" style="background:#d4cce4;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Switches - Plates</div></div>
+              <div class="photo-card" data-task-id="50053"><div class="photo-thumb" style="background:#e8d8cc;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Switches - Verified</div></div>
+              
+              <!-- Task 50054: Screen/Buff and Recoat Hardwood -->
+              <div class="photo-card" data-task-id="50054"><div class="photo-thumb" style="background:#e8d4c9;"></div><div class="photo-label">Floor - Before</div></div>
+              <div class="photo-card" data-task-id="50054"><div class="photo-thumb" style="background:#d4cce8;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Floor - Screening</div></div>
+              <div class="photo-card" data-task-id="50054"><div class="photo-thumb" style="background:#d4e8c9;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Floor - Buffing</div></div>
+              <div class="photo-card" data-task-id="50054"><div class="photo-thumb" style="background:#c9e8d0;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Floor - Stain 1</div></div>
+              <div class="photo-card" data-task-id="50054"><div class="photo-thumb" style="background:#c9dce8;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Floor - Stain 2</div></div>
+              <div class="photo-card" data-task-id="50054"><div class="photo-thumb" style="background:#e8d4e8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Floor - Coating</div></div>
+              <div class="photo-card" data-task-id="50054"><div class="photo-thumb" style="background:#d4c9e8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Floor - Drying</div></div>
+              <div class="photo-card" data-task-id="50054"><div class="photo-thumb" style="background:#e8dcc9;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Floor - Final</div></div>
+              
+              <!-- Task 50055: Replace Ceiling Register -->
+              <div class="photo-card" data-task-id="50055"><div class="photo-thumb" style="background:#c9e4d4;"></div><div class="photo-label">Register - Before</div></div>
+              <div class="photo-card" data-task-id="50055"><div class="photo-thumb" style="background:#e8d4d4;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Register - Install</div></div>
+              <div class="photo-card" data-task-id="50055"><div class="photo-thumb" style="background:#cce8e8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Register - Finished</div></div>
+              
+              <!-- Task 50056: Replace vent hood filter -->
+              <div class="photo-card" data-task-id="50056"><div class="photo-thumb" style="background:#e8e4d4;"></div><div class="photo-label">Hood Filter - Before</div></div>
+              <div class="photo-card" data-task-id="50056"><div class="photo-thumb" style="background:#e8cce4;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Hood Filter - After</div></div>
+              
+              <!-- Task 50057: Caulk All Needed per Room -->
+              <div class="photo-card" data-task-id="50057"><div class="photo-thumb" style="background:#cce8cc;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Caulk - Area 1</div></div>
+              <div class="photo-card" data-task-id="50057"><div class="photo-thumb" style="background:#d4e2e8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Caulk - Area 2</div></div>
+              <div class="photo-card" data-task-id="50057"><div class="photo-thumb" style="background:#e8d4cc;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Caulk - Finished</div></div>
+              
+              <!-- Task 50058: Snake drain -->
+              <div class="photo-card" data-task-id="50058"><div class="photo-thumb" style="background:#ccd8c9;"></div><div class="photo-label">Drain - Service</div></div>
+              <div class="photo-card" data-task-id="50058"><div class="photo-thumb" style="background:#e8ccd8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Drain - Clear</div></div>
             </div>
           </div>
           <button class="carousel-btn next" onclick="carouselScroll(this,1)">&#8250;</button>
@@ -1989,7 +2448,7 @@
       <!-- Date group 2 — hidden until added -->
       <div class="date-group" id="group-1" style="display:none;">
         <div class="date-group-header">
-          <div class="date-picker" onclick="this.querySelector('input').showPicker()">
+          <div class="date-picker" onclick="if(this.querySelector('input') && !this.querySelector('input').disabled) this.querySelector('input').showPicker();">
             <input type="date" value="2025-02-20" aria-label="Select date"/>
             <img class="date-picker__icon" src="https://www.figma.com/api/mcp/asset/9315f051-52b4-45a3-a710-d9b796f3e8f6" alt="calendar"/>
           </div>
@@ -2000,18 +2459,58 @@
           <button class="carousel-btn prev" onclick="carouselScroll(this,-1)" disabled>&#8249;</button>
           <div class="photo-scroll-container">
             <div class="photo-grid">
-              <div class="photo-card" data-task-id="10003"><div class="photo-thumb" style="background:#dce8c9;"><span class="photo-badge photo-tag rework">Rework</span></div><div class="photo-label">Counter</div></div>
-              <div class="photo-card" data-task-id="10005"><div class="photo-thumb" style="background:#c9e0e8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Appliances</div></div>
-              <div class="photo-card" data-task-id="10004"><div class="photo-thumb" style="background:#e8c9ce;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Flooring</div></div>
-              <div class="photo-card" data-task-id="10003"><div class="photo-thumb" style="background:#d8c9e8;"></div><div class="photo-label">Cabinets</div></div>
-              <div class="photo-card" data-task-id="10005"><div class="photo-thumb" style="background:#e8e8c9;"><span class="photo-badge photo-tag rework">Rework</span></div><div class="photo-label">Electrical</div></div>
-              <div class="photo-card" data-task-id="10004"><div class="photo-thumb" style="background:#c9e8d8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Plumbing</div></div>
-              <div class="photo-card" data-task-id="10005"><div class="photo-thumb" style="background:#e8d0c9;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Drywall</div></div>
-              <div class="photo-card" data-task-id="10003"><div class="photo-thumb" style="background:#c9cce8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Lighting</div></div>
-              <div class="photo-card" data-task-id="10004"><div class="photo-thumb" style="background:#e8c9e8;"></div><div class="photo-label">Window</div></div>
-              <div class="photo-card" data-task-id="10005"><div class="photo-thumb" style="background:#c9e8c4;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Trim</div></div>
-              <div class="photo-card" data-task-id="10003"><div class="photo-thumb" style="background:#e8d8c9;"><span class="photo-badge photo-tag rework">Rework</span></div><div class="photo-label">Sink</div></div>
-              <div class="photo-card" data-task-id="10004"><div class="photo-thumb" style="background:#c9e4e8;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Backsplash</div></div>
+              <!-- Task 50048: Paint Cabinet Base - Progress photos -->
+              <div class="photo-card" data-task-id="50048"><div class="photo-thumb" style="background:#dce8c9;"><span class="photo-badge photo-tag rework">Rework</span></div><div class="photo-label">Cabinet Base - Touch-up 1</div></div>
+              <div class="photo-card" data-task-id="50048"><div class="photo-thumb" style="background:#d4e0c9;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Cabinet Base - Touch-up 2</div></div>
+              <div class="photo-card" data-task-id="50048"><div class="photo-thumb" style="background:#cce8cc;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Cabinet Base - Final</div></div>
+              
+              <!-- Task 50049: Repair Cabinets - Progress photos -->
+              <div class="photo-card" data-task-id="50049"><div class="photo-thumb" style="background:#d8cce8;"></div><div class="photo-label">Cabinet Repair - Stage 1</div></div>
+              <div class="photo-card" data-task-id="50049"><div class="photo-thumb" style="background:#e8d0cc;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Cabinet Repair - Stage 2</div></div>
+              <div class="photo-card" data-task-id="50049"><div class="photo-thumb" style="background:#c9e4d8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Cabinet Repair - Final</div></div>
+              
+              <!-- Task 50050: Replace door hardware - Progress -->
+              <div class="photo-card" data-task-id="50050"><div class="photo-thumb" style="background:#e8ccc9;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Hardware - Hinges Final</div></div>
+              <div class="photo-card" data-task-id="50050"><div class="photo-thumb" style="background:#d4dce8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Hardware - Knobs Final</div></div>
+              <div class="photo-card" data-task-id="50050"><div class="photo-thumb" style="background:#e8dac9;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Hardware - Completed</div></div>
+              
+              <!-- Task 50051: GFCI Outlet Replacement - Progress -->
+              <div class="photo-card" data-task-id="50051"><div class="photo-thumb" style="background:#e8c9ce;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">GFCI - Test 1</div></div>
+              <div class="photo-card" data-task-id="50051"><div class="photo-thumb" style="background:#c9e8d8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">GFCI - Test 2</div></div>
+              <div class="photo-card" data-task-id="50051"><div class="photo-thumb" style="background:#e8d0c9;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">GFCI - Complete</div></div>
+              
+              <!-- Task 50052: Replace Outlet and Plate - Progress -->
+              <div class="photo-card" data-task-id="50052"><div class="photo-thumb" style="background:#c9cce8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Outlets - Group 1</div></div>
+              <div class="photo-card" data-task-id="50052"><div class="photo-thumb" style="background:#e8c9e8;"></div><div class="photo-label">Outlets - Group 2</div></div>
+              <div class="photo-card" data-task-id="50052"><div class="photo-thumb" style="background:#c9e8c4;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Outlets - Complete</div></div>
+              
+              <!-- Task 50053: Electrical Switch Replacement - Progress -->
+              <div class="photo-card" data-task-id="50053"><div class="photo-thumb" style="background:#e8d8c9;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Switches - Group 1</div></div>
+              <div class="photo-card" data-task-id="50053"><div class="photo-thumb" style="background:#c9e4e8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Switches - Group 2</div></div>
+              <div class="photo-card" data-task-id="50053"><div class="photo-thumb" style="background:#e8cce4;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Switches - Final</div></div>
+              
+              <!-- Task 50054: Screen/Buff and Recoat Hardwood - Progress -->
+              <div class="photo-card" data-task-id="50054"><div class="photo-thumb" style="background:#e8e8c9;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Floor - Polishing 1</div></div>
+              <div class="photo-card" data-task-id="50054"><div class="photo-thumb" style="background:#c9e0e8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Floor - Polishing 2</div></div>
+              <div class="photo-card" data-task-id="50054"><div class="photo-thumb" style="background:#e8dcc9;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Floor - Final Polish</div></div>
+              <div class="photo-card" data-task-id="50054"><div class="photo-thumb" style="background:#d8e8d4;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Floor - Hardened</div></div>
+              
+              <!-- Task 50055: Replace Ceiling Register - Progress -->
+              <div class="photo-card" data-task-id="50055"><div class="photo-thumb" style="background:#e8ccd8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Register - Clean</div></div>
+              <div class="photo-card" data-task-id="50055"><div class="photo-thumb" style="background:#cce8d8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Register - Final</div></div>
+              
+              <!-- Task 50056: Replace vent hood filter - Progress -->
+              <div class="photo-card" data-task-id="50056"><div class="photo-thumb" style="background:#e8d4cc;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Hood - Cleaned</div></div>
+              <div class="photo-card" data-task-id="50056"><div class="photo-thumb" style="background:#d4e8e8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Hood - Final</div></div>
+              
+              <!-- Task 50057: Caulk All Needed per Room - Progress -->
+              <div class="photo-card" data-task-id="50057"><div class="photo-thumb" style="background:#e8ddc9;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Caulk - Trim 1</div></div>
+              <div class="photo-card" data-task-id="50057"><div class="photo-thumb" style="background:#ccd4e8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Caulk - Trim 2</div></div>
+              <div class="photo-card" data-task-id="50057"><div class="photo-thumb" style="background:#e8ccc9;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Caulk - Final</div></div>
+              
+              <!-- Task 50058: Snake drain - Progress -->
+              <div class="photo-card" data-task-id="50058"><div class="photo-thumb" style="background:#d4e2e8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Drain - Cleared</div></div>
+              <div class="photo-card" data-task-id="50058"><div class="photo-thumb" style="background:#e8d8d4;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Drain - Verified</div></div>
             </div>
           </div>
           <button class="carousel-btn next" onclick="carouselScroll(this,1)">&#8250;</button>
@@ -2037,6 +2536,7 @@
     <div class="sidebar-section">
       <div class="sidebar-section-head">
         <div class="sidebar-section-title">Activities <span>11</span></div>
+        <a class="sidebar-see-more">See more</a>
       </div>
 
       <div class="sidebar-section-content">
@@ -2064,6 +2564,30 @@
             <div class="activity-detail-row">
               <span>Notes added</span>
               <span class="val">6</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="activity-item">
+          <div class="activity-head">
+            <div class="activity-title"><span class="green">Task Completed</span> by contractor</div>
+            <div class="activity-time">Mar 20 14:32</div>
+          </div>
+          <div class="activity-author">Shane D.</div>
+          <div class="activity-details">
+            <div class="activity-detail-row">
+              <span>Completed tasks</span>
+              <span class="val">3</span>
+            </div>
+            <div class="activity-detail-row">
+              <span>Photos uploaded</span>
+              <span class="val">8</span>
+            </div>
+            <div class="activity-detail-row">
+              <span>Inspection</span>
+              <span class="val green">Passed</span>
             </div>
           </div>
         </div>
@@ -2109,6 +2633,26 @@
 
         <div class="activity-item">
           <div class="activity-head">
+            <div class="activity-title"><span class="green">Materials</span> delivered</div>
+            <div class="activity-time">Mar 16 14:20</div>
+          </div>
+          <div class="activity-author">Eric L.</div>
+          <div class="activity-details">
+            <div class="activity-detail-row">
+              <span>Items received</span>
+              <span class="val">12</span>
+            </div>
+            <div class="activity-detail-row">
+              <span>Stored location</span>
+              <span class="val">Garage</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="activity-item">
+          <div class="activity-head">
             <div class="activity-title"><span class="green">Contractor</span> assigned</div>
             <div class="activity-time">Mar 16 09:18</div>
           </div>
@@ -2129,6 +2673,26 @@
 
         <div class="activity-item">
           <div class="activity-head">
+            <div class="activity-title"><span class="green">Inspection</span> scheduled</div>
+            <div class="activity-time">Mar 15 11:45</div>
+          </div>
+          <div class="activity-author">Shane D.</div>
+          <div class="activity-details">
+            <div class="activity-detail-row">
+              <span>Inspection date</span>
+              <span class="val">Mar 19</span>
+            </div>
+            <div class="activity-detail-row">
+              <span>Inspector</span>
+              <span class="val">R. Garcia</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="activity-item">
+          <div class="activity-head">
             <div class="activity-title"><span class="green">Deferred</span> task flagged</div>
             <div class="activity-time">Mar 15 13:26</div>
           </div>
@@ -2141,6 +2705,26 @@
             <div class="activity-detail-row">
               <span>Reason</span>
               <span class="val">Budget hold</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="activity-item">
+          <div class="activity-head">
+            <div class="activity-title"><span class="green">Prep Work</span> completed</div>
+            <div class="activity-time">Mar 14 15:30</div>
+          </div>
+          <div class="activity-author">Shane D.</div>
+          <div class="activity-details">
+            <div class="activity-detail-row">
+              <span>Surfaces prepped</span>
+              <span class="val">8 of 12</span>
+            </div>
+            <div class="activity-detail-row">
+              <span>Next phase</span>
+              <span class="val">Paint application</span>
             </div>
           </div>
         </div>
@@ -2173,6 +2757,7 @@
     <div class="sidebar-section">
       <div class="sidebar-section-head">
         <div class="sidebar-section-title">Notes <span>31</span></div>
+        <a class="sidebar-see-more">See more</a>
       </div>
 
       <div class="sidebar-section-content">
@@ -2269,6 +2854,7 @@
     <div class="modal-photo" id="modalPhoto">
       <button class="modal-photo-nav-btn prev" id="modalPhotoPrevBtn" onclick="navigateModalPhoto(-1)" aria-label="Previous photo">‹</button>
       <button class="modal-photo-nav-btn next" id="modalPhotoNextBtn" onclick="navigateModalPhoto(1)" aria-label="Next photo">›</button>
+      <div class="modal-photo-status-badge hidden" id="modalPhotoStatusBadge"></div>
       <div class="modal-photo-content">
         <div class="modal-photo-label" id="modalPhotoLabel">Photo</div>
       </div>
@@ -2297,8 +2883,8 @@
           </button>
         </div>
         <div class="modal-title-section">
-          <div class="modal-title" id="modalTitle">Task Name</div>
           <div class="modal-subtitle" id="modalSubtitle">Task details</div>
+          <div class="modal-title" id="modalTitle">Task Name</div>
         </div>
         <div class="modal-task-actions">
           <button class="modal-task-action-btn approve" id="approveTaskBtn" type="button" onclick="approveCurrentTask()">Approve Task</button>
@@ -2333,6 +2919,19 @@
               </button>
             </div>
           </div>
+          <div class="detail-item">
+            <span class="detail-label">ID</span>
+            <span class="detail-value" id="detailId">—</span>
+          </div>
+          <div class="detail-item editable">
+            <span class="detail-label">Unit Price</span>
+            <div class="detail-edit-row">
+              <input class="detail-input" id="detailUnitPrice" data-detail-field="unitPrice" type="text" value="" />
+              <button class="detail-edit-btn" type="button" data-focus-target="detailUnitPrice" aria-label="Edit unit price">
+                <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.9 2.1a1.5 1.5 0 1 1 2.1 2.1L6 11.2 3 12l.8-3 7.1-6.9Z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </div>
           <div class="detail-item editable">
             <span class="detail-label">Modifier</span>
             <div class="detail-edit-row modifier-row">
@@ -2347,23 +2946,7 @@
                   </div>
                 </details>
               </div>
-              <button class="detail-edit-btn" type="button" data-focus-target="detailModifierSummary" aria-label="Edit modifier">
-                <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.9 2.1a1.5 1.5 0 1 1 2.1 2.1L6 11.2 3 12l.8-3 7.1-6.9Z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
             </div>
-          </div>
-          <div class="detail-item editable">
-            <span class="detail-label">Unit Price</span>
-            <div class="detail-edit-row">
-              <input class="detail-input" id="detailUnitPrice" data-detail-field="unitPrice" type="text" value="" />
-              <button class="detail-edit-btn" type="button" data-focus-target="detailUnitPrice" aria-label="Edit unit price">
-                <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.9 2.1a1.5 1.5 0 1 1 2.1 2.1L6 11.2 3 12l.8-3 7.1-6.9Z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-            </div>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">ID</span>
-            <span class="detail-value" id="detailId">—</span>
           </div>
         </div>
       </div>
@@ -2371,7 +2954,191 @@
       <div class="details-section">
         <div class="details-section-title">Task Activities</div>
         <div id="detailActivities" class="activity-list">
-          <!-- Activities will be populated here -->
+          <div class="activity-card">
+            <div class="activity-card-head">
+              <div class="activity-card-title"><span class="accent">Paint Cabinet Base</span> completed</div>
+              <div class="activity-card-time">Mar 20 14:32</div>
+            </div>
+            <div class="activity-card-author">Shane D.</div>
+            <div class="activity-card-notes">Cabinet base painting completed. Color matched perfectly to existing base.</div>
+            <div class="activity-card-details">
+              <div class="activity-card-detail-item">
+                <span>Status</span>
+                <span class="activity-card-detail-value green">Completed</span>
+              </div>
+              <div class="activity-card-detail-item">
+                <span>Quality Check</span>
+                <span class="activity-card-detail-value">Passed</span>
+              </div>
+            </div>
+            <div class="activity-card-photos">
+              <div class="activity-card-photo-thumb" style="background:#c9d8e8;"></div>
+              <div class="activity-card-photo-thumb" style="background:#d4e8d4;"></div>
+              <div class="activity-card-photo-thumb" style="background:#e8d4c9;"></div>
+            </div>
+          </div>
+
+          <div class="activity-card">
+            <div class="activity-card-head">
+              <div class="activity-card-title"><span class="accent-orange">Materials</span> delivered</div>
+              <div class="activity-card-time">Mar 19 09:15</div>
+            </div>
+            <div class="activity-card-author">R. Garcia</div>
+            <div class="activity-card-notes">Cabinet hardware and paint materials arrived on site. Stored in garage per spec.</div>
+            <div class="activity-card-details">
+              <div class="activity-card-detail-item">
+                <span>Items Received</span>
+                <span class="activity-card-detail-value">12</span>
+              </div>
+              <div class="activity-card-detail-item">
+                <span>Verification</span>
+                <span class="activity-card-detail-value green">Complete</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="activity-card">
+            <div class="activity-card-head">
+              <div class="activity-card-title"><span class="accent">Prep Work</span> in progress</div>
+              <div class="activity-card-time">Mar 18 16:42</div>
+            </div>
+            <div class="activity-card-author">Shane D.</div>
+            <div class="activity-card-notes">Cabinet surfaces sanded and cleaned. Primer application scheduled for tomorrow morning.</div>
+            <div class="activity-card-details">
+              <div class="activity-card-detail-item">
+                <span>Surfaces Prepared</span>
+                <span class="activity-card-detail-value">8 of 12 cabinets</span>
+              </div>
+              <div class="activity-card-detail-item">
+                <span>Next Step</span>
+                <span class="activity-card-detail-value">Primer application</span>
+              </div>
+            </div>
+            <div class="activity-card-photos">
+              <div class="activity-card-photo-thumb" style="background:#d4cce8;"></div>
+              <div class="activity-card-photo-thumb" style="background:#e8e4c9;"></div>
+            </div>
+          </div>
+
+          <div class="activity-card">
+            <div class="activity-card-head">
+              <div class="activity-card-title"><span class="accent-orange">Inspection</span> requested</div>
+              <div class="activity-card-time">Mar 17 13:26</div>
+            </div>
+            <div class="activity-card-author">Eric L.</div>
+            <div class="activity-card-notes">Scheduling required before repair work begins. Homeowner needs 48-hour notice.</div>
+            <div class="activity-card-details">
+              <div class="activity-card-detail-item">
+                <span>Inspection Type</span>
+                <span class="activity-card-detail-value">Cabinet condition</span>
+              </div>
+              <div class="activity-card-detail-item">
+                <span>Scheduled</span>
+                <span class="activity-card-detail-value">Mar 19 10:00 AM</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="activity-card">
+            <div class="activity-card-head">
+              <div class="activity-card-title"><span class="accent">Task Assigned</span> to contractor</div>
+              <div class="activity-card-time">Mar 16 10:22</div>
+            </div>
+            <div class="activity-card-author">You</div>
+            <div class="activity-card-notes">Cabinet base painting assigned. Work to begin following inspection clearance.</div>
+            <div class="activity-card-details">
+              <div class="activity-card-detail-item">
+                <span>Assigned to</span>
+                <span class="activity-card-detail-value">Summit Ridge</span>
+              </div>
+              <div class="activity-card-detail-item">
+                <span>Estimated Duration</span>
+                <span class="activity-card-detail-value">2-3 days</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="activity-card">
+            <div class="activity-card-head">
+              <div class="activity-card-title"><span class="accent">Budget adjustment</span> approved</div>
+              <div class="activity-card-time">Mar 15 08:55</div>
+            </div>
+            <div class="activity-card-author">Shane D.</div>
+            <div class="activity-card-notes">Additional cabinet repair costs approved. Total paint amount confirmed.</div>
+            <div class="activity-card-details">
+              <div class="activity-card-detail-item">
+                <span>Original Price</span>
+                <span class="activity-card-detail-value">$50.00</span>
+              </div>
+              <div class="activity-card-detail-item">
+                <span>Adjustment</span>
+                <span class="activity-card-detail-value green">+$0.00</span>
+              </div>
+              <div class="activity-card-detail-item">
+                <span>Final Price</span>
+                <span class="activity-card-detail-value green">$50.00</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="activity-card">
+            <div class="activity-card-head">
+              <div class="activity-card-title"><span class="accent">Scope Note</span> added</div>
+              <div class="activity-card-time">Mar 14 16:30</div>
+            </div>
+            <div class="activity-card-author">R. Garcia</div>
+            <div class="activity-card-notes">Added requirement: Match existing cabinet base color exactly. Homeowner wants seamless blend with current finishes.</div>
+            <div class="activity-card-details">
+              <div class="activity-card-detail-item">
+                <span>Note Type</span>
+                <span class="activity-card-detail-value">Scope Group Note</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="activity-card">
+            <div class="activity-card-head">
+              <div class="activity-card-title"><span class="accent">Photo Upload</span> documentation</div>
+              <div class="activity-card-time">Mar 13 11:18</div>
+            </div>
+            <div class="activity-card-author">Shane D.</div>
+            <div class="activity-card-notes">Before photos of cabinet base taken and uploaded. Reference images for color matching stored.</div>
+            <div class="activity-card-details">
+              <div class="activity-card-detail-item">
+                <span>Photos Uploaded</span>
+                <span class="activity-card-detail-value">6</span>
+              </div>
+              <div class="activity-card-detail-item">
+                <span>Documentation</span>
+                <span class="activity-card-detail-value green">Complete</span>
+              </div>
+            </div>
+            <div class="activity-card-photos">
+              <div class="activity-card-photo-thumb" style="background:#c9e8e2;"></div>
+              <div class="activity-card-photo-thumb" style="background:#e8c9d4;"></div>
+              <div class="activity-card-photo-thumb" style="background:#ccd8e8;"></div>
+              <div class="activity-card-photo-thumb" style="background:#e8d9c9;"></div>
+            </div>
+          </div>
+
+          <div class="activity-card">
+            <div class="activity-card-head">
+              <div class="activity-card-title"><span class="accent">Task Created</span></div>
+              <div class="activity-card-time">Mar 12 09:45</div>
+            </div>
+            <div class="activity-card-author">You</div>
+            <div class="activity-card-notes">Paint Cabinet Base task created as part of Kitchen Group scope review.</div>
+            <div class="activity-card-details">
+              <div class="activity-card-detail-item">
+                <span>Task ID</span>
+                <span class="activity-card-detail-value">50048</span>
+              </div>
+              <div class="activity-card-detail-item">
+                <span>Initial Budget</span>
+                <span class="activity-card-detail-value">$50.00</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -2393,6 +3160,7 @@
 <script>
   // ── Carousel helpers ──────────────────────────────────────────
   const SCROLL_STEP = 642; // ~3 cards
+  let refreshPhotoSizes = () => {};
 
   function updateCarouselBtns(container) {
     const row = container.closest('.photo-grid-row');
@@ -2438,7 +3206,16 @@
   function updateAddBtn() {
     const visible = Array.from(document.querySelectorAll('.date-group'))
       .filter(g => g.style.display !== 'none').length;
-    document.getElementById('addDateBtn').disabled = visible >= 2;
+    const photosSection = document.getElementById('photosSection');
+    if (photosSection) {
+      photosSection.classList.toggle('two-date-rows', visible >= 2);
+    }
+    const addBtn = document.getElementById('addDateBtn');
+    if (!addBtn) return;
+    const maxReached = visible >= 2;
+    addBtn.disabled = maxReached;
+    addBtn.style.display = maxReached ? 'none' : 'inline-flex';
+    refreshPhotoSizes();
   }
 
   function addGroup() {
@@ -2448,6 +3225,8 @@
       g1.querySelectorAll('.photo-scroll-container').forEach(initDrag);
     }
     updateAddBtn();
+    updatePhotoDatePickerAvailability();
+    refreshPhotoSizes();
   }
 
   function removeGroup(idx) {
@@ -2477,6 +3256,57 @@
       g.style.display = 'none';
     }
     updateAddBtn();
+    updatePhotoDatePickerAvailability();
+    refreshPhotoSizes();
+  }
+
+  function updatePhotoDatePickerAvailability(validTaskIds = null) {
+    const activeTaskIds = validTaskIds instanceof Set
+      ? validTaskIds
+      : new Set(Array.from(document.querySelectorAll('.scope-table .task-row'))
+          .filter((row) => row.style.display !== 'none')
+          .map((row) => getTaskIdFromRow(row))
+          .filter(Boolean));
+
+    document.querySelectorAll('.date-group').forEach((group) => {
+      if (group.style.display === 'none') return;
+
+      const datePicker = group.querySelector('.date-picker');
+      const dateInput = group.querySelector('.date-picker input[type="date"]');
+      const header = group.querySelector('.date-group-header');
+      if (!datePicker || !dateInput) return;
+
+      let photoCountWrap = group.querySelector('.date-photo-count');
+      if (!photoCountWrap && header) {
+        photoCountWrap = document.createElement('div');
+        photoCountWrap.className = 'date-photo-count';
+        photoCountWrap.innerHTML = '<span class="date-photo-count-value">0</span> <img src="https://www.figma.com/api/mcp/asset/65dc39c4-726d-4933-8c3b-f0faae884b95" alt="cam"/>';
+        const removeBtn = header.querySelector('.date-remove-btn');
+        if (removeBtn) {
+          header.insertBefore(photoCountWrap, removeBtn);
+        } else {
+          header.appendChild(photoCountWrap);
+        }
+      }
+
+      const totalPhotoCount = group.querySelectorAll('.photo-card').length;
+      const matchingPhotoCount = Array.from(group.querySelectorAll('.photo-card')).reduce((count, card) => {
+        const taskId = String(card.getAttribute('data-task-id') || '').trim();
+        return count + (activeTaskIds.has(taskId) ? 1 : 0);
+      }, 0);
+
+      const photoCountValue = photoCountWrap?.querySelector('.date-photo-count-value');
+      if (photoCountValue) {
+        photoCountValue.textContent = String(matchingPhotoCount);
+      }
+
+      const hasPhotos = totalPhotoCount > 0;
+      dateInput.disabled = !hasPhotos;
+      datePicker.classList.toggle('disabled', !hasPhotos);
+      group.classList.toggle('no-photos', !hasPhotos);
+      datePicker.setAttribute('aria-disabled', hasPhotos ? 'false' : 'true');
+      datePicker.title = hasPhotos ? 'Select date' : 'No photos for this date';
+    });
   }
 
   // ── Draggable separator ────────────────────────────────────────
@@ -2491,15 +3321,36 @@
     let startTableHeight = 0;
 
     // Function to update photo sizes based on available height
-    function updatePhotoSizes() {
-      const photosHeight = photosSection.offsetHeight;
-      // Calculate optimal photo size: leave room for padding (32px top+bottom), labels, gaps, and scrollbar
-      // Rough calculation: assume ~50px per row for text + gaps, so we have (photosHeight - 50) / 2 for ~2 rows visible
-      // This gives us: (availableHeight - textAndGaps) / rowsVisible
-      const availableForPhotos = photosHeight - 100; // Account for padding and text labels
-      const photoSize = Math.max(150, Math.min(400, Math.floor(availableForPhotos / 1.5))); // Scale for ~1.5 rows
+    refreshPhotoSizes = function updatePhotoSizes() {
+      const photosHeight = photosSection.clientHeight;
+      const sectionStyle = window.getComputedStyle(photosSection);
+      const sectionPadding = parseFloat(sectionStyle.paddingTop || '0')
+        + parseFloat(sectionStyle.paddingBottom || '0');
+
+      const visibleGroups = Array.from(photosSection.querySelectorAll('.date-group'))
+        .filter((group) => group.style.display !== 'none');
+      const visibleGroupCount = Math.max(visibleGroups.length, 1);
+
+      const addBtn = document.getElementById('addDateBtn');
+      const addBtnHeight = addBtn && addBtn.style.display !== 'none'
+        ? addBtn.offsetHeight + 8
+        : 0;
+
+      const reservedHeight = visibleGroups.reduce((sum, group, index) => {
+        const groupStyle = window.getComputedStyle(group);
+        const paddingTop = parseFloat(groupStyle.paddingTop || '0');
+        const paddingBottom = parseFloat(groupStyle.paddingBottom || '0');
+        const borderTop = index === 0 ? 0 : parseFloat(groupStyle.borderTopWidth || '0');
+        const headerHeight = group.querySelector('.date-group-header')?.offsetHeight || 0;
+        const headerGap = 16;
+        const labelAndGap = 34;
+        return sum + paddingTop + paddingBottom + borderTop + headerHeight + headerGap + labelAndGap;
+      }, 0);
+
+      const availableForPhotos = photosHeight - sectionPadding - addBtnHeight - reservedHeight;
+      const photoSize = Math.max(96, Math.min(260, Math.floor(availableForPhotos / visibleGroupCount)));
       document.documentElement.style.setProperty('--photo-size', `${photoSize}px`);
-    }
+    };
 
     separator.addEventListener('mousedown', (e) => {
       isDragging = true;
@@ -2531,7 +3382,7 @@
       photosSection.style.flex = `0 0 ${newPhotosHeight}px`;
       
       // Update photo sizes as user drags
-      updatePhotoSizes();
+      refreshPhotoSizes();
     });
 
     document.addEventListener('mouseup', () => {
@@ -2543,10 +3394,10 @@
     });
 
     // Initialize photo sizes
-    updatePhotoSizes();
+    refreshPhotoSizes();
     
     // Update on window resize
-    window.addEventListener('resize', updatePhotoSizes);
+    window.addEventListener('resize', refreshPhotoSizes);
   });
 
   // ── Modal navigation ─────────────────────────────────────────────
@@ -2570,6 +3421,14 @@
   let groupTasks = {};
   let groupCosts = {};
   let currentGroup = '';
+  let currentTableView = 'group';
+  let contractorViews = [];
+  let contractorTasks = {};
+  let contractorCosts = {};
+  let currentContractorView = '';
+  let activitiesData = {};
+  let defaultPhotoGridMarkup = null;
+  let syncExteriorGeneralPhotosIfAvailable = () => {};
 
   function normalizeUnit(unit) {
     const trimmed = String(unit || '').trim();
@@ -2583,6 +3442,13 @@
     groups = [];
     groupTasks = {};
     groupCosts = {};
+    contractorViews = [];
+    contractorTasks = {};
+    contractorCosts = {};
+
+    const contractorTotals = {};
+    const contractorTaskIds = {};
+    const unassignedKey = 'Unassigned';
 
     (importedScopeData.groups || []).forEach((group) => {
       const groupName = String(group.name || '').trim();
@@ -2606,29 +3472,141 @@
 
         const contractor = String(task.contractor || '').trim();
         if (contractor) contractors.add(contractor);
+
+        const contractorKey = contractor || unassignedKey;
+        if (!contractorTaskIds[contractorKey]) contractorTaskIds[contractorKey] = [];
+        contractorTaskIds[contractorKey].push(id);
+        contractorTotals[contractorKey] = (contractorTotals[contractorKey] || 0) + amount;
       });
 
       groupTasks[groupName] = ids;
       groupCosts[groupName] = formatCurrency(computedTotal);
     });
 
+    const sortedContractors = Array.from(contractors).sort((a, b) => a.localeCompare(b));
+    contractorViews = [
+      ...(contractorTaskIds[unassignedKey]?.length ? [unassignedKey] : []),
+      ...sortedContractors
+    ];
+
+    contractorViews.forEach((contractorName) => {
+      contractorTasks[contractorName] = contractorTaskIds[contractorName] || [];
+      contractorCosts[contractorName] = formatCurrency(contractorTotals[contractorName] || 0);
+    });
+
     contractorOptions = ['', ...Array.from(contractors).sort((a, b) => a.localeCompare(b))];
     currentGroup = groups[0] || '';
+    currentContractorView = contractorViews[0] || '';
+  }
+
+  function getCurrentViewBuckets() {
+    return currentTableView === 'contractor' ? contractorViews : groups;
+  }
+
+  function getCurrentViewTasksMap() {
+    return currentTableView === 'contractor' ? contractorTasks : groupTasks;
+  }
+
+  function getCurrentViewCostsMap() {
+    return currentTableView === 'contractor' ? contractorCosts : groupCosts;
+  }
+
+  function getCurrentViewKey() {
+    return currentTableView === 'contractor' ? currentContractorView : currentGroup;
+  }
+
+  function setCurrentViewKey(value) {
+    if (currentTableView === 'contractor') {
+      currentContractorView = value;
+      return;
+    }
+    currentGroup = value;
+  }
+
+  function getCurrentViewTitleLabel() {
+    return currentTableView === 'contractor' ? 'Contractor' : 'Group';
+  }
+
+  function updateViewModeToggleUi() {
+    const groupBtn = document.getElementById('viewModeGroupBtn');
+    const tradeBtn = document.getElementById('viewModeTradeBtn');
+    if (!groupBtn || !tradeBtn) return;
+
+    const isGroup = currentTableView === 'group';
+    groupBtn.classList.toggle('active', isGroup);
+    tradeBtn.classList.toggle('active', !isGroup);
+    groupBtn.setAttribute('aria-selected', isGroup ? 'true' : 'false');
+    tradeBtn.setAttribute('aria-selected', !isGroup ? 'true' : 'false');
+  }
+
+  function syncPrimaryColumnByViewMode() {
+    const contractorHeader = document.querySelector('.scope-table thead th.col-contr');
+    if (contractorHeader) {
+      contractorHeader.textContent = currentTableView === 'contractor' ? 'Group' : 'Contractor';
+    }
+
+    document.querySelectorAll('.scope-table .task-row').forEach((row) => {
+      const contractorCell = row.querySelectorAll('td')[3];
+      if (!contractorCell) return;
+
+      const contractorSelect = contractorCell.querySelector('.contractor-select');
+      let groupLabel = contractorCell.querySelector('.task-group-cell-value');
+      if (!groupLabel) {
+        groupLabel = document.createElement('span');
+        groupLabel.className = 'task-group-cell-value';
+        contractorCell.appendChild(groupLabel);
+      }
+
+      const taskId = getTaskIdFromRow(row);
+      groupLabel.textContent = taskGroups[taskId] || '—';
+
+      const showGroupColumn = currentTableView === 'contractor';
+      if (contractorSelect) {
+        contractorSelect.style.display = showGroupColumn ? 'none' : '';
+        contractorSelect.disabled = showGroupColumn;
+      }
+      groupLabel.style.display = showGroupColumn ? 'inline-flex' : 'none';
+    });
+  }
+
+  function setTableViewMode(viewMode) {
+    const normalized = viewMode === 'contractor' ? 'contractor' : 'group';
+    if (currentTableView === normalized) {
+      updateViewModeToggleUi();
+      return;
+    }
+
+    currentTableView = normalized;
+    const buckets = getCurrentViewBuckets();
+    const activeKey = getCurrentViewKey();
+    const nextViewKey = buckets.includes(activeKey) ? activeKey : (buckets[0] || '');
+
+    populateGroupDropdown();
+    updateViewModeToggleUi();
+    syncPrimaryColumnByViewMode();
+
+    if (nextViewKey) {
+      renderGroup(nextViewKey);
+    }
   }
 
   function populateGroupDropdown() {
     const menu = document.getElementById('groupDropdownMenu');
     if (!menu) return;
 
+    const buckets = getCurrentViewBuckets();
+    const activeKey = getCurrentViewKey();
+
     menu.innerHTML = '';
-    groups.forEach((groupName, index) => {
+    buckets.forEach((bucketName, index) => {
       const item = document.createElement('button');
       item.type = 'button';
       item.className = 'group-dropdown-item';
-      item.dataset.groupName = groupName;
-      item.textContent = `${index + 1}. ${groupName}`;
+      item.dataset.viewKey = bucketName;
+      item.textContent = `${index + 1}. ${bucketName}`;
+      item.classList.toggle('active', bucketName === activeKey);
       item.addEventListener('click', () => {
-        renderGroup(groupName);
+        renderGroup(bucketName);
         const dropdown = document.getElementById('groupDropdown');
         if (dropdown) dropdown.open = false;
       });
@@ -2646,6 +3624,40 @@
 
   function getTaskIdFromRow(row) {
     return String(row?.dataset.taskId || row?.querySelector('.task-id')?.textContent || '').trim();
+  }
+
+  function getTaskActivityAndPhotoCounts(taskId) {
+    const normalizedTaskId = String(taskId || '').trim();
+    const activities = activitiesData[normalizedTaskId] || [];
+    const activityCount = activities.length;
+    const photoCount = activities.reduce((count, activity) => {
+      return count + ((activity?.photos && Array.isArray(activity.photos)) ? activity.photos.length : 0);
+    }, 0);
+    return { activityCount, photoCount };
+  }
+
+  function refreshTaskActivityAndPhotoCounts() {
+    document.querySelectorAll('.scope-table .task-row').forEach((row) => {
+      const taskId = getTaskIdFromRow(row);
+      const { activityCount, photoCount } = getTaskActivityAndPhotoCounts(taskId);
+      const noteCountEl = row.querySelector('.note-count');
+      const photoCountEl = row.querySelector('.photo-count');
+      if (noteCountEl) noteCountEl.textContent = String(activityCount);
+      if (photoCountEl) photoCountEl.textContent = String(photoCount);
+    });
+  }
+
+  function updateTaskContractorInSource(taskId, contractor) {
+    const normalizedId = String(taskId || '').trim();
+    if (!normalizedId) return;
+
+    const normalizedContractor = String(contractor || '').trim();
+    (importedScopeData.groups || []).forEach((group) => {
+      (group.tasks || []).forEach((task) => {
+        if (String(task.id || '').trim() !== normalizedId) return;
+        task.contractor = normalizedContractor;
+      });
+    });
   }
 
   function getTaskActionState(taskId) {
@@ -2768,6 +3780,105 @@
     openDeleteTaskConfirm();
   }
 
+  function getSelectedTaskRows() {
+    return Array.from(document.querySelectorAll('.scope-table .task-row')).filter((row) => {
+      if (row.style.display === 'none') return false;
+      const checkbox = row.querySelector('.task-check');
+      return Boolean(checkbox?.checked);
+    });
+  }
+
+  function updateBulkActionBar() {
+    const bar = document.getElementById('bulkActionBar');
+    const countEl = document.getElementById('bulkActionCount');
+    if (!bar || !countEl) return;
+
+    const selectedRows = getSelectedTaskRows();
+    const selectedCount = selectedRows.length;
+    countEl.textContent = `${selectedCount} selected`;
+    bar.classList.toggle('active', selectedCount > 0);
+  }
+
+  function setRowChecked(row, checked) {
+    const checkbox = row?.querySelector('.task-check');
+    if (!checkbox) return;
+    checkbox.checked = checked;
+  }
+
+  function removeTasksByIds(taskIdsToRemove) {
+    if (!taskIdsToRemove.length) return;
+
+    const ids = new Set(taskIdsToRemove.map((id) => String(id || '').trim()).filter(Boolean));
+    if (!ids.size) return;
+
+    const sourceGroups = importedScopeData.groups || [];
+    sourceGroups.forEach((group) => {
+      group.tasks = (group.tasks || []).filter((task) => !ids.has(String(task.id || '').trim()));
+    });
+    importedScopeData.groups = sourceGroups.filter((group) => (group.tasks || []).length > 0);
+
+    ids.forEach((taskId) => {
+      delete taskActionState[taskId];
+      refreshPhotoCardsForTaskRemoval(taskId);
+    });
+
+    const activeModalTaskId = getTaskIdFromRow(currentModalRow);
+    if (activeModalTaskId && ids.has(activeModalTaskId)) {
+      closeModal();
+    }
+
+    const desiredViewKey = getCurrentViewKey();
+    buildScopeDataMaps();
+    populateGroupDropdown();
+    const buckets = getCurrentViewBuckets();
+    const nextViewKey = buckets.includes(desiredViewKey) ? desiredViewKey : (buckets[0] || '');
+    if (nextViewKey) {
+      renderGroup(nextViewKey);
+    }
+  }
+
+  function approveSelectedTasks() {
+    const selectedRows = getSelectedTaskRows();
+    selectedRows.forEach((row) => {
+      const taskId = getTaskIdFromRow(row);
+      if (!taskId) return;
+      taskActionState[taskId] = { approved: true, editRequested: false };
+      refreshTaskUiState(row);
+      setRowChecked(row, false);
+    });
+    updateBulkActionBar();
+  }
+
+  function requestEditSelectedTasks() {
+    const selectedRows = getSelectedTaskRows();
+    selectedRows.forEach((row) => {
+      const taskId = getTaskIdFromRow(row);
+      if (!taskId) return;
+      const currentState = getTaskActionState(taskId);
+      if (currentState.approved) return;
+      taskActionState[taskId] = { ...currentState, editRequested: true };
+      refreshTaskUiState(row);
+      setRowChecked(row, false);
+    });
+    updateBulkActionBar();
+  }
+
+  function deleteSelectedTasks() {
+    const selectedRows = getSelectedTaskRows();
+    if (!selectedRows.length) return;
+
+    const taskIdsToRemove = selectedRows
+      .map((row) => getTaskIdFromRow(row))
+      .filter(Boolean);
+    if (!taskIdsToRemove.length) return;
+
+    const confirmed = window.confirm(`Delete ${taskIdsToRemove.length} selected task${taskIdsToRemove.length === 1 ? '' : 's'}? This action cannot be undone.`);
+    if (!confirmed) return;
+
+    removeTasksByIds(taskIdsToRemove);
+    updateBulkActionBar();
+  }
+
   function refreshPhotoCardsForTaskRemoval(taskId) {
     const fallbackTaskId = taskIds[0] || '';
     document.querySelectorAll(`.photo-card[data-task-id="${taskId}"]`).forEach((card) => {
@@ -2811,13 +3922,14 @@
     row.remove();
     delete taskActionState[taskId];
 
-    const desiredGroup = currentGroup;
+    const desiredViewKey = getCurrentViewKey();
     buildScopeDataMaps();
     populateGroupDropdown();
-    currentGroup = groups.includes(desiredGroup) ? desiredGroup : (groups[0] || '');
     refreshPhotoCardsForTaskRemoval(taskId);
-    if (currentGroup) {
-      renderGroup(currentGroup);
+    const buckets = getCurrentViewBuckets();
+    const nextViewKey = buckets.includes(desiredViewKey) ? desiredViewKey : (buckets[0] || '');
+    if (nextViewKey) {
+      renderGroup(nextViewKey);
     }
 
     closeDeleteTaskConfirm();
@@ -2906,6 +4018,9 @@
     const pillArea = document.createElement('div');
     pillArea.className = 'modifier-pill-area';
 
+    const pillList = document.createElement('div');
+    pillList.className = 'modifier-pill-list';
+
     const addDropdown = document.createElement('details');
     addDropdown.className = 'modifier-add-dropdown';
     addDropdown.innerHTML = `
@@ -2921,7 +4036,7 @@
     `;
 
     const rebuildPills = () => {
-      pillArea.querySelectorAll('.modifier-pill').forEach(p => p.remove());
+      pillList.innerHTML = '';
       const checked = Array.from(addDropdown.querySelectorAll('input:checked')).map(cb => cb.value);
       checked.forEach(val => {
         const pill = createModifierPill(val, (removed) => {
@@ -2929,8 +4044,9 @@
           if (cb) cb.checked = false;
           rebuildPills();
         });
-        pillArea.insertBefore(pill, addDropdown);
+        pillList.appendChild(pill);
       });
+      pillList.appendChild(addDropdown);
       setRowModifierText(row, checked);
       if (currentModalRow === row) syncModalInputsFromRow(row);
     };
@@ -2941,8 +4057,9 @@
         if (cb) cb.checked = false;
         rebuildPills();
       });
-      pillArea.appendChild(pill);
+      pillList.appendChild(pill);
     });
+    pillList.appendChild(addDropdown);
 
     addDropdown.querySelectorAll('input').forEach(cb => {
       cb.addEventListener('change', rebuildPills);
@@ -2951,7 +4068,7 @@
     addDropdown.addEventListener('click', e => e.stopPropagation());
     addDropdown.addEventListener('mousedown', e => e.stopPropagation());
 
-    pillArea.appendChild(addDropdown);
+    pillArea.appendChild(pillList);
     cell.appendChild(pillArea);
     return cell;
   }
@@ -2991,7 +4108,20 @@
 
     const row = select.closest('.task-row');
     if (row) {
+      const taskId = getTaskIdFromRow(row);
+      updateTaskContractorInSource(taskId, normalized);
       updateUnassignedContractorBadge(row);
+
+      if (currentTableView === 'contractor') {
+        const activeViewKey = getCurrentViewKey();
+        buildScopeDataMaps();
+        populateGroupDropdown();
+        const buckets = getCurrentViewBuckets();
+        const nextViewKey = buckets.includes(activeViewKey) ? activeViewKey : (buckets[0] || '');
+        if (nextViewKey) {
+          renderGroup(nextViewKey);
+        }
+      }
     }
   }
 
@@ -3079,6 +4209,7 @@
     const unitPrice = parseNumericValue(task.unitPrice);
     const amount = parseNumericValue(task.amount) || (qty * unitPrice);
     const hasContractor = Boolean(contractor);
+    const { activityCount, photoCount } = getTaskActivityAndPhotoCounts(id);
 
     row.dataset.taskId = id;
 
@@ -3093,8 +4224,8 @@
       <td><div class="qty-wrap"><input class="qty-input" type="number" step="any" inputmode="decimal" value="${qty}"/><span class="qty-unit">${unit}</span></div></td>
       <td><input class="price-input" type="number" step="any" inputmode="decimal" value="${unitPrice}"/></td>
       <td class="total-val">${formatCurrency(amount)}</td>
-      <td><div class="note-wrap">0 <img src="https://www.figma.com/api/mcp/asset/03a8e96d-a7c3-4fe2-9423-c38dd347f76b" alt="notes"/></div></td>
-      <td><div class="photo-wrap">0 <img src="https://www.figma.com/api/mcp/asset/65dc39c4-726d-4933-8c3b-f0faae884b95" alt="cam"/></div></td>
+      <td><div class="note-wrap"><span class="note-count">${activityCount}</span> <img src="https://www.figma.com/api/mcp/asset/03a8e96d-a7c3-4fe2-9423-c38dd347f76b" alt="notes"/></div></td>
+      <td><div class="photo-wrap"><span class="photo-count">${photoCount}</span> <img src="https://www.figma.com/api/mcp/asset/65dc39c4-726d-4933-8c3b-f0faae884b95" alt="cam"/></div></td>
     `;
 
     const nameEl = row.querySelector('.task-name');
@@ -3123,6 +4254,11 @@
         setSelectValue(select, select.value);
       });
       contractorCell.appendChild(select);
+
+      const groupLabel = document.createElement('span');
+      groupLabel.className = 'task-group-cell-value';
+      groupLabel.textContent = taskGroups[id] || '—';
+      contractorCell.appendChild(groupLabel);
     }
 
     updateTaskActionBadges(row);
@@ -3232,21 +4368,22 @@
     const cell = row.querySelector('.modifier-cell');
 
     if (cell) {
-      const pillArea = cell.querySelector('.modifier-pill-area');
+      const pillList = cell.querySelector('.modifier-pill-list');
       const addDropdown = cell.querySelector('.modifier-add-dropdown');
-      if (pillArea && addDropdown) {
+      if (pillList && addDropdown) {
         addDropdown.querySelectorAll('input').forEach(cb => {
           cb.checked = normalizedValues.includes(cb.value);
         });
-        pillArea.querySelectorAll('.modifier-pill').forEach(p => p.remove());
+        pillList.innerHTML = '';
         normalizedValues.forEach(val => {
           const pill = createModifierPill(val, (removed) => {
             const cb = addDropdown.querySelector(`input[value="${removed}"]`);
             if (cb) cb.checked = false;
             setRowModifierText(row, Array.from(addDropdown.querySelectorAll('input:checked')).map(c => c.value));
           });
-          pillArea.insertBefore(pill, addDropdown);
+          pillList.appendChild(pill);
         });
+        pillList.appendChild(addDropdown);
       }
     }
 
@@ -3357,48 +4494,155 @@
     currentModalTask.total = rowTotal;
   }
 
+  function syncPhotoOrderingWithCurrentView(orderedTaskIds = []) {
+    const grids = Array.from(document.querySelectorAll('.date-group .photo-grid'));
+    if (!grids.length) return;
+
+    grids.forEach((grid) => {
+      const cards = Array.from(grid.querySelectorAll('.photo-card'));
+      if (!cards.length) return;
+
+      cards.forEach((card, index) => {
+        if (!card.dataset.baseOrder) {
+          card.dataset.baseOrder = String(index);
+        }
+      });
+
+      if (currentTableView !== 'contractor') {
+        cards
+          .slice()
+          .sort((a, b) => Number(a.dataset.baseOrder || '0') - Number(b.dataset.baseOrder || '0'))
+          .forEach((card) => grid.appendChild(card));
+        return;
+      }
+
+      const orderMap = new Map();
+      orderedTaskIds.forEach((taskId, index) => {
+        const normalized = String(taskId || '').trim();
+        if (!normalized || orderMap.has(normalized)) return;
+        orderMap.set(normalized, index);
+      });
+
+      cards
+        .slice()
+        .sort((a, b) => {
+          const aTaskId = String(a.getAttribute('data-task-id') || '').trim();
+          const bTaskId = String(b.getAttribute('data-task-id') || '').trim();
+          const aRank = orderMap.has(aTaskId) ? orderMap.get(aTaskId) : Number.MAX_SAFE_INTEGER;
+          const bRank = orderMap.has(bTaskId) ? orderMap.get(bTaskId) : Number.MAX_SAFE_INTEGER;
+
+          if (aRank !== bRank) return aRank - bRank;
+          return Number(a.dataset.baseOrder || '0') - Number(b.dataset.baseOrder || '0');
+        })
+        .forEach((card) => grid.appendChild(card));
+    });
+  }
+
+  function syncPhotoTaskAssignmentsWithCurrentView(orderedTaskIds = [], activeKey = '') {
+    const useExteriorRealPhotos = currentTableView === 'group' && activeKey === 'Exterior General';
+    if (useExteriorRealPhotos) return;
+    if (!orderedTaskIds.length) return;
+
+    const normalizedTaskIds = orderedTaskIds
+      .map((id) => String(id || '').trim())
+      .filter(Boolean);
+    if (!normalizedTaskIds.length) return;
+
+    document.querySelectorAll('.date-group .photo-grid').forEach((grid) => {
+      const cards = Array.from(grid.querySelectorAll('.photo-card'));
+      cards.forEach((card, index) => {
+        const mappedTaskId = normalizedTaskIds[index % normalizedTaskIds.length];
+        card.setAttribute('data-task-id', mappedTaskId);
+
+        const labelEl = card.querySelector('.photo-label');
+        if (labelEl) {
+          const taskName = getTaskNameById(mappedTaskId);
+          const trimmed = String(taskName || '').trim();
+          if (trimmed) {
+            labelEl.textContent = trimmed.length > 24 ? `${trimmed.slice(0, 24).trim()}...` : trimmed;
+          }
+        }
+      });
+    });
+  }
+
+  function syncPhotoVisibilityWithCurrentView(validIds, activeKey) {
+    const showGroupLevelPhotos = currentTableView === 'group' && activeKey === 'Exterior General';
+    document.querySelectorAll('.date-group .photo-card').forEach((card) => {
+      const taskId = String(card.getAttribute('data-task-id') || '').trim();
+      const shouldShow = taskId ? validIds.has(taskId) : showGroupLevelPhotos;
+      card.style.display = shouldShow ? '' : 'none';
+    });
+  }
+
   function renderGroup(groupName) {
-    currentGroup = groupName;
+    const buckets = getCurrentViewBuckets();
+    const fallbackKey = buckets[0] || '';
+    const requestedKey = String(groupName || '').trim();
+    const activeKey = buckets.includes(requestedKey) ? requestedKey : fallbackKey;
+    setCurrentViewKey(activeKey);
 
     // Header text
     const groupTitle = document.querySelector('.group-title');
     if (groupTitle) {
-      const groupIndex = groups.indexOf(groupName);
-      const displayIndex = groupIndex >= 0 ? groupIndex + 1 : 0;
-      const totalGroups = groups.length;
-      groupTitle.textContent = totalGroups > 0 && displayIndex > 0
-        ? `${groupName} (${displayIndex}/${totalGroups})`
-        : groupName;
+      const bucketIndex = buckets.indexOf(activeKey);
+      const displayIndex = bucketIndex >= 0 ? bucketIndex + 1 : 0;
+      const totalBuckets = buckets.length;
+      groupTitle.textContent = totalBuckets > 0 && displayIndex > 0
+        ? `${activeKey} (${displayIndex}/${totalBuckets})`
+        : activeKey;
     }
-    document.querySelector('.group-header .cost-value').textContent = groupCosts[groupName] || '—';
+
+    const costMap = getCurrentViewCostsMap();
+    document.querySelector('.group-header .cost-value').textContent = costMap[activeKey] || '—';
+
+    const approveGroupBtn = document.querySelector('.group-header .btn-approve');
+    if (approveGroupBtn) {
+      approveGroupBtn.textContent = 'Approve Tasks';
+    }
 
     document.querySelectorAll('.group-dropdown-item').forEach((item) => {
-      item.classList.toggle('active', item.dataset.groupName === groupName);
+      item.classList.toggle('active', item.dataset.viewKey === activeKey);
     });
 
     // Group row summary
     const groupRow = document.querySelector('.scope-table .group-row');
     if (groupRow) {
       const titleSpan = groupRow.querySelector('td:nth-child(2) span');
-      if (titleSpan) titleSpan.textContent = groupName.replace(' Group', '');
+      if (titleSpan) titleSpan.textContent = activeKey.replace(' Group', '');
       const costCell = groupRow.querySelector('td:nth-child(7)');
-      if (costCell) costCell.textContent = groupCosts[groupName] || '—';
+      if (costCell) costCell.textContent = costMap[activeKey] || '—';
     }
 
-    const validIds = new Set(groupTasks[groupName] || []);
+    syncExteriorGeneralPhotosIfAvailable(activeKey);
+
+    const viewTasksMap = getCurrentViewTasksMap();
+    const orderedTaskIds = viewTasksMap[activeKey] || [];
+    const validIds = new Set(viewTasksMap[activeKey] || []);
+
+    syncPhotoTaskAssignmentsWithCurrentView(orderedTaskIds, activeKey);
+
     document.querySelectorAll('.scope-table .task-row').forEach(row => {
       const id = row.querySelector('.task-id')?.textContent.trim();
       row.style.display = validIds.has(id) ? '' : 'none';
     });
 
+    syncPhotoOrderingWithCurrentView(orderedTaskIds);
+    syncPhotoVisibilityWithCurrentView(validIds, activeKey);
+
+    updatePhotoDatePickerAvailability(validIds);
+
     recalculateCurrentGroupTotal();
+    updateBulkActionBar();
   }
 
   function navigateGroup(direction) {
-    const index = groups.indexOf(currentGroup);
+    const buckets = getCurrentViewBuckets();
+    const currentKey = getCurrentViewKey();
+    const index = buckets.indexOf(currentKey);
     if (index === -1) return;
-    const nextIndex = (index + direction + groups.length) % groups.length;
-    renderGroup(groups[nextIndex]);
+    const nextIndex = (index + direction + buckets.length) % buckets.length;
+    renderGroup(buckets[nextIndex]);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -3408,18 +4652,21 @@
       navButtons[1].addEventListener('click', () => navigateGroup(1));
     }
 
-    if (currentGroup) {
-      renderGroup(currentGroup);
+    const initialViewKey = getCurrentViewKey();
+    if (initialViewKey) {
+      renderGroup(initialViewKey);
     }
   });
 
   function getBoundaryGroupNames() {
-    if (!groups.length) {
+    const buckets = getCurrentViewBuckets();
+    if (!buckets.length) {
       return { previous: 'Previous Group', next: 'Next Group' };
     }
-    const currentIndex = Math.max(groups.indexOf(currentGroup), 0);
-    const previous = groups[(currentIndex - 1 + groups.length) % groups.length];
-    const next = groups[(currentIndex + 1) % groups.length];
+    const currentKey = getCurrentViewKey();
+    const currentIndex = Math.max(buckets.indexOf(currentKey), 0);
+    const previous = buckets[(currentIndex - 1 + buckets.length) % buckets.length];
+    const next = buckets[(currentIndex + 1) % buckets.length];
     return { previous, next };
   }
 
@@ -3480,6 +4727,28 @@
     return 'Task';
   }
 
+  function getTaskPositionInGroupText(taskId) {
+    const normalizedId = String(taskId || '').trim();
+    if (!normalizedId) return 'Task details';
+
+    const groupName = taskGroups[normalizedId];
+    const idsInGroup = groupName ? (groupTasks[groupName] || []) : [];
+    if (!idsInGroup.length) return 'Task details';
+
+    const index = idsInGroup.indexOf(normalizedId);
+    if (index < 0) return `Task 1 of ${idsInGroup.length}`;
+    return `Task ${index + 1} of ${idsInGroup.length}`;
+  }
+
+  function escapeHtml(raw) {
+    return String(raw || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   function navigateTask(direction) {
     if (!currentModalTask) return;
 
@@ -3510,6 +4779,62 @@
       targetRow.click();
     }
   }
+
+  function normalizeActivityStatus(rawValue) {
+    const value = String(rawValue || '').trim().toLowerCase();
+
+    if (!value || value.includes('not started')) {
+      return { text: 'Not started', className: 'status-not-started' };
+    }
+    if (value.includes('rework')) {
+      return { text: 'Rework', className: 'status-rework' };
+    }
+    if (value.includes('complete') || value.includes('completed')) {
+      return { text: 'Completed', className: 'status-completed' };
+    }
+    if (value.includes('in progress') || value.includes('progress')) {
+      return { text: 'In Progress', className: 'status-in-progress' };
+    }
+
+    return { text: 'Not started', className: 'status-not-started' };
+  }
+
+  function normalizeActivityDetail(detail) {
+    const label = String(detail?.label || '').trim().toLowerCase();
+    if (label !== 'status') {
+      return {
+        value: detail?.value || '',
+        className: detail?.accent || ''
+      };
+    }
+
+    const normalized = normalizeActivityStatus(detail?.value);
+    return {
+      value: normalized.text,
+      className: normalized.className
+    };
+  }
+
+  function getActivityStatusBadge(activity) {
+    const statusDetail = (activity?.details || []).find((detail) => (
+      String(detail?.label || '').trim().toLowerCase() === 'status'
+    ));
+    if (!statusDetail) return null;
+
+    const normalized = normalizeActivityStatus(statusDetail.value);
+    const badgeClassByStatus = {
+      'Not started': 'not-started',
+      'In Progress': 'in-progress',
+      Rework: 'rework',
+      Completed: 'completed'
+    };
+
+    return {
+      text: normalized.text,
+      badgeClass: badgeClassByStatus[normalized.text] || 'not-started'
+    };
+  }
+
   function renderActivityCard(activity, activityIndex) {
     return `
       <div class="activity-card">
@@ -3524,12 +4849,15 @@
         ${activity.notes ? `<div class="activity-card-notes">${activity.notes}</div>` : ''}
         ${activity.details ? `
           <div class="activity-card-details">
-            ${activity.details.map(detail => `
-              <div class="activity-card-detail-item">
-                <span>${detail.label}</span>
-                <span class="activity-card-detail-value${detail.accent ? ' ' + detail.accent : ''}">${detail.value}</span>
-              </div>
-            `).join('')}
+            ${activity.details.map(detail => {
+              const normalizedDetail = normalizeActivityDetail(detail);
+              return `
+                <div class="activity-card-detail-item">
+                  <span>${detail.label}</span>
+                  <span class="activity-card-detail-value${normalizedDetail.className ? ' ' + normalizedDetail.className : ''}">${normalizedDetail.value}</span>
+                </div>
+              `;
+            }).join('')}
           </div>
         ` : ''}
         ${activity.photos ? `
@@ -3547,12 +4875,47 @@
     `;
   }
 
-  function updateModalPhoto(bgColor, label, date, photographer, uploadSource = '') {
+  function getActivityTimestamp(activity) {
+    const raw = String(activity?.time || '').trim();
+    const monthMap = {
+      jan: 0,
+      feb: 1,
+      mar: 2,
+      apr: 3,
+      may: 4,
+      jun: 5,
+      jul: 6,
+      aug: 7,
+      sep: 8,
+      oct: 9,
+      nov: 10,
+      dec: 11
+    };
+
+    const match = raw.match(/^([A-Za-z]{3})\s+(\d{1,2})\s+(\d{1,2}):(\d{2})(?:\s*(AM|PM))?$/i);
+    if (!match) return 0;
+
+    const month = monthMap[match[1].toLowerCase()];
+    if (month === undefined) return 0;
+
+    const day = parseInt(match[2], 10);
+    let hour = parseInt(match[3], 10);
+    const minute = parseInt(match[4], 10);
+    const meridiem = (match[5] || '').toUpperCase();
+
+    if (meridiem === 'PM' && hour < 12) hour += 12;
+    if (meridiem === 'AM' && hour === 12) hour = 0;
+
+    return new Date(2025, month, day, hour, minute, 0, 0).getTime();
+  }
+
+  function updateModalPhoto(bgColor, label, date, photographer, uploadSource = '', statusBadge = null) {
     const photoDiv = document.getElementById('modalPhoto');
     const photoLabel = document.getElementById('modalPhotoLabel');
     const photoDate = document.getElementById('modalPhotoDate');
     const photoPhotographer = document.getElementById('modalPhotoPhotographer');
     const photoUploadSource = document.getElementById('modalPhotoUploadSource');
+    const photoStatusBadge = document.getElementById('modalPhotoStatusBadge');
     
     photoDiv.style.setProperty('--modal-photo-bg', bgColor);
     photoLabel.textContent = label;
@@ -3564,6 +4927,16 @@
     } else {
       photoUploadSource.textContent = '';
       photoUploadSource.style.display = 'none';
+    }
+
+    if (photoStatusBadge) {
+      if (statusBadge?.text) {
+        photoStatusBadge.textContent = statusBadge.text;
+        photoStatusBadge.className = `modal-photo-status-badge ${statusBadge.badgeClass || 'not-started'}`;
+      } else {
+        photoStatusBadge.textContent = '';
+        photoStatusBadge.className = 'modal-photo-status-badge hidden';
+      }
     }
   }
 
@@ -3608,7 +4981,8 @@
       photo.label || 'Photo',
       photo.date || '',
       photo.photographer || '',
-      photo.uploadSource || (photo.uploadedFromComputer ? 'Uploaded from computer' : '') || ''
+      photo.uploadSource || (photo.uploadedFromComputer ? 'Uploaded from computer' : '') || '',
+      photo.statusBadge || null
     );
 
     setActiveModalPhotoThumbs(photo.activityIdx, photo.photoIdx);
@@ -3666,11 +5040,14 @@
     currentModalRow = row;
     currentModalPhotos = [];
     currentModalPhotoIndex = 0;
+    const orderedActivities = Array.isArray(data.activities)
+      ? [...data.activities].sort((a, b) => getActivityTimestamp(b) - getActivityTimestamp(a))
+      : [];
     
     // Set title and subtitle with group name
     const groupName = taskGroups[data.id] || currentGroup || groups[0] || 'Scope Group';
-    document.getElementById('modalTitle').textContent = `${groupName} · ${data.name || 'Task Name'}`;
-    document.getElementById('modalSubtitle').textContent = data.id ? `ID: ${data.id}` : 'Task details';
+    document.getElementById('modalTitle').textContent = data.name || 'Task Name';
+    document.getElementById('modalSubtitle').innerHTML = `<span class="modal-subtitle-group">${escapeHtml(groupName)} group</span>: ${getTaskPositionInGroupText(data.id)}`;
     syncModalTaskActionButtons();
     
     // Update navigation buttons
@@ -3695,6 +5072,7 @@
     const photoDate = document.getElementById('modalPhotoDate');
     const photoPhotographer = document.getElementById('modalPhotoPhotographer');
     const photoUploadSource = document.getElementById('modalPhotoUploadSource');
+    const photoStatusBadge = document.getElementById('modalPhotoStatusBadge');
     const firstActivityPhoto = data.activities && data.activities.length > 0
       ? (data.activities.find(activity => activity.photos && activity.photos.length > 0)?.photos?.[0] || null)
       : null;
@@ -3703,6 +5081,11 @@
     const initialUploadSource = firstActivityPhoto
       ? (firstActivityPhoto.uploadSource || (firstActivityPhoto.uploadedFromComputer ? 'Uploaded from computer' : '') || '')
       : (data.photoUploadSource || '');
+
+    if (photoStatusBadge) {
+      photoStatusBadge.textContent = '';
+      photoStatusBadge.className = 'modal-photo-status-badge hidden';
+    }
     
     if (data.photoBg) {
       photoDiv.style.setProperty('--modal-photo-bg', data.photoBg);
@@ -3728,12 +5111,46 @@
     // Populate photo gallery from all activities
     const galleryDiv = document.getElementById('modalPhotoGallery');
     galleryDiv.innerHTML = '';
+
+    let earliestActivityWithPhotosIdx = -1;
+    let earliestActivityWithPhotosTime = Number.POSITIVE_INFINITY;
+    orderedActivities.forEach((activity, idx) => {
+      if (!activity?.photos || !activity.photos.length) return;
+      const ts = getActivityTimestamp(activity);
+      if (ts < earliestActivityWithPhotosTime) {
+        earliestActivityWithPhotosTime = ts;
+        earliestActivityWithPhotosIdx = idx;
+      }
+    });
+
+    if (earliestActivityWithPhotosIdx >= 0) {
+      const earliestActivity = orderedActivities[earliestActivityWithPhotosIdx] || {};
+      const existingDetails = Array.isArray(earliestActivity.details) ? earliestActivity.details : [];
+      const nonStatusDetails = existingDetails.filter((detail) => (
+        String(detail?.label || '').trim().toLowerCase() !== 'status'
+      ));
+
+      orderedActivities[earliestActivityWithPhotosIdx] = {
+        ...earliestActivity,
+        type: 'Initial walk',
+        title: 'submitted',
+        details: [
+          { label: 'Status', value: 'Not started' },
+          ...nonStatusDetails
+        ]
+      };
+    }
     
-    if (data.activities && data.activities.length > 0) {
+    if (orderedActivities.length > 0) {
       let photoIndex = 0;
-      data.activities.forEach((activity, activityIdx) => {
+      orderedActivities.forEach((activity, activityIdx) => {
+        const statusBadge = getActivityStatusBadge(activity);
         if (activity.photos && activity.photos.length > 0) {
           activity.photos.forEach((photo, photoIdx) => {
+            const effectiveStatusBadge = activityIdx === earliestActivityWithPhotosIdx
+              ? { text: 'Not started', badgeClass: 'not-started' }
+              : statusBadge;
+
             currentModalPhotos.push({
               activityIdx,
               photoIdx,
@@ -3741,7 +5158,8 @@
               label: photo.label || 'Photo',
               date: photo.date || '',
               photographer: photo.photographer || '',
-              uploadSource: photo.uploadSource || (photo.uploadedFromComputer ? 'Uploaded from computer' : '') || ''
+              uploadSource: photo.uploadSource || (photo.uploadedFromComputer ? 'Uploaded from computer' : '') || '',
+              statusBadge: effectiveStatusBadge
             });
             const flatPhotoIndex = currentModalPhotos.length - 1;
 
@@ -3776,14 +5194,15 @@
         label: data.photoLabel || 'Photo',
         date: initialDate,
         photographer: initialPhotographer,
-        uploadSource: initialUploadSource
+        uploadSource: initialUploadSource,
+        statusBadge: null
       });
     }
     
     // Set activities
     const activitiesDiv = document.getElementById('detailActivities');
-    if (data.activities && data.activities.length > 0) {
-      activitiesDiv.innerHTML = data.activities.map((activity, idx) => renderActivityCard(activity, idx)).join('');
+    if (orderedActivities.length > 0) {
+      activitiesDiv.innerHTML = orderedActivities.map((activity, idx) => renderActivityCard(activity, idx)).join('');
     } else {
       activitiesDiv.innerHTML = '<div style="font-size: 13px; color: var(--gray-text); font-style: italic;">No activities yet</div>';
     }
@@ -3863,7 +5282,7 @@
   // ── Add click handlers to table rows ────────────────────────────
   document.addEventListener('DOMContentLoaded', () => {
     // Sample activities data
-    const activitiesData = {
+    activitiesData = {
       '10003': [ // Cabinet Replacement
         {
           type: 'Progress walk',
@@ -4019,45 +5438,108 @@
       const normalizedName = String(taskName || 'Task').trim() || 'Task';
       const normalizedGroup = String(groupName || 'Scope').trim() || 'Scope';
       const baseSeed = Number(String(taskId).replace(/\D/g, '')) || index + 1;
+      const includeRework = baseSeed % 3 === 0;
+      const includeCompleted = baseSeed % 2 === 0;
 
-      return [
-        {
-          type: 'Progress walk',
-          title: 'submitted',
-          author: 'Shane D.',
-          time: 'Mar 22 09:15',
-          notes: `${normalizedName} walkthrough completed. Crew captured updated condition photos and confirmed next actions.`,
-          details: [
-            { label: 'Status', value: 'In Progress', accent: 'green' }
-          ],
-          photos: [
-            { bg: getSeededPaletteColor(baseSeed + 1), label: 'Overview', date: 'Mar 22, 2025 9:15 AM', photographer: 'Shane D.', uploadedFromComputer: true },
-            { bg: getSeededPaletteColor(baseSeed + 2), label: 'Detail', date: 'Mar 22, 2025 9:20 AM', photographer: 'Shane D.' },
-            { bg: getSeededPaletteColor(baseSeed + 3), label: 'Progress', date: 'Mar 22, 2025 9:28 AM', photographer: 'Shane D.' }
-          ]
-        },
-        {
-          type: 'Change order',
-          typeClass: 'orange',
-          title: 'submitted',
-          author: 'Shane D.',
-          time: 'Mar 20 13:40',
-          notes: `Material and labor adjustment proposed for ${normalizedName.toLowerCase()} in ${normalizedGroup}.`,
-          details: [
-            { label: 'Line item cost', value: '$120.00', accent: 'green' }
-          ]
-        },
+      const activities = [
         {
           type: 'Scope approved',
           title: 'by homeowner',
           author: 'You',
-          time: 'Mar 18 16:05',
-          notes: `${normalizedGroup} scope confirmed for ${normalizedName}.`,
+          time: 'Mar 15 16:05',
+          notes: `${normalizedGroup} scope confirmed for ${normalizedName}. Work has not started yet.`,
           details: [
-            { label: 'Approved budget', value: '$250.00', accent: 'green' }
+            { label: 'Status', value: 'Not started' },
+            { label: 'Approved budget', value: '$2,850.00', accent: 'green' }
+          ]
+        },
+        {
+          type: 'Progress walk',
+          title: 'submitted',
+          author: 'Eric L.',
+          time: 'Mar 17 15:15',
+          notes: `Initial site assessment for ${normalizedName.toLowerCase()} completed and prep work started.`,
+          details: [
+            { label: 'Status', value: 'In Progress' }
+          ],
+          photos: [
+            { bg: getSeededPaletteColor(baseSeed + 2), label: 'Site Overview', date: 'Mar 17, 2025 3:15 PM', photographer: 'Eric L.', uploadedFromComputer: true },
+            { bg: getSeededPaletteColor(baseSeed + 3), label: 'Measurements', date: 'Mar 17, 2025 3:32 PM', photographer: 'Eric L.' },
+            { bg: getSeededPaletteColor(baseSeed + 4), label: 'Prep Work', date: 'Mar 17, 2025 3:48 PM', photographer: 'Eric L.', uploadedFromComputer: true },
+            { bg: getSeededPaletteColor(baseSeed + 5), label: 'Plan Review', date: 'Mar 17, 2025 4:05 PM', photographer: 'Eric L.' }
+          ]
+        },
+        {
+          type: 'Progress walk',
+          title: 'submitted',
+          author: 'Shane D.',
+          time: 'Mar 18 10:20',
+          notes: `Field crew continued ${normalizedName.toLowerCase()} and documented progress photos.`,
+          details: [
+            { label: 'Status', value: 'In Progress' }
+          ],
+          photos: [
+            { bg: getSeededPaletteColor(baseSeed + 7), label: 'Work Area', date: 'Mar 18, 2025 10:20 AM', photographer: 'Shane D.' },
+            { bg: getSeededPaletteColor(baseSeed + 8), label: 'Detail 1', date: 'Mar 18, 2025 10:35 AM', photographer: 'Shane D.', uploadedFromComputer: true },
+            { bg: getSeededPaletteColor(baseSeed + 9), label: 'Detail 2', date: 'Mar 18, 2025 10:50 AM', photographer: 'Shane D.' },
+            { bg: getSeededPaletteColor(baseSeed + 1), label: 'Progress Check', date: 'Mar 18, 2025 11:05 AM', photographer: 'Shane D.', uploadedFromComputer: true }
           ]
         }
       ];
+
+      if (includeRework) {
+        activities.push({
+          type: 'Change order',
+          typeClass: 'orange',
+          title: 'submitted',
+          author: 'Shane D.',
+          time: 'Mar 19 13:40',
+          notes: `Inspection found items requiring corrections on ${normalizedName.toLowerCase()}. Rework was issued.`,
+          details: [
+            { label: 'Status', value: 'Rework' },
+            { label: 'Line item cost', value: '$85.00', accent: 'green' }
+          ]
+        });
+      }
+
+      activities.push({
+        type: 'Progress walk',
+        title: 'submitted',
+        author: 'Eric L.',
+        time: 'Mar 20 11:30',
+        notes: includeRework
+          ? `Rework items were addressed and ${normalizedName.toLowerCase()} is back in progress.`
+          : `Mid-stage inspection for ${normalizedName.toLowerCase()} confirmed steady progress.`,
+        details: [
+          { label: 'Status', value: 'In Progress' }
+        ],
+        photos: [
+          { bg: getSeededPaletteColor(baseSeed + 3), label: 'Mid-Stage', date: 'Mar 20, 2025 11:30 AM', photographer: 'Eric L.', uploadedFromComputer: true },
+          { bg: getSeededPaletteColor(baseSeed + 4), label: 'Quality Check', date: 'Mar 20, 2025 11:42 AM', photographer: 'Eric L.' },
+          { bg: getSeededPaletteColor(baseSeed + 5), label: 'Correction Review', date: 'Mar 20, 2025 11:58 AM', photographer: 'Eric L.', uploadedFromComputer: true },
+          { bg: getSeededPaletteColor(baseSeed + 6), label: 'Next Steps', date: 'Mar 20, 2025 12:10 PM', photographer: 'Eric L.' }
+        ]
+      });
+
+      if (includeCompleted) {
+        activities.push({
+          type: 'Progress walk',
+          title: 'submitted',
+          author: 'Shane D.',
+          time: 'Mar 22 09:15',
+          notes: `${normalizedName} finished and ready for closeout review.`,
+          details: [
+            { label: 'Status', value: 'Completed' }
+          ],
+          photos: [
+            { bg: getSeededPaletteColor(baseSeed + 1), label: 'Final Overview', date: 'Mar 22, 2025 9:15 AM', photographer: 'Shane D.', uploadedFromComputer: true },
+            { bg: getSeededPaletteColor(baseSeed + 2), label: 'Final Detail', date: 'Mar 22, 2025 9:20 AM', photographer: 'Shane D.' },
+            { bg: getSeededPaletteColor(baseSeed + 3), label: 'Completed Work', date: 'Mar 22, 2025 9:28 AM', photographer: 'Shane D.', uploadedFromComputer: true }
+          ]
+        });
+      }
+
+      return activities;
     }
 
     function ensureMockActivitiesForAllTasks() {
@@ -4067,13 +5549,96 @@
         const groupName = taskGroups[taskId] || currentGroup || groups[0] || 'Scope';
         activitiesData[taskId] = createMockActivities(taskId, taskName, groupName, index);
       });
+
+      refreshTaskActivityAndPhotoCounts();
     }
+
+    syncExteriorGeneralPhotosIfAvailable = function(activeKey = '') {
+      const basePath = 'file:///Users/quinnhoang/Downloads/Kai%20Photos%20-%20Property%202080-Pinehurst-View-Drive-Grayson-GA-30017%20-%20GA23594D/Exterior_General';
+      const group0Grid = document.querySelector('#group-0 .photo-grid');
+      const group1Grid = document.querySelector('#group-1 .photo-grid');
+      if (!group0Grid || !group1Grid) return;
+
+      if (!defaultPhotoGridMarkup) {
+        defaultPhotoGridMarkup = {
+          group0: group0Grid.innerHTML,
+          group1: group1Grid.innerHTML
+        };
+      }
+
+      const hasAnyRealPhoto = taskIds.includes('50001') && taskIds.includes('50002') && taskIds.includes('50003') && taskIds.includes('50004');
+      const shouldUseExteriorRealPhotos = currentTableView === 'group' && activeKey === 'Exterior General';
+
+      if (!hasAnyRealPhoto || !shouldUseExteriorRealPhotos) {
+        if (group0Grid.innerHTML !== defaultPhotoGridMarkup.group0) {
+          group0Grid.innerHTML = defaultPhotoGridMarkup.group0;
+        }
+        if (group1Grid.innerHTML !== defaultPhotoGridMarkup.group1) {
+          group1Grid.innerHTML = defaultPhotoGridMarkup.group1;
+        }
+        return;
+      }
+
+      const cards = [
+        { id: '', label: 'Exterior General', path: '01598bdd-3258-4157-bbd3-ed2adcad46c1.jpeg' },
+        { id: '', label: 'Exterior General', path: '02321449-fa7b-48ea-8ce3-c4eb62de497a.jpeg' },
+        { id: '', label: 'Exterior General', path: '092593af-d454-42dd-a3ea-b88143ffe7a3.jpeg' },
+        { id: '', label: 'Exterior General', path: '098c334b-7779-4b4f-9546-98f4c80e9608.jpeg' },
+        { id: '', label: 'Exterior General', path: '0c380397-eff7-48a8-ad20-9fd526fd2eb4.jpeg' },
+        { id: '', label: 'Exterior General', path: '2a660c9e-cdab-4914-9fee-1997153e2262.jpeg' },
+        { id: '', label: 'Exterior General', path: '37a4cb4c-375d-4b18-b240-290944bb51b2.jpeg' },
+        { id: '', label: 'Exterior General', path: '37aa8e03-8809-479b-91c4-5bc13d98415f.jpeg' },
+        { id: '', label: 'Exterior General', path: '4b898d72-6c04-4558-b008-068ad69c5298.jpeg' },
+        { id: '', label: 'Exterior General', path: '5bc90d66-ca3e-4d7a-aa23-6ff3634776ac.jpeg' },
+        { id: '', label: 'Exterior General', path: '72b0c4a5-228a-4fe7-8237-68f3f23c8cf9.jpeg' },
+        { id: '', label: 'Exterior General', path: '73698212-b379-4574-bcb6-a2343ef6e23c.jpeg' },
+        { id: '', label: 'Exterior General', path: '74cd9776-7380-405c-b789-f485dcaed14a.jpeg' },
+        { id: '', label: 'Exterior General', path: '8b637088-1efd-4f5d-9213-9a3fb5b0f944.jpeg' },
+        { id: '', label: 'Exterior General', path: '8eee1fee-fc00-4891-ad77-2d46a3740107.jpeg' },
+        { id: '', label: 'Exterior General', path: '9171197f-a229-4a2b-b54d-4638be6b93e6.jpeg' },
+        { id: '', label: 'Exterior General', path: 'afbb7bc4-0f6d-41d8-9ca3-3f6238c8059e.jpeg' },
+        { id: '', label: 'Exterior General', path: 'd2d6753d-817a-4c00-81cb-10c69d8c6a42.jpeg' },
+        { id: '', label: 'Exterior General', path: 'dd0a3d68-98d9-4185-8844-245640e57a48.jpeg' },
+        { id: '', label: 'Exterior General', path: 'eadbc0ff-261b-4c7a-85a9-5324b5089c12.jpeg' },
+        { id: '50001', label: 'Powerwash All (Siding, Trim, Porches, Deck, Windows, Doors, Mailbox, Garage Floor, Backside of Garage Door, All Flatwork, HVAC Pad, Sidewalks)', path: 'Powerwash/1ca5b563-1c8d-4c7a-bf9c-11fb5f238b3f.jpeg' },
+        { id: '50001', label: 'Powerwash All (Siding, Trim, Porches, Deck, Windows, Doors, Mailbox, Garage Floor, Backside of Garage Door, All Flatwork, HVAC Pad, Sidewalks)', path: 'Powerwash/2b29916f-7088-4e9a-a26f-94287d30a1d0.jpeg' },
+        { id: '50001', label: 'Powerwash All (Siding, Trim, Porches, Deck, Windows, Doors, Mailbox, Garage Floor, Backside of Garage Door, All Flatwork, HVAC Pad, Sidewalks)', path: 'Powerwash/7936185f-8fa6-4519-a699-8f76e92afb3f.jpeg' },
+        { id: '50001', label: 'Powerwash All (Siding, Trim, Porches, Deck, Windows, Doors, Mailbox, Garage Floor, Backside of Garage Door, All Flatwork, HVAC Pad, Sidewalks)', path: 'Powerwash/8390e660-580c-4624-9c6a-897a648399d1.jpeg' },
+        { id: '50001', label: 'Powerwash All (Siding, Trim, Porches, Deck, Windows, Doors, Mailbox, Garage Floor, Backside of Garage Door, All Flatwork, HVAC Pad, Sidewalks)', path: 'Powerwash/9c6fa03b-5b46-4dae-b949-90aa7ba8250a.jpeg' },
+        { id: '50001', label: 'Powerwash All (Siding, Trim, Porches, Deck, Windows, Doors, Mailbox, Garage Floor, Backside of Garage Door, All Flatwork, HVAC Pad, Sidewalks)', path: 'Powerwash/c9bde997-ffe4-4d20-81bf-9b9b2624cbe1.jpeg' },
+        { id: '50002', label: 'Paint Mailbox Post', path: 'Mailbox_Paint_Repair/1cb2cefe-04c1-4566-b7d5-9f11eaf7ba06.jpeg' },
+        { id: '50003', label: 'Paint double doors to storage', path: 'Non-Standard_Task__Storage/0884703c-a2dd-49aa-9597-810d58d3479e.jpeg' },
+        { id: '50004', label: 'Exterior plastic louvered exhaust vent', path: 'Exhaust_Vent__Exterior_Plastic_Louvered_/5d923f1f-3239-452d-82d5-02f1af1ac571.jpeg' }
+      ];
+
+      group0Grid.innerHTML = cards.map((photo) =>
+        `<div class="photo-card" data-task-id="${photo.id}"><div class="photo-thumb"><img src="${basePath}/${photo.path}" alt="" style="width:100%;height:100%;object-fit:cover;"></div><div class="photo-label">${photo.label}</div></div>`
+      ).join('');
+
+      group1Grid.innerHTML = [
+        { id: '50001', label: 'Powerwash All (Siding, Trim, Porches, Deck, Windows, Doors, Mailbox, Garage Floor, Backside of Garage Door, All Flatwork, HVAC Pad, Sidewalks)', bg: '#c9d8e8' },
+        { id: '50001', label: 'Powerwash All (Siding, Trim, Porches, Deck, Windows, Doors, Mailbox, Garage Floor, Backside of Garage Door, All Flatwork, HVAC Pad, Sidewalks)', bg: '#d4e8d4' },
+        { id: '50002', label: 'Paint Mailbox Post', bg: '#e8d4c9' },
+        { id: '50003', label: 'Paint double doors to storage', bg: '#d4cce8' },
+        { id: '50004', label: 'Exterior plastic louvered exhaust vent', bg: '#d4e8c9' }
+      ].map((photo) =>
+        `<div class="photo-card" data-task-id="${photo.id}"><div class="photo-thumb" style="background:${photo.bg};"></div><div class="photo-label">${photo.label}</div></div>`
+      ).join('');
+    };
 
     function remapTimelinePhotoCardsToCurrentTasks() {
       const photoCards = Array.from(document.querySelectorAll('.photo-card'));
       if (!photoCards.length || !taskIds.length) return;
 
       photoCards.forEach((card, index) => {
+        const existingTaskId = String(card.getAttribute('data-task-id') || '').trim();
+        if (existingTaskId && taskIds.includes(existingTaskId)) {
+          return;
+        }
+        if (!existingTaskId) {
+          return;
+        }
+
         const taskId = taskIds[index % taskIds.length];
         card.setAttribute('data-task-id', taskId);
 
@@ -4088,14 +5653,41 @@
       });
     }
 
+    function enforceInitialWalkNotStartedStatuses() {
+      const initialWalkGroup = document.getElementById('group-0');
+      if (!initialWalkGroup) return;
+
+      const thumbs = Array.from(initialWalkGroup.querySelectorAll('.photo-card .photo-thumb'));
+      thumbs.forEach((thumb) => {
+        let badge = thumb.querySelector('.photo-badge.photo-tag');
+        if (!badge) {
+          badge = document.createElement('span');
+          badge.className = 'photo-badge photo-tag';
+          thumb.appendChild(badge);
+        }
+
+        badge.className = 'photo-badge photo-tag not-started';
+        badge.textContent = 'Not started';
+      });
+    }
+
     buildScopeDataMaps();
     populateGroupDropdown();
     buildAllTableRows();
     ensureMockActivitiesForAllTasks();
     remapTimelinePhotoCardsToCurrentTasks();
+    enforceInitialWalkNotStartedStatuses();
     initTableModifierColumn();
     initRowUndoTracking();
-    renderGroup(currentGroup);
+    updateViewModeToggleUi();
+    syncPrimaryColumnByViewMode();
+    renderGroup(getCurrentViewKey());
+    updateAddBtn();
+
+    const viewModeGroupBtn = document.getElementById('viewModeGroupBtn');
+    const viewModeTradeBtn = document.getElementById('viewModeTradeBtn');
+    viewModeGroupBtn?.addEventListener('click', () => setTableViewMode('group'));
+    viewModeTradeBtn?.addEventListener('click', () => setTableViewMode('contractor'));
 
     // Add click handler to task rows
     document.querySelectorAll('.scope-table .task-row').forEach((row, index) => {
@@ -4336,10 +5928,11 @@
     });
 
     // Toggle expand for sidebar sections
-    document.querySelectorAll('.sidebar-see-all').forEach(link => {
+    document.querySelectorAll('.sidebar-see-all, .sidebar-see-more').forEach(link => {
       link.addEventListener('click', () => {
         const section = link.closest('.sidebar-section');
         const allSections = document.querySelectorAll('.sidebar-section');
+        const isSeeMore = link.classList.contains('sidebar-see-more');
         const isExpanding = !section.classList.contains('expanded');
 
         allSections.forEach((currentSection) => {
@@ -4347,6 +5940,10 @@
           const currentLink = currentSection.querySelector('.sidebar-see-all');
           if (currentLink) currentLink.textContent = 'See all';
         });
+
+        if (isSeeMore) {
+          return;
+        }
 
         if (isExpanding) {
           section.classList.add('expanded');
@@ -4360,6 +5957,21 @@
         }
       });
     });
+
+    document.addEventListener('change', (event) => {
+      if (!event.target.matches('.scope-table .task-check')) return;
+      updateBulkActionBar();
+    });
+
+    const bulkApproveBtn = document.getElementById('bulkApproveBtn');
+    const bulkRequestEditBtn = document.getElementById('bulkRequestEditBtn');
+    const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
+
+    bulkApproveBtn?.addEventListener('click', approveSelectedTasks);
+    bulkRequestEditBtn?.addEventListener('click', requestEditSelectedTasks);
+    bulkDeleteBtn?.addEventListener('click', deleteSelectedTasks);
+
+    updateBulkActionBar();
   });
 </script>
 
