@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ConstructIQ — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:       #10045A;
+      --secondary:     #4554A7;
+      --accent-green:  #1E9C2B;
+      --accent-purple: #9185DA;
+      --focus-blue:    #5A48F6;
+      --bg:            #F4F7FE;
+      --white:         #FFFFFF;
+      --divider:       #E9EDF7;
+      --text-primary:  #1B2559;
+      --text-secondary:#A3AED0;
+      --text-dark:     #0A1B39;
+      --sidebar-w:     80px;
+      --header-h:      72px;
+      --card-shadow:   10px 4px 20px 4px rgba(16,4,90,.08);
+      --card-radius:   12px;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: var(--sidebar-w);
+      height: 100vh;
+      background: var(--primary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      z-index: 100;
+    }
+
+    .sidebar__logo {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: var(--focus-blue);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 28px;
+    }
+
+    .sidebar__divider {
+      width: 40px;
+      height: 1px;
+      background: rgba(255,255,255,.12);
+      margin-bottom: 20px;
+    }
+
+    .sidebar__nav {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .nav-item {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background .15s;
+      position: relative;
+    }
+    .nav-item svg { opacity: .5; transition: opacity .15s; }
+    .nav-item:hover svg { opacity: .8; }
+    .nav-item.active {
+      background: rgba(255,255,255,.12);
+    }
+    .nav-item.active svg { opacity: 1; }
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      left: -12px;
+      width: 4px; height: 24px;
+      background: var(--focus-blue);
+      border-radius: 0 4px 4px 0;
+    }
+
+    .sidebar__avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--secondary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700;
+      color: #fff;
+      margin-top: auto;
+    }
+
+    /* ── Main layout ── */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .header {
+      height: var(--header-h);
+      background: var(--white);
+      border-bottom: 1px solid var(--divider);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header__left { display: flex; flex-direction: column; gap: 2px; }
+
+    .header__breadcrumb {
+      font-size: 11px;
+      color: var(--text-secondary);
+      letter-spacing: .02em;
+    }
+    .header__breadcrumb span { color: var(--primary); font-weight: 600; }
+
+    .header__title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+
+    .header__right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header__search {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--bg);
+      border: 1px solid var(--divider);
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-family: inherit;
+      cursor: pointer;
+      min-width: 200px;
+    }
+
+    .header__icon-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 1px solid var(--divider);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(16,4,90,.06);
+      position: relative;
+    }
+
+    .header__icon-btn .badge {
+      position: absolute;
+      top: -2px; right: -2px;
+      width: 8px; height: 8px;
+      background: #E74C3C;
+      border-radius: 50%;
+      border: 2px solid #fff;
+    }
+
+    .header__avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    /* ── Page body ── */
+    .page {
+      flex: 1;
+      padding: 28px 32px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ── Section labels ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .section-link {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--focus-blue);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    /* ── Stat cards row ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--divider);
+      border-radius: var(--card-radius);
+      padding: 20px 22px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .stat-card__icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .stat-card__label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .stat-card__value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.1;
+    }
+
+    .stat-card__delta {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .stat-card__delta.up   { color: var(--accent-green); }
+    .stat-card__delta.down { color: #E74C3C; }
+
+    .stat-card__delta svg { flex-shrink: 0; }
+
+    /* ── Middle grid ── */
+    .middle-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+    }
+
+    /* ── Projects card ── */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--divider);
+      border-radius: var(--card-radius);
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+    }
+
+    .card__head {
+      padding: 18px 22px 14px;
+      border-bottom: 1px solid var(--divider);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card__title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .btn-sm {
+      font-size: 11px;
+      font-weight: 700;
+      font-family: inherit;
+      color: var(--white);
+      background: var(--primary);
+      border: none;
+      border-radius: 20px;
+      padding: 7px 16px;
+      cursor: pointer;
+      letter-spacing: .02em;
+      transition: opacity .15s;
+    }
+    .btn-sm:hover { opacity: .85; }
+
+    .btn-outline {
+      font-size: 11px;
+      font-weight: 700;
+      font-family: inherit;
+      color: var(--primary);
+      background: transparent;
+      border: 1px solid var(--divider);
+      border-radius: 20px;
+      padding: 7px 16px;
+      cursor: pointer;
+      letter-spacing: .02em;
+      transition: background .15s;
+    }
+    .btn-outline:hover { background: var(--bg); }
+
+    /* ── Projects table ── */
+    .project-table { width: 100%; border-collapse: collapse; }
+
+    .project-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      padding: 10px 22px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .project-table td {
+      padding: 14px 22px;
+      font-size: 13px;
+      border-bottom: 1px solid var(--divider);
+      vertical-align: middle;
+    }
+    .project-table tr:last-child td { border-bottom: none; }
+    .project-table tr:hover td { background: #fafbff; }
+
+    .project-name {
+      font-weight: 600;
+      color: var(--text-dark);
+      display: block;
+      margin-bottom: 2px;
+    }
+    .project-address {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 20px;
+      padding: 4px 10px;
+    }
+    .badge-status::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .badge-status.in-progress {
+      background: rgba(90,72,246,.1);
+      color: var(--focus-blue);
+    }
+    .badge-status.in-progress::before { background: var(--focus-blue); }
+
+    .badge-status.completed {
+      background: rgba(30,156,43,.1);
+      color: var(--accent-green);
+    }
+    .badge-status.completed::before { background: var(--accent-green); }
+
+    .badge-status.on-hold {
+      background: rgba(231,76,60,.1);
+      color: #E74C3C;
+    }
+    .badge-status.on-hold::before { background: #E74C3C; }
+
+    .badge-status.planning {
+      background: rgba(163,174,208,.15);
+      color: var(--text-secondary);
+    }
+    .badge-status.planning::before { background: var(--text-secondary); }
+
+    .progress-bar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .progress-bar {
+      flex: 1;
+      height: 6px;
+      background: var(--divider);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .progress-bar__fill {
+      height: 100%;
+      border-radius: 10px;
+      background: var(--focus-blue);
+    }
+    .progress-pct {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      min-width: 28px;
+      text-align: right;
+    }
+
+    .budget-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    .budget-sub {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .avatar-stack {
+      display: flex;
+    }
+    .avatar-stack .av {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      font-size: 9px;
+      font-weight: 700;
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      margin-left: -6px;
+    }
+    .avatar-stack .av:first-child { margin-left: 0; }
+
+    /* ── Activity feed ── */
+    .activity-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .activity-item {
+      display: flex;
+      gap: 12px;
+      padding: 14px 22px;
+      border-bottom: 1px solid var(--divider);
+    }
+    .activity-item:last-child { border-bottom: none; }
+
+    .activity-icon {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .activity-body { flex: 1; }
+    .activity-text {
+      font-size: 12px;
+      color: var(--text-dark);
+      line-height: 1.5;
+    }
+    .activity-text strong { font-weight: 600; }
+    .activity-time {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 3px;
+    }
+
+    /* ── Bottom grid ── */
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    /* ── Budget chart ── */
+    .donut-wrap {
+      padding: 24px 22px;
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .donut {
+      position: relative;
+      width: 120px; height: 120px;
+      flex-shrink: 0;
+    }
+
+    .donut svg { transform: rotate(-90deg); }
+    .donut__center {
+      position: absolute;
+      inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+    }
+    .donut__pct {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+    .donut__label {
+      font-size: 10px;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .donut-legend { display: flex; flex-direction: column; gap: 10px; }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .legend-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .legend-label { font-size: 12px; color: var(--text-secondary); flex: 1; }
+    .legend-val   { font-size: 12px; font-weight: 700; color: var(--text-primary); }
+
+    /* ── Upcoming tasks ── */
+    .task-list {
+      display: flex;
+      flex-direction: column;
+    }
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 22px;
+      border-bottom: 1px solid var(--divider);
+    }
+    .task-item:last-child { border-bottom: none; }
+
+    .task-check {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--divider);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .task-body { flex: 1; }
+    .task-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    .task-meta {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 1px;
+    }
+    .task-due {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 3px 8px;
+      white-space: nowrap;
+    }
+    .task-due.overdue { color: #E74C3C; background: rgba(231,76,60,.08); }
+
+  </style>
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<aside class="sidebar">
+  <div class="sidebar__logo">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <rect x="2" y="2" width="8" height="8" rx="2" fill="#fff" opacity=".9"/>
+      <rect x="12" y="2" width="8" height="8" rx="2" fill="#fff" opacity=".5"/>
+      <rect x="2" y="12" width="8" height="8" rx="2" fill="#fff" opacity=".5"/>
+      <rect x="12" y="12" width="8" height="8" rx="2" fill="#fff" opacity=".9"/>
+    </svg>
+  </div>
+  <div class="sidebar__divider"></div>
+  <nav class="sidebar__nav">
+    <!-- Dashboard (active) -->
+    <div class="nav-item active" title="Dashboard">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <rect x="2" y="2" width="7" height="7" rx="1.5" fill="white"/>
+        <rect x="11" y="2" width="7" height="7" rx="1.5" fill="white"/>
+        <rect x="2" y="11" width="7" height="7" rx="1.5" fill="white"/>
+        <rect x="11" y="11" width="7" height="7" rx="1.5" fill="white"/>
+      </svg>
+    </div>
+    <!-- Projects -->
+    <div class="nav-item" title="Projects">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M3 5a2 2 0 012-2h10a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M7 9h6M7 12h4" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M7 6h2" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <!-- Team -->
+    <div class="nav-item" title="Team">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <circle cx="8" cy="7" r="3" stroke="white" stroke-width="1.5"/>
+        <path d="M2 17c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M14 3a3 3 0 110 6" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M17 17c0-2.21-1.343-4-3-4.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <!-- Properties -->
+    <div class="nav-item" title="Properties">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M10 2L3 8v10h5v-5h4v5h5V8L10 2z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <!-- Reports -->
+    <div class="nav-item" title="Reports">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <rect x="3" y="3" width="14" height="14" rx="2" stroke="white" stroke-width="1.5"/>
+        <path d="M7 13V10M10 13V7M13 13V11" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <!-- Settings -->
+    <div class="nav-item" title="Settings">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <circle cx="10" cy="10" r="3" stroke="white" stroke-width="1.5"/>
+        <path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.22 4.22l1.42 1.42M14.36 14.36l1.42 1.42M4.22 15.78l1.42-1.42M14.36 5.64l1.42-1.42" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </nav>
+  <div class="sidebar__avatar">QH</div>
+</aside>
+
+<!-- ── Main ── -->
+<div class="main">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header__left">
+      <div class="header__breadcrumb">Overview / <span>Dashboard</span></div>
+      <div class="header__title">Project Dashboard</div>
+    </div>
+    <div class="header__right">
+      <div class="header__search">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <circle cx="6" cy="6" r="4.5" stroke="#A3AED0" stroke-width="1.4"/>
+          <path d="M10 10l2.5 2.5" stroke="#A3AED0" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        Search projects...
+      </div>
+      <div class="header__icon-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1a5 5 0 00-5 5c0 3-1.5 4-1.5 4h13S13 9 13 6a5 5 0 00-5-5zM6.5 13a1.5 1.5 0 003 0" stroke="#A3AED0" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="badge"></span>
+      </div>
+      <div class="header__icon-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="5" r="3" stroke="#A3AED0" stroke-width="1.4"/>
+          <path d="M2 14c0-2.761 2.686-5 6-5s6 2.239 6 5" stroke="#A3AED0" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="header__avatar">QH</div>
+    </div>
+  </header>
+
+  <!-- Page content -->
+  <div class="page">
+
+    <!-- Stat Cards -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-card__icon" style="background:rgba(90,72,246,.1);">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M3 5a2 2 0 012-2h10a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" stroke="#5A48F6" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M7 9h6M7 12h4" stroke="#5A48F6" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="stat-card__label">Active Projects</div>
+        <div class="stat-card__value">14</div>
+        <div class="stat-card__delta up">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M6 9V3M3 6l3-3 3 3" stroke="#1E9C2B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          +2 this month
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card__icon" style="background:rgba(30,156,43,.1);">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect x="3" y="5" width="14" height="11" rx="2" stroke="#1E9C2B" stroke-width="1.5"/>
+            <path d="M3 8h14" stroke="#1E9C2B" stroke-width="1.5"/>
+            <path d="M7 3v3M13 3v3" stroke="#1E9C2B" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M7 12l2 2 4-4" stroke="#1E9C2B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="stat-card__label">Completed</div>
+        <div class="stat-card__value">38</div>
+        <div class="stat-card__delta up">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M6 9V3M3 6l3-3 3 3" stroke="#1E9C2B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          +5 vs last quarter
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card__icon" style="background:rgba(145,133,218,.12);">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="7" stroke="#9185DA" stroke-width="1.5"/>
+            <path d="M10 6v4l3 2" stroke="#9185DA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="stat-card__label">Open Tasks</div>
+        <div class="stat-card__value">63</div>
+        <div class="stat-card__delta down">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M6 3v6M3 6l3 3 3-3" stroke="#E74C3C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          8 overdue
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card__icon" style="background:rgba(16,4,90,.07);">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M4 16V7l6-4 6 4v9" stroke="#10045A" stroke-width="1.5" stroke-linejoin="round"/>
+            <rect x="7" y="10" width="3" height="6" rx=".5" fill="#10045A" opacity=".3"/>
+            <rect x="10" y="10" width="3" height="6" rx=".5" fill="#10045A" opacity=".3"/>
+          </svg>
+        </div>
+        <div class="stat-card__label">Total Budget</div>
+        <div class="stat-card__value">$4.2M</div>
+        <div class="stat-card__delta up">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M6 9V3M3 6l3-3 3 3" stroke="#1E9C2B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          68% utilized
+        </div>
+      </div>
+    </div>
+
+    <!-- Middle: Projects table + Activity -->
+    <div class="middle-grid">
+
+      <!-- Projects Table -->
+      <div class="card">
+        <div class="card__head">
+          <div class="card__title">Active Projects</div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn-outline">Filter</button>
+            <button class="btn-sm">+ New Project</button>
+          </div>
+        </div>
+        <table class="project-table">
+          <thead>
+            <tr>
+              <th>Project</th>
+              <th>Status</th>
+              <th>Progress</th>
+              <th>Budget</th>
+              <th>Team</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <span class="project-name">Riverside Renovation</span>
+                <span class="project-address">4415 Roche St, Atlanta, GA</span>
+              </td>
+              <td><span class="badge-status in-progress">In Progress</span></td>
+              <td>
+                <div class="progress-bar-wrap">
+                  <div class="progress-bar"><div class="progress-bar__fill" style="width:72%;background:#5A48F6;"></div></div>
+                  <span class="progress-pct">72%</span>
+                </div>
+              </td>
+              <td>
+                <span class="budget-text">$320K</span><br>
+                <span class="budget-sub">of $440K</span>
+              </td>
+              <td>
+                <div class="avatar-stack">
+                  <div class="av" style="background:#5A48F6;">JM</div>
+                  <div class="av" style="background:#9185DA;">SR</div>
+                  <div class="av" style="background:#1E9C2B;">TK</div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="project-name">Oakwood Commercial Build</span>
+                <span class="project-address">210 Commerce Ave, Decatur, GA</span>
+              </td>
+              <td><span class="badge-status in-progress">In Progress</span></td>
+              <td>
+                <div class="progress-bar-wrap">
+                  <div class="progress-bar"><div class="progress-bar__fill" style="width:41%;background:#5A48F6;"></div></div>
+                  <span class="progress-pct">41%</span>
+                </div>
+              </td>
+              <td>
+                <span class="budget-text">$680K</span><br>
+                <span class="budget-sub">of $1.2M</span>
+              </td>
+              <td>
+                <div class="avatar-stack">
+                  <div class="av" style="background:#10045A;">AL</div>
+                  <div class="av" style="background:#4554A7;">PM</div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="project-name">Maple Heights Remodel</span>
+                <span class="project-address">88 Maple Dr, Marietta, GA</span>
+              </td>
+              <td><span class="badge-status completed">Completed</span></td>
+              <td>
+                <div class="progress-bar-wrap">
+                  <div class="progress-bar"><div class="progress-bar__fill" style="width:100%;background:#1E9C2B;"></div></div>
+                  <span class="progress-pct">100%</span>
+                </div>
+              </td>
+              <td>
+                <span class="budget-text">$215K</span><br>
+                <span class="budget-sub">of $230K</span>
+              </td>
+              <td>
+                <div class="avatar-stack">
+                  <div class="av" style="background:#1E9C2B;">RD</div>
+                  <div class="av" style="background:#9185DA;">CW</div>
+                  <div class="av" style="background:#5A48F6;">BL</div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="project-name">Peachtree Office Fit-Out</span>
+                <span class="project-address">500 Peachtree NE, Atlanta, GA</span>
+              </td>
+              <td><span class="badge-status on-hold">On Hold</span></td>
+              <td>
+                <div class="progress-bar-wrap">
+                  <div class="progress-bar"><div class="progress-bar__fill" style="width:28%;background:#E74C3C;"></div></div>
+                  <span class="progress-pct">28%</span>
+                </div>
+              </td>
+              <td>
+                <span class="budget-text">$95K</span><br>
+                <span class="budget-sub">of $340K</span>
+              </td>
+              <td>
+                <div class="avatar-stack">
+                  <div class="av" style="background:#4554A7;">MH</div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="project-name">Sycamore Mixed-Use</span>
+                <span class="project-address">1740 Sycamore Ln, Smyrna, GA</span>
+              </td>
+              <td><span class="badge-status planning">Planning</span></td>
+              <td>
+                <div class="progress-bar-wrap">
+                  <div class="progress-bar"><div class="progress-bar__fill" style="width:5%;background:#A3AED0;"></div></div>
+                  <span class="progress-pct">5%</span>
+                </div>
+              </td>
+              <td>
+                <span class="budget-text">$40K</span><br>
+                <span class="budget-sub">of $2.1M</span>
+              </td>
+              <td>
+                <div class="avatar-stack">
+                  <div class="av" style="background:#10045A;">QH</div>
+                  <div class="av" style="background:#9185DA;">JM</div>
+                  <div class="av" style="background:#5A48F6;">AL</div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Activity Feed -->
+      <div class="card">
+        <div class="card__head">
+          <div class="card__title">Recent Activity</div>
+          <a class="section-link">View all</a>
+        </div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-icon" style="background:rgba(30,156,43,.1);">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M3 8l4 4 6-7" stroke="#1E9C2B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="activity-body">
+              <div class="activity-text"><strong>Maple Heights</strong> marked complete by Ryan D.</div>
+              <div class="activity-time">2 hours ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon" style="background:rgba(90,72,246,.1);">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 3v5l3 3" stroke="#5A48F6" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="8" cy="8" r="5.5" stroke="#5A48F6" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <div class="activity-body">
+              <div class="activity-text"><strong>Inspection photos</strong> uploaded to Riverside — Kitchen (12)</div>
+              <div class="activity-time">4 hours ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon" style="background:rgba(231,76,60,.1);">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 5v4M8 11v1" stroke="#E74C3C" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M7.13 2.5L1.5 12.5a1 1 0 00.87 1.5h11.26a1 1 0 00.87-1.5L8.87 2.5a1 1 0 00-1.74 0z" stroke="#E74C3C" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="activity-body">
+              <div class="activity-text"><strong>Peachtree Office</strong> placed on hold — permit delay</div>
+              <div class="activity-time">Yesterday 3:42 PM</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon" style="background:rgba(145,133,218,.12);">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <circle cx="6" cy="6" r="3" stroke="#9185DA" stroke-width="1.5"/>
+                <path d="M2 14c0-2.2 1.8-4 4-4s4 1.8 4 4" stroke="#9185DA" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M11 4a2 2 0 110 4" stroke="#9185DA" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M13.5 13a3 3 0 00-2-3" stroke="#9185DA" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="activity-body">
+              <div class="activity-text"><strong>Alice L.</strong> joined Sycamore Mixed-Use as GC Lead</div>
+              <div class="activity-time">Yesterday 10:15 AM</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon" style="background:rgba(16,4,90,.07);">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <rect x="3" y="2" width="10" height="12" rx="1.5" stroke="#10045A" stroke-width="1.5"/>
+                <path d="M5.5 6h5M5.5 9h3" stroke="#10045A" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="activity-body">
+              <div class="activity-text">Progress Walk 1 report generated — <strong>Riverside</strong></div>
+              <div class="activity-time">Mar 22 · 9:00 AM</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon" style="background:rgba(30,156,43,.1);">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M4 12V5a4 4 0 018 0v7" stroke="#1E9C2B" stroke-width="1.5" stroke-linecap="round"/>
+                <rect x="2" y="10" width="12" height="3" rx="1" stroke="#1E9C2B" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <div class="activity-body">
+              <div class="activity-text">Budget approved for <strong>Oakwood Commercial</strong> — $1.2M</div>
+              <div class="activity-time">Mar 21 · 2:30 PM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom: Budget breakdown + Upcoming tasks -->
+    <div class="bottom-grid">
+
+      <!-- Budget Donut -->
+      <div class="card">
+        <div class="card__head">
+          <div class="card__title">Budget Overview</div>
+          <a class="section-link">Details</a>
+        </div>
+        <div class="donut-wrap">
+          <div class="donut">
+            <svg width="120" height="120" viewBox="0 0 120 120">
+              <!-- bg track -->
+              <circle cx="60" cy="60" r="48" fill="none" stroke="#E9EDF7" stroke-width="14"/>
+              <!-- labor: 38% = 301.6 of 301.6 -->
+              <circle cx="60" cy="60" r="48" fill="none" stroke="#5A48F6" stroke-width="14"
+                stroke-dasharray="301.6 301.6" stroke-dashoffset="0" stroke-linecap="round"/>
+              <!-- materials: 30% -->
+              <circle cx="60" cy="60" r="48" fill="none" stroke="#9185DA" stroke-width="14"
+                stroke-dasharray="238.1 301.6" stroke-dashoffset="-114.6" stroke-linecap="round"/>
+              <!-- subcontractors: 22% -->
+              <circle cx="60" cy="60" r="48" fill="none" stroke="#1E9C2B" stroke-width="14"
+                stroke-dasharray="174.9 301.6" stroke-dashoffset="-228.7" stroke-linecap="round"/>
+              <!-- contingency: 10% -->
+              <circle cx="60" cy="60" r="48" fill="none" stroke="#A3AED0" stroke-width="14"
+                stroke-dasharray="79.6 301.6" stroke-dashoffset="-278.3" stroke-linecap="round"/>
+            </svg>
+            <div class="donut__center">
+              <div class="donut__pct">68%</div>
+              <div class="donut__label">Used</div>
+            </div>
+          </div>
+          <div class="donut-legend">
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#5A48F6;"></div>
+              <span class="legend-label">Labor</span>
+              <span class="legend-val">$1.60M</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#9185DA;"></div>
+              <span class="legend-label">Materials</span>
+              <span class="legend-val">$1.26M</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#1E9C2B;"></div>
+              <span class="legend-label">Subcontractors</span>
+              <span class="legend-val">$0.92M</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#A3AED0;"></div>
+              <span class="legend-label">Contingency</span>
+              <span class="legend-val">$0.42M</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upcoming Tasks -->
+      <div class="card">
+        <div class="card__head">
+          <div class="card__title">Upcoming Tasks</div>
+          <a class="section-link">View all 63</a>
+        </div>
+        <div class="task-list">
+          <div class="task-item">
+            <div class="task-check"></div>
+            <div class="task-body">
+              <div class="task-name">Final inspection — Riverside Kitchen</div>
+              <div class="task-meta">Riverside Renovation · John M.</div>
+            </div>
+            <div class="task-due overdue">Mar 20</div>
+          </div>
+          <div class="task-item">
+            <div class="task-check"></div>
+            <div class="task-body">
+              <div class="task-name">Submit permit application — Sycamore</div>
+              <div class="task-meta">Sycamore Mixed-Use · Quinn H.</div>
+            </div>
+            <div class="task-due overdue">Mar 22</div>
+          </div>
+          <div class="task-item">
+            <div class="task-check"></div>
+            <div class="task-body">
+              <div class="task-name">Electrical rough-in complete — Oakwood</div>
+              <div class="task-meta">Oakwood Commercial · Alice L.</div>
+            </div>
+            <div class="task-due">Mar 25</div>
+          </div>
+          <div class="task-item">
+            <div class="task-check"></div>
+            <div class="task-body">
+              <div class="task-name">Subcontractor walkthrough — Riverside</div>
+              <div class="task-meta">Riverside Renovation · Sarah R.</div>
+            </div>
+            <div class="task-due">Mar 26</div>
+          </div>
+          <div class="task-item">
+            <div class="task-check"></div>
+            <div class="task-body">
+              <div class="task-name">Concrete pour — Oakwood foundation ext.</div>
+              <div class="task-meta">Oakwood Commercial · Trade GC</div>
+            </div>
+            <div class="task-due">Mar 28</div>
+          </div>
+          <div class="task-item">
+            <div class="task-check"></div>
+            <div class="task-body">
+              <div class="task-name">Owner review meeting — Sycamore plan</div>
+              <div class="task-meta">Sycamore Mixed-Use · Quinn H.</div>
+            </div>
+            <div class="task-due">Mar 31</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /page -->
+</div><!-- /main -->
+
+</body>
+</html>

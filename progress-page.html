@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Progress Page - 4310 Alysheba Drive</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green: #30803d;
+      --green-light: #f4f9f6;
+      --green-border: #7cb88e;
+      --green-bold: #bfdcc8;
+      --gray-bg: #f9fafb;
+      --gray-mid: #ededed;
+      --gray-border: #e5e7eb;
+      --gray-text: #898989;
+      --gray-text-mid: #565656;
+      --dark: #1d1d1d;
+      --side-w: 238px;
+      --header-h: 66px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      color: var(--dark);
+      min-height: 100vh;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: var(--side-w) 1fr;
+    }
+
+    .sidebar {
+      border-right: 1px solid var(--gray-border);
+      background: linear-gradient(180deg, #ffffff 0%, #fafbfc 100%);
+      display: flex;
+      flex-direction: column;
+      padding: 16px 12px;
+      gap: 12px;
+      min-height: 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--dark);
+      font-weight: 600;
+      font-size: 36px;
+      text-transform: lowercase;
+      line-height: 1;
+    }
+
+    .brand svg {
+      width: 26px;
+      height: 26px;
+      color: var(--gray-text-mid);
+      flex-shrink: 0;
+    }
+
+    .overview {
+      border: 1px solid var(--gray-border);
+      padding: 12px;
+      display: grid;
+      gap: 6px;
+      background: var(--gray-bg);
+    }
+
+    .overview .label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--gray-text-mid);
+      text-transform: uppercase;
+    }
+
+    .overview .amount {
+      color: var(--green);
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .overview .meta {
+      font-size: 13px;
+      color: var(--gray-text-mid);
+      line-height: 1.45;
+    }
+
+    .task-list {
+      margin-top: 4px;
+      overflow-y: auto;
+      border-top: 1px solid var(--gray-border);
+      padding-top: 10px;
+    }
+
+    .task-list-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--gray-text-mid);
+      letter-spacing: 0.05em;
+      margin: 0 0 8px;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 9px 2px;
+      border-top: 1px solid var(--gray-border);
+      font-size: 14px;
+      color: var(--green);
+      position: relative;
+      cursor: pointer;
+    }
+
+    .task-item .dot {
+      width: 14px;
+      height: 14px;
+      border: 1px solid var(--gray-text);
+      border-radius: 50%;
+      background: #fff;
+      flex-shrink: 0;
+    }
+
+    .task-item.active {
+      color: var(--dark);
+      font-weight: 600;
+    }
+
+    .task-item.active::before {
+      content: "";
+      position: absolute;
+      left: -12px;
+      top: 6px;
+      bottom: 6px;
+      width: 4px;
+      border-radius: 2px;
+      background: var(--green);
+    }
+
+    .main {
+      min-width: 0;
+      min-height: 0;
+      display: grid;
+      grid-template-rows: var(--header-h) 1fr;
+    }
+
+    .header {
+      border-bottom: 1px solid var(--gray-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px 0 24px;
+      gap: 16px;
+      background: #fff;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .time {
+      color: var(--gray-text);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .address {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--dark);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--gray-text);
+    }
+
+    .amh {
+      font-size: 24px;
+      font-weight: 700;
+      color: #9aa0a8;
+      text-transform: lowercase;
+      margin-right: 4px;
+    }
+
+    .icon-btn {
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--gray-border);
+      background: #fff;
+      color: var(--gray-text-mid);
+      display: grid;
+      place-items: center;
+      border-radius: 4px;
+    }
+
+    .icon-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--gray-border);
+      background: linear-gradient(160deg, #bcc4b2, #f4f6f0);
+      border-radius: 4px;
+    }
+
+    .content {
+      min-height: 0;
+      overflow: auto;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 12px;
+      padding: 18px;
+      background: #fff;
+    }
+
+    .summary {
+      border: 1px solid var(--gray-border);
+      background: var(--gray-bg);
+      border-radius: 6px;
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .task-title {
+      font-size: 22px;
+      color: var(--gray-text-mid);
+    }
+
+    .task-title strong {
+      color: var(--dark);
+      font-weight: 700;
+    }
+
+    .price-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .price {
+      color: var(--green);
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .chip {
+      min-width: 62px;
+      height: 40px;
+      border: 1px solid var(--gray-border);
+      display: grid;
+      place-items: center;
+      text-transform: uppercase;
+      font-size: 10px;
+      color: var(--gray-text);
+      background: #fff;
+      border-radius: 4px;
+      padding: 0 8px;
+      line-height: 1.15;
+    }
+
+    .chip strong {
+      display: block;
+      font-size: 15px;
+      color: var(--gray-text-mid);
+      font-weight: 700;
+    }
+
+    .detail-card {
+      border: 1px solid var(--gray-border);
+      border-radius: 6px;
+      padding: 12px;
+      background: #fff;
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 10px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--gray-border);
+      border-radius: 4px;
+      padding: 12px 14px;
+    }
+
+    .meta-row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 6px;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+
+    .meta-row b {
+      color: var(--dark);
+      font-weight: 700;
+    }
+
+    .meta-row span {
+      color: var(--gray-text-mid);
+    }
+
+    .line-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+
+    .line-copy {
+      font-size: 13px;
+      color: var(--gray-text-mid);
+      line-height: 1.4;
+    }
+
+    .line-copy a {
+      color: var(--green);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .evolution-panel {
+      border: 1px solid var(--gray-border);
+      border-radius: 6px;
+      background: #fff;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .panel-head {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--gray-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .panel-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-text-mid);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .panel-count {
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .inline-photos {
+      padding: 12px;
+      border-bottom: 1px solid var(--gray-border);
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+    }
+
+    .inline-photo {
+      border: 1px solid var(--gray-border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+      min-width: 230px;
+    }
+
+    .inline-photo-swatch {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      position: relative;
+      background: var(--gray-mid);
+    }
+
+
+    .photo-status {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border: 1px solid transparent;
+      background: #fff;
+    }
+
+    .photo-status.completed {
+      color: var(--green);
+      border-color: var(--green-border);
+      background: var(--green-light);
+    }
+
+    .photo-status.progress {
+      color: #8a5a00;
+      border-color: #c47f00;
+      background: #fff3cd;
+    }
+
+    .photo-status.rework {
+      color: #2d44a8;
+      border-color: #3b5bdb;
+      background: #e8eeff;
+    }
+
+    .timeline {
+      overflow: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .event {
+      border: 1px solid var(--gray-border);
+      border-radius: 8px;
+      padding: 12px;
+      background: var(--gray-bg);
+    }
+
+    .event.with-photos .event-content {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .event-main {
+      min-width: 0;
+    }
+
+    .event-head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .event-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .event-title .accent {
+      color: var(--green);
+    }
+
+    .event-meta {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .event-author {
+      font-size: 12px;
+      color: var(--gray-text-mid);
+      font-weight: 600;
+    }
+
+    .event-time {
+      font-size: 11px;
+      color: var(--gray-text);
+      white-space: nowrap;
+    }
+
+    .event-text {
+      font-size: 12px;
+      color: var(--gray-text-mid);
+      line-height: 1.45;
+    }
+
+    .event-photo-col {
+      min-width: 0;
+    }
+
+    .event-photos {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      height: 100%;
+      align-content: start;
+    }
+
+    .event-photo {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      min-height: 94px;
+      border-radius: 6px;
+      border: 1px solid var(--gray-border);
+      background: var(--gray-mid);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .inline-photo {
+      cursor: pointer;
+    }
+
+    .photo-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1200;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(2px);
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+    }
+
+    .photo-modal.active {
+      display: flex;
+    }
+
+    .photo-modal-card {
+      width: min(1280px, 98vw);
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid var(--gray-border);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.65fr 0.95fr;
+      position: relative;
+    }
+
+    .photo-modal-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 30px;
+      height: 30px;
+      border: 1px solid var(--gray-border);
+      border-radius: 50%;
+      background: #fff;
+      color: var(--gray-text-mid);
+      font-size: 18px;
+      cursor: pointer;
+      line-height: 1;
+      z-index: 2;
+    }
+
+    .photo-modal-preview {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-right: 1px solid var(--gray-border);
+      background: var(--gray-mid);
+      position: relative;
+    }
+
+    .photo-modal-status {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border: 1px solid transparent;
+      background: #fff;
+    }
+
+    .photo-modal-status.completed {
+      color: var(--green);
+      border-color: var(--green-border);
+      background: var(--green-light);
+    }
+
+    .photo-modal-status.progress {
+      color: #8a5a00;
+      border-color: #c47f00;
+      background: #fff3cd;
+    }
+
+    .photo-modal-status.rework {
+      color: #2d44a8;
+      border-color: #3b5bdb;
+      background: #e8eeff;
+    }
+
+    .photo-modal-meta {
+      padding: 22px;
+      display: grid;
+      align-content: start;
+      gap: 14px;
+      background: var(--gray-bg);
+    }
+
+    .photo-modal-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-right: 28px;
+    }
+
+    .photo-modal-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr;
+    }
+
+    .photo-modal-item {
+      border: 1px solid var(--gray-border);
+      border-radius: 8px;
+      background: #fff;
+      padding: 10px 12px;
+    }
+
+    .photo-modal-item label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--gray-text);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 3px;
+    }
+
+    .photo-modal-item div {
+      font-size: 13px;
+      color: var(--gray-text-mid);
+      font-weight: 600;
+    }
+
+    @media (max-width: 980px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--gray-border);
+      }
+
+      .task-list {
+        max-height: 220px;
+      }
+
+      .header {
+        min-height: 68px;
+        height: auto;
+        flex-wrap: wrap;
+        padding: 10px 14px;
+      }
+
+      .summary,
+      .detail-card {
+        grid-template-columns: 1fr;
+      }
+
+      .event.with-photos .event-content {
+        grid-template-columns: 1fr;
+      }
+
+      .inline-photo {
+        min-width: 170px;
+      }
+
+      .photo-modal-card {
+        grid-template-columns: 1fr;
+        width: min(760px, 96vw);
+      }
+
+      .photo-modal-preview {
+        aspect-ratio: 1 / 1;
+        border-right: none;
+        border-bottom: 1px solid var(--gray-border);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 13.5L11.4 5.5C11.75 5.16 12.3 5.16 12.65 5.5L21 13.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M6.5 12.5V19H17.5V12.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        kai
+      </div>
+
+      <section class="overview">
+        <div class="label">Overview</div>
+        <div class="amount">$45,560.25</div>
+        <div class="label">Acquisition Scan</div>
+        <div class="meta">Listed sqft: 2,562<br/>Measured sqft: 192</div>
+      </section>
+
+      <div class="task-list">
+        <div class="task-list-title">Task Progress</div>
+        <div class="task-item active" data-task-id="drywall"><span class="dot"></span>Drywall Repair</div>
+        <div class="task-item" data-task-id="cabinets"><span class="dot"></span>Cabinet Replacement</div>
+        <div class="task-item" data-task-id="countertop"><span class="dot"></span>Countertop Replacement</div>
+        <div class="task-item" data-task-id="appliance"><span class="dot"></span>Appliance Package</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="header">
+        <div class="header-left">
+          <div class="time">08:20 Fri June 13</div>
+          <div class="address">4310 Alysheba Drive, Fairburn, GA 30213</div>
+        </div>
+        <div class="header-right">
+          <div class="amh">amh</div>
+          <button class="icon-btn" aria-label="Messages">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 6H19V16H9L5 20V6Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          </button>
+          <div class="avatar" aria-hidden="true"></div>
+          <button class="icon-btn" aria-label="Network">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12C6.5 9.5 9 8.5 12 8.5C15 8.5 17.5 9.5 20 12" stroke="currentColor" stroke-width="1.8"/><path d="M7 15C8.7 13.5 10.4 13 12 13C13.6 13 15.3 13.5 17 15" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="18" r="1.5" fill="currentColor"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="summary">
+          <div class="task-title">Task: <strong id="taskTitle">Drywall Repair</strong></div>
+          <div class="price-wrap">
+            <div class="price" id="taskPrice">$100.00</div>
+            <div class="chip"><strong id="taskSqft">144</strong>SQFT</div>
+            <div class="chip"><strong id="taskPft">48</strong>PFT</div>
+            <div class="chip"><strong id="taskWsqft">350</strong>WSQFT</div>
+          </div>
+        </div>
+
+        <div class="detail-card">
+          <div class="card">
+            <div class="meta-row"><b>Contractor</b><span id="taskContractor">Summit Build Solutions</span></div>
+            <div class="meta-row"><b>Task ID</b><span id="taskId">DW-1001</span></div>
+            <div class="meta-row"><b>Date</b><span id="taskDate">03/20/2026</span></div>
+          </div>
+          <div class="card">
+            <div class="line-title">Line Item</div>
+            <p class="line-copy" id="taskLineItem">Drywall replacement and patching in kitchen wall areas with finish sanding and paint prep. <a href="#">Read More...</a></p>
+          </div>
+        </div>
+
+        <section class="evolution-panel">
+          <div class="panel-head">
+            <div class="panel-title">Task Activities</div>
+            <div class="panel-count" id="eventCount">0 updates</div>
+          </div>
+          <div class="inline-photos" id="inlinePhotos"></div>
+          <div class="timeline" id="timeline"></div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div class="photo-modal" id="photoModal">
+    <div class="photo-modal-card">
+      <button class="photo-modal-close" id="photoModalClose" aria-label="Close photo modal">x</button>
+      <div class="photo-modal-preview" id="photoModalPreview">
+        <span class="photo-modal-status" id="photoModalStatus">status</span>
+      </div>
+      <div class="photo-modal-meta">
+        <div class="photo-modal-title" id="photoModalTitle">Photo</div>
+        <div class="photo-modal-grid">
+          <div class="photo-modal-item">
+            <label>Date</label>
+            <div id="photoModalDate">-</div>
+          </div>
+          <div class="photo-modal-item">
+            <label>Photographer</label>
+            <div id="photoModalPhotographer">-</div>
+          </div>
+          <div class="photo-modal-item">
+            <label>Task</label>
+            <div id="photoModalTask">-</div>
+          </div>
+          <div class="photo-modal-item">
+            <label>Source</label>
+            <div id="photoModalSource">-</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const TASKS = {
+      drywall: {
+        id: 'DW-1001',
+        name: 'Drywall Repair',
+        contractor: 'Summit Build Solutions',
+        date: '03/20/2026',
+        total: '$100.00',
+        sqft: '144',
+        pft: '48',
+        wsqft: '350',
+        lineItem: 'Drywall replacement and patching in kitchen wall areas with finish sanding and paint prep.',
+        photos: [
+          { label: 'Initial Wall Condition', date: 'Mar 18, 2026', photographer: 'R. Garcia', status: 'progress', bg: '#dbe7f7' },
+          { label: 'Corner Patch', date: 'Mar 19, 2026', photographer: 'R. Garcia', status: 'progress', bg: '#d9e6f7' },
+          { label: 'Joint Compound Pass 1', date: 'Mar 20, 2026', photographer: 'Shane D.', status: 'progress', bg: '#f2e3cd' },
+          { label: 'Sanded Finish', date: 'Mar 21, 2026', photographer: 'R. Garcia', status: 'completed', bg: '#d7eddc' },
+          { label: 'Paint Prep', date: 'Mar 23, 2026', photographer: 'Shane D.', status: 'rework', bg: '#e4ddf6' },
+          { label: 'Closeout Check', date: 'Mar 24, 2026', photographer: 'Shane D.', status: 'completed', bg: '#dcebe5' }
+        ],
+        events: [
+          {
+            type: 'Change Order',
+            title: 'submitted',
+            author: 'You',
+            time: 'Mar 25 08:42',
+            text: 'Submitted change order for added wall texture blend and corner bead reinforcement.',
+            photos: [5]
+          },
+          {
+            type: 'Progress Walk',
+            title: 'submitted',
+            author: 'Shane D.',
+            time: 'Mar 25 07:55',
+            text: 'Confirmed texture cure and paint readiness on all repaired drywall areas.',
+            photos: [4, 5]
+          },
+          {
+            type: 'Change Order',
+            title: 'submitted',
+            author: 'Shane D.',
+            time: 'Mar 24 16:30',
+            text: 'Submitted labor adjustment for extra sanding pass in the kitchen transition wall.',
+            photos: [3, 4]
+          },
+          {
+            type: 'Progress Walk',
+            title: 'submitted',
+            author: 'R. Garcia',
+            time: 'Mar 23 13:05',
+            text: 'Reviewed joint smoothness and noted one area requiring final feathering near outlet.',
+            photos: [2, 4]
+          },
+          {
+            type: 'Change Order',
+            title: 'submitted',
+            author: 'You',
+            time: 'Mar 22 18:22',
+            text: 'Submitted change order for additional primer coat to address patch color variation.',
+            photos: [2, 3]
+          },
+          {
+            type: 'Initial Walk',
+            title: 'submitted',
+            author: 'R. Garcia',
+            time: 'Mar 18 09:12',
+            text: 'Documented baseline drywall condition and marked damaged corners for patching.',
+            photos: [0, 1]
+          },
+          {
+            type: 'Progress Walk',
+            title: 'submitted',
+            author: 'Shane D.',
+            time: 'Mar 21 14:20',
+            text: 'Progress verified on skim coat, sanding, and texture blending before paint prep.',
+            photos: [2, 3, 4]
+          },
+          {
+            type: 'Closeout',
+            title: 'submitted',
+            author: 'You',
+            time: 'Mar 24 09:18',
+            text: 'Final drywall finish accepted with minor touch-up complete and task ready for final sign-off.',
+            photos: [5]
+          }
+        ]
+      },
+      cabinets: {
+        id: 'CB-2004',
+        name: 'Cabinet Replacement',
+        contractor: 'Atlantic Install Co.',
+        date: '03/19/2026',
+        total: '$4,100.00',
+        sqft: '98',
+        pft: '34',
+        wsqft: '260',
+        lineItem: 'Replace upper and lower kitchen cabinets, align hardware, and level all doors and drawers.',
+        photos: [
+          { label: 'Initial Cabinet Condition', date: 'Mar 17, 2026', photographer: 'R. Garcia', status: 'progress', bg: '#f0dfc3' },
+          { label: 'Demo Stage', date: 'Mar 18, 2026', photographer: 'R. Garcia', status: 'progress', bg: '#efdcbf' },
+          { label: 'Frame Install', date: 'Mar 19, 2026', photographer: 'R. Garcia', status: 'progress', bg: '#d8e2f2' },
+          { label: 'Hardware Setup', date: 'Mar 20, 2026', photographer: 'Shane D.', status: 'rework', bg: '#e8ddf5' },
+          { label: 'Door Alignment', date: 'Mar 21, 2026', photographer: 'Shane D.', status: 'completed', bg: '#dcecd8' },
+          { label: 'Closeout Photo', date: 'Mar 22, 2026', photographer: 'You', status: 'completed', bg: '#d7e7d2' }
+        ],
+        events: [
+          {
+            type: 'Initial Walk',
+            title: 'submitted',
+            author: 'R. Garcia',
+            time: 'Mar 17 08:40',
+            text: 'Captured before-condition and measured replacement layout for cabinet bank.',
+            photos: [0, 1]
+          },
+          {
+            type: 'Progress Walk',
+            title: 'submitted',
+            author: 'Shane D.',
+            time: 'Mar 20 11:12',
+            text: 'Install progression reviewed; two hinges adjusted and face alignment corrected.',
+            photos: [2, 3, 4]
+          },
+          {
+            type: 'Closeout',
+            title: 'submitted',
+            author: 'You',
+            time: 'Mar 22 10:04',
+            text: 'Cabinet replacement complete and quality checks passed for closeout.',
+            photos: [5]
+          }
+        ]
+      },
+      countertop: {
+        id: 'CT-3102',
+        name: 'Countertop Replacement',
+        contractor: 'Summit Stone Works',
+        date: '03/18/2026',
+        total: '$3,990.00',
+        sqft: '42',
+        pft: '22',
+        wsqft: '150',
+        lineItem: 'Template, fabricate, and install quartz countertop including sink cutout and backsplash return.',
+        photos: [
+          { label: 'Initial Counter Condition', date: 'Mar 16, 2026', photographer: 'R. Garcia', status: 'progress', bg: '#eddecf' },
+          { label: 'Old Counter', date: 'Mar 17, 2026', photographer: 'R. Garcia', status: 'progress', bg: '#e8d9c9' },
+          { label: 'Template Check', date: 'Mar 18, 2026', photographer: 'R. Garcia', status: 'completed', bg: '#d6e8e2' },
+          { label: 'Fabrication Ready', date: 'Mar 19, 2026', photographer: 'Summit Stone Works', status: 'progress', bg: '#dde6f1' },
+          { label: 'Install Day', date: 'Mar 20, 2026', photographer: 'Shane D.', status: 'completed', bg: '#d8deee' },
+          { label: 'Closeout Finish', date: 'Mar 21, 2026', photographer: 'You', status: 'completed', bg: '#d7e9de' }
+        ],
+        events: [
+          {
+            type: 'Initial Walk',
+            title: 'submitted',
+            author: 'R. Garcia',
+            time: 'Mar 16 11:05',
+            text: 'Initial walk captured baseline counter condition and sink measurements.',
+            photos: [0, 1]
+          },
+          {
+            type: 'Progress Walk',
+            title: 'submitted',
+            author: 'Summit Stone Works',
+            time: 'Mar 19 08:35',
+            text: 'Fabrication and fit-check completed; install crew confirmed seam positions.',
+            photos: [2, 3, 4]
+          },
+          {
+            type: 'Closeout',
+            title: 'submitted',
+            author: 'Shane D.',
+            time: 'Mar 21 17:14',
+            text: 'Seams checked, edge sealed, and countertop approved for closeout.',
+            photos: [5]
+          }
+        ]
+      },
+      appliance: {
+        id: 'AP-4109',
+        name: 'Appliance Package',
+        contractor: 'Metro Appliance Team',
+        date: '03/16/2026',
+        total: '$5,200.00',
+        sqft: '1',
+        pft: '0',
+        wsqft: '0',
+        lineItem: 'Deliver and install refrigerator, range, microwave, and dishwasher with utility connections.',
+        photos: [
+          { label: 'Initial Appliance Area', date: 'Mar 14, 2026', photographer: 'R. Garcia', status: 'progress', bg: '#dce7f3' },
+          { label: 'Delivery', date: 'Mar 15, 2026', photographer: 'R. Garcia', status: 'progress', bg: '#d9e3ef' },
+          { label: 'Range Install', date: 'Mar 16, 2026', photographer: 'Shane D.', status: 'completed', bg: '#dce9da' },
+          { label: 'Dishwasher Test', date: 'Mar 17, 2026', photographer: 'Shane D.', status: 'completed', bg: '#efe1cd' },
+          { label: 'Final Setup', date: 'Mar 18, 2026', photographer: 'You', status: 'completed', bg: '#e1daf1' },
+          { label: 'Closeout Verification', date: 'Mar 19, 2026', photographer: 'You', status: 'completed', bg: '#d8e8de' }
+        ],
+        events: [
+          {
+            type: 'Initial Walk',
+            title: 'submitted',
+            author: 'R. Garcia',
+            time: 'Mar 14 13:20',
+            text: 'Initial appliance area reviewed and utility rough-ins validated.',
+            photos: [0, 1]
+          },
+          {
+            type: 'Progress Walk',
+            title: 'submitted',
+            author: 'Metro Appliance Team',
+            time: 'Mar 16 15:05',
+            text: 'All appliances seated and powered. Leak and vent tests passed.',
+            photos: [2, 3, 4]
+          },
+          {
+            type: 'Closeout',
+            title: 'submitted',
+            author: 'You',
+            time: 'Mar 19 09:10',
+            text: 'Owner orientation completed; warranty docs shared and task closed out.',
+            photos: [5]
+          }
+        ]
+      }
+    };
+
+    function statusClass(status) {
+      if (status === 'completed') return 'completed';
+      if (status === 'rework') return 'rework';
+      return 'progress';
+    }
+
+    function parseEventTime(value) {
+      const months = {
+        Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+        Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
+      };
+
+      const match = value.match(/^(\w{3})\s(\d{1,2})\s(\d{2}):(\d{2})$/);
+      if (!match) return 0;
+
+      const month = months[match[1]];
+      const day = Number(match[2]);
+      const hour = Number(match[3]);
+      const minute = Number(match[4]);
+      return new Date(2026, month, day, hour, minute).getTime();
+    }
+
+    function openPhotoModal(task, photo, source) {
+      const modal = document.getElementById('photoModal');
+      const preview = document.getElementById('photoModalPreview');
+      const status = document.getElementById('photoModalStatus');
+
+      preview.style.background = photo.bg;
+      status.className = `photo-modal-status ${statusClass(photo.status)}`;
+      status.textContent = photo.status;
+
+      document.getElementById('photoModalTitle').textContent = photo.label || 'Photo';
+      document.getElementById('photoModalDate').textContent = photo.date || '-';
+      document.getElementById('photoModalPhotographer').textContent = photo.photographer || '-';
+      document.getElementById('photoModalTask').textContent = task.name || '-';
+      document.getElementById('photoModalSource').textContent = source;
+
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePhotoModal() {
+      document.getElementById('photoModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function renderTask(taskId) {
+      const task = TASKS[taskId];
+      if (!task) return;
+
+      document.getElementById('taskTitle').textContent = task.name;
+      document.getElementById('taskPrice').textContent = task.total;
+      document.getElementById('taskSqft').textContent = task.sqft;
+      document.getElementById('taskPft').textContent = task.pft;
+      document.getElementById('taskWsqft').textContent = task.wsqft;
+      document.getElementById('taskContractor').textContent = task.contractor;
+      document.getElementById('taskId').textContent = task.id;
+      document.getElementById('taskDate').textContent = task.date;
+      document.getElementById('taskLineItem').innerHTML = `${task.lineItem} <a href="#">Read More...</a>`;
+
+      const inlinePhotos = document.getElementById('inlinePhotos');
+      inlinePhotos.innerHTML = task.photos.map((photo, index) => `
+        <article class="inline-photo" data-photo-index="${index}">
+          <div class="inline-photo-swatch" style="background:${photo.bg};">
+            <span class="photo-status ${statusClass(photo.status)}">${photo.status}</span>
+          </div>
+        </article>
+      `).join('');
+
+      inlinePhotos.querySelectorAll('.inline-photo').forEach((node) => {
+        node.addEventListener('click', () => {
+          const index = Number(node.dataset.photoIndex || 0);
+          const photo = task.photos[index];
+          if (!photo) return;
+          openPhotoModal(task, photo, 'Top Photo Strip');
+        });
+      });
+
+      const timeline = document.getElementById('timeline');
+      const sortedEvents = [...task.events].sort((a, b) => parseEventTime(b.time) - parseEventTime(a.time));
+
+      timeline.innerHTML = sortedEvents.map((event) => {
+        const eventPhotos = event.photos.map((photoIndex) => {
+          const p = task.photos[photoIndex];
+          if (!p) return '';
+          return `<div class="event-photo" data-photo-index="${photoIndex}" style="background:${p.bg};"></div>`;
+        }).join('');
+
+        const hasPhotos = Boolean(eventPhotos);
+
+        return `
+          <article class="event ${hasPhotos ? 'with-photos' : ''}">
+            <div class="event-content">
+              <div class="event-main">
+                <div class="event-head">
+                  <div class="event-title"><span class="accent">${event.type}</span> ${event.title}</div>
+                </div>
+                <div class="event-meta">
+                  <div class="event-author">${event.author}</div>
+                  <div class="event-time">${event.time}</div>
+                </div>
+                <div class="event-text">${event.text}</div>
+              </div>
+              ${eventPhotos ? `<div class="event-photo-col"><div class="event-photos">${eventPhotos}</div></div>` : ''}
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      timeline.querySelectorAll('.event-photo').forEach((node) => {
+        node.addEventListener('click', () => {
+          const index = Number(node.dataset.photoIndex || 0);
+          const photo = task.photos[index];
+          if (!photo) return;
+          openPhotoModal(task, photo, 'Task Activity Card');
+        });
+      });
+
+      document.getElementById('eventCount').textContent = `${task.events.length} updates`;
+
+      document.querySelectorAll('.task-item').forEach((item) => {
+        item.classList.toggle('active', item.dataset.taskId === taskId);
+      });
+    }
+
+    document.querySelectorAll('.task-item').forEach((item) => {
+      item.addEventListener('click', () => renderTask(item.dataset.taskId));
+    });
+
+    document.getElementById('photoModalClose').addEventListener('click', closePhotoModal);
+    document.getElementById('photoModal').addEventListener('click', (e) => {
+      if (e.target.id === 'photoModal') closePhotoModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closePhotoModal();
+    });
+
+    renderTask('drywall');
+  </script>
+</body>
+</html>

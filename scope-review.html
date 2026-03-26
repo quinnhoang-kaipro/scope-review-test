@@ -1,0 +1,4367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scope Review — 4310 Alysheba Drive</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:         #30803d;
+      --green-light:   #f4f9f6;
+      --green-border:  #7cb88e;
+      --green-bold:    #bfdcc8;
+      --gray-bg:       #f9fafb;
+      --gray-mid:      #ededed;
+      --gray-border:   #e5e7eb;
+      --gray-text:     #898989;
+      --gray-text-mid: #565656;
+      --dark:          #1d1d1d;
+      --pill-inactive: #f6f6f6;
+      --pill-border:   #b7b7b7;
+      --badge-red-bg:  #ffe6e6;
+      --badge-red-bdr: #8c1a1a;
+      --badge-red-txt: #8c1a1a;
+      --sidebar-w:     380px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── Top nav ── */
+    .topnav {
+      height: 50px;
+      background: #fff;
+      border-bottom: 1px solid var(--gray-border);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 20px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .topnav__back {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      color: var(--gray-text-mid);
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .topnav__back:hover { color: var(--dark); }
+    .topnav__back svg { flex-shrink: 0; }
+
+    .topnav__address {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--dark);
+      white-space: nowrap;
+    }
+
+    .topnav__tabs {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-left: 8px;
+    }
+
+    .topnav__tab {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 16px 16px;
+      color: var(--gray-text);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: color .15s;
+      white-space: nowrap;
+    }
+    .topnav__tab.active {
+      color: var(--dark);
+      border-bottom-color: var(--dark);
+    }
+    .topnav__tab:hover:not(.active) { color: var(--dark); }
+
+    .topnav__right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      width: 34px; height: 34px;
+      border: 1px solid var(--gray-border);
+      border-radius: 6px;
+      background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+    .icon-btn:hover { background: var(--gray-bg); }
+
+    .btn-primary {
+      background: var(--green);
+      color: #fff;
+      border: 1px solid #7cb88e;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .02em;
+      padding: 9px 14px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-primary:hover { opacity: .9; }
+
+    .btn-approve {
+      background: transparent;
+      color: var(--green);
+      border: 1.5px solid var(--green);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      padding: 7px 14px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-approve:hover { background: var(--green-light); }
+
+    /* ── Page layout ── */
+    .layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      height: calc(100vh - 50px);
+      min-height: 0;
+    }
+
+    /* ── Main panel ── */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-width: 0;
+      min-height: 0;
+    }
+
+    /* ── Table container ── */
+    .table-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      min-width: 0;
+      min-height: 0;
+    }
+
+    /* ── Group header ── */
+    .group-header {
+      display: flex;
+      align-items: center;
+      padding: 20px 32px 16px;
+      gap: 12px;
+      border-bottom: 1px solid var(--gray-border);
+      flex-shrink: 0;
+    }
+
+    .group-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .group-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .group-dropdown {
+      position: static;
+    }
+
+    .group-dropdown summary {
+      list-style: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      color: #111;
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+      padding: 0;
+    }
+
+    .group-dropdown summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .group-dropdown summary:hover {
+      background: #f3f4f6;
+    }
+
+    .group-dropdown[open] summary {
+      background: #f3f4f6;
+    }
+
+    .group-dropdown summary:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(48, 128, 61, 0.12);
+    }
+
+    .group-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      min-width: 320px;
+      max-height: 300px;
+      overflow: auto;
+      z-index: 30;
+      background: #fff;
+      border: 1px solid var(--gray-border);
+      border-radius: 8px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
+      padding: 6px;
+      display: grid;
+      gap: 3px;
+    }
+
+    .group-dropdown-item {
+      text-align: left;
+      width: 100%;
+      border: none;
+      background: transparent;
+      color: var(--gray-text-mid);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 7px 9px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .group-dropdown-item:hover {
+      background: #f3f4f6;
+      color: var(--dark);
+    }
+
+    .group-dropdown-item.active {
+      background: #edf6f0;
+      color: var(--green);
+    }
+
+    .nav-arrow {
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: var(--gray-text-mid);
+      border-radius: 4px;
+    }
+    .nav-arrow:hover { background: var(--gray-bg); }
+
+    .group-header__right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .cost-label {
+      font-size: 12px;
+      color: var(--gray-text);
+      font-weight: 500;
+    }
+    .cost-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    /* ── Table ── */
+    .scope-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .scope-table thead tr {
+      background: var(--gray-bg);
+      border-bottom: 1px solid var(--gray-border);
+    }
+
+    .scope-table thead th {
+      text-align: left;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--gray-text);
+      padding: 9px 8px;
+      white-space: nowrap;
+    }
+    .scope-table thead th:first-child { padding-left: 16px; width: 30px; }
+    .scope-table thead th.col-id     { width: 54px; }
+    .scope-table thead th.col-desc   { min-width: 320px; width: 36%; }
+    .scope-table thead th.col-contr  { width: 170px; }
+    .scope-table thead th.col-modifier { width: 160px; }
+    .scope-table thead th.col-qty    { width: 100px; }
+    .scope-table thead th.col-price  { width: 90px; }
+    .scope-table thead th.col-total  { width: 100px; }
+    .scope-table thead th.col-note   { width: 60px; }
+    .scope-table thead th.col-photos { width: 80px; }
+
+    /* Group row */
+    .scope-table .group-row td {
+      background: var(--gray-mid);
+      border-bottom: 1px solid var(--gray-border);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: var(--gray-text-mid);
+      padding: 10px 8px;
+      white-space: nowrap;
+    }
+    .scope-table .group-row td:first-child { padding-left: 16px; }
+    .group-row__total { color: var(--green) !important; margin-left: auto; }
+    .group-row__cells { display: flex; justify-content: space-between; width: 100%; }
+
+    /* Task rows */
+    .scope-table .task-row td {
+      border-bottom: 1px solid var(--gray-border);
+      padding: 10px 8px;
+      vertical-align: top;
+    }
+    .scope-table .task-row td:first-child { padding-left: 16px; }
+    .scope-table .task-row:hover td { background: #fafafa; }
+
+    .task-row.highlighted {
+      border-left: 4px solid var(--green);
+    }
+    .task-row.highlighted td {
+      background: linear-gradient(90deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.7) 100%),
+                  linear-gradient(90deg, #bfdcc8 0%, #bfdcc8 100%);
+    }
+    .task-row.highlighted:hover td { background: rgba(191,220,200,0.25); }
+
+    .task-check {
+      width: 16px; height: 16px;
+      border: 1px solid var(--gray-border);
+      border-radius: 4px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .task-id {
+      font-size: 11px;
+      color: var(--gray-text);
+      font-weight: 400;
+    }
+
+    .task-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+
+    .task-product-line {
+      font-size: 11px;
+      line-height: 1.35;
+      color: var(--gray-text-mid);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .badge-unassigned {
+      background: var(--badge-red-bg);
+      border: 1px solid var(--badge-red-bdr);
+      color: var(--badge-red-txt);
+    }
+    .badge-tenant {
+      background: #fff8e1;
+      border: 1px solid #f59e0b;
+      color: #b45309;
+    }
+
+    .badge-approved {
+      background: #e6f4ea;
+      border: 1px solid #30803d;
+      color: #1e5a2a;
+      margin-top: 6px;
+      margin-right: 6px;
+    }
+
+    .badge-edit-requested {
+      background: #fff3e8;
+      border: 1px solid #c4600a;
+      color: #9a4b06;
+      margin-top: 6px;
+      margin-right: 6px;
+    }
+
+    .row-undo-btn {
+      display: none;
+      margin-top: 8px;
+      border: 1px solid #ea7b12;
+      background: #f28c1b;
+      color: #ffffff;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      padding: 7px 12px;
+      cursor: pointer;
+      box-shadow: none;
+    }
+
+    .row-undo-btn.visible {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .row-undo-btn:hover {
+      background: #e47a10;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .row-undo-anchor {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .task-status-text {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gray-text-mid);
+    }
+
+    .task-status-text.tenant {
+      color: #b45309;
+    }
+
+    .task-status-text.resident {
+      color: #b45309;
+    }
+
+    .task-status-text.deferred {
+      color: #8a5a00;
+    }
+
+    /* Photo tag colors */
+    .photo-tag {
+      display: inline-flex;
+      align-items: center;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      border-width: 1px;
+      border-style: solid;
+    }
+    .photo-tag.unassigned  { background: #ffe6e6; border-color: #8c1a1a; color: #8c1a1a; }
+    .photo-tag.in-progress { background: #fff3cd; border-color: #c47f00; color: #8a5a00; }
+    .photo-tag.rework      { background: #e8eeff; border-color: #3b5bdb; color: #2d44a8; }
+    .photo-tag.completed   { background: #e6f4ea; border-color: #30803d; color: #1e5a2a; }
+
+    .contractor-select {
+      border: 1px solid var(--gray-border);
+      border-radius: 4px;
+      background: var(--gray-bg);
+      font-size: 12px;
+      color: var(--gray-text-mid);
+      cursor: pointer;
+      min-width: 120px;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 5px 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    select.contractor-select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      display: block;
+      width: 100%;
+      min-width: 120px;
+      border: 1px solid var(--gray-border);
+      border-radius: 4px;
+      background: var(--gray-bg);
+      color: var(--gray-text-mid);
+      padding: 5px 8px;
+    }
+    .contractor-select.unassigned {
+      border-color: var(--badge-red-bdr);
+      color: var(--badge-red-txt);
+      background: var(--badge-red-bg);
+    }
+    .contractor-select svg { margin-left: auto; flex-shrink: 0; }
+
+    .modifier-cell {
+      min-width: 120px;
+      vertical-align: top;
+    }
+
+    .modifier-pill-area {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      align-items: flex-start;
+    }
+
+    .modifier-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #f3f4f6;
+      border: 1px solid #d1d5db;
+      border-radius: 20px;
+      padding: 2px 6px 2px 8px;
+      font-size: 11px;
+      color: #374151;
+      position: relative;
+      cursor: default;
+    }
+
+    .modifier-pill .pill-x {
+      background: none;
+      border: none;
+      padding: 0 0 0 2px;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1;
+      color: #6b7280;
+      display: flex;
+      align-items: center;
+    }
+
+    .modifier-pill .pill-x:hover { color: #374151; }
+
+    .modifier-pill[data-tooltip]:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1f2937;
+      color: #fff;
+      font-size: 11px;
+      line-height: 1.4;
+      padding: 5px 9px;
+      border-radius: 6px;
+      white-space: normal;
+      min-width: 160px;
+      max-width: 220px;
+      text-align: center;
+      z-index: 100;
+      pointer-events: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    }
+
+    .modifier-add-dropdown { position: relative; font-size: 11px; }
+
+    .modifier-add-btn {
+      list-style: none;
+      cursor: pointer;
+      color: #6b7280;
+      border: 1px dashed #d1d5db;
+      border-radius: 20px;
+      padding: 2px 8px;
+      white-space: nowrap;
+      background: transparent;
+    }
+
+    .modifier-add-btn::-webkit-details-marker { display: none; }
+    .modifier-add-btn:hover { background: #f3f4f6; color: #374151; }
+
+    .modifier-add-options {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      min-width: 150px;
+      z-index: 20;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.12);
+      padding: 6px;
+      display: grid;
+      gap: 4px;
+    }
+
+    .modifier-add-option {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #374151;
+      cursor: pointer;
+      padding: 3px 4px;
+      border-radius: 4px;
+    }
+
+    .modifier-add-option:hover { background: #f3f4f6; }
+    .modifier-add-option input { margin: 0; }
+
+    .qty-wrap {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .qty-input {
+      width: 46px;
+      border: 1px solid var(--gray-border);
+      border-radius: 3px;
+      background: var(--gray-bg);
+      font-size: 12px;
+      color: var(--gray-text-mid);
+      padding: 4px 6px;
+      font-family: inherit;
+    }
+    .qty-unit {
+      font-size: 11px;
+      color: var(--gray-text);
+    }
+
+    .price-input {
+      width: 70px;
+      border: 1px solid var(--gray-border);
+      border-radius: 3px;
+      background: var(--gray-bg);
+      font-size: 12px;
+      color: var(--gray-text-mid);
+      padding: 4px 6px;
+      font-family: inherit;
+    }
+
+    .total-val {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--gray-text-mid);
+    }
+
+    .note-wrap, .photo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      color: var(--gray-text-mid);
+      font-weight: 500;
+    }
+    .note-wrap img, .photo-wrap img {
+      width: 20px; height: 20px;
+      object-fit: contain;
+    }
+
+    /* scroll indicator - now a draggable divider */
+    .scroll-indicator {
+      text-align: center;
+      padding: 5px 10px;
+      color: var(--gray-text);
+      font-size: 12px;
+      letter-spacing: 1px;
+      border-top: 1px solid var(--gray-border);
+      border-bottom: 1px solid var(--gray-border);
+      cursor: ns-resize;
+      user-select: none;
+      flex-shrink: 0;
+      background: #fff;
+      transition: background 0.15s;
+    }
+    .scroll-indicator:hover {
+      background: var(--gray-bg);
+    }
+    .scroll-indicator.dragging {
+      background: var(--gray-mid);
+    }
+
+    /* ── Date picker + Photos ── */
+    .photos-section {
+      padding: 16px 32px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      flex: 1;
+      overflow-y: auto;
+      min-width: 0;
+      min-height: 0;
+    }
+
+    .date-group {
+      border-top: 1px solid var(--gray-border);
+      padding: 16px 0 24px;
+      flex-shrink: 0;
+    }
+    .date-group:first-child { border-top: none; padding-top: 0; }
+
+    .date-group-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    /* Date picker input — matches Figma spec */
+    .date-picker {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: var(--gray-bg);
+      border: 1px solid var(--gray-border);
+      border-radius: 3px;
+      padding: 5px 8px;
+      width: 160px;
+      cursor: pointer;
+      position: relative;
+    }
+    .date-picker:hover { border-color: #9ca3af; }
+    .date-picker:focus-within { border-color: var(--green-border); box-shadow: 0 0 0 2px rgba(48,128,61,.1); }
+
+    .date-picker input[type="date"] {
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 12px;
+      color: #1f2937;
+      cursor: pointer;
+      outline: none;
+      width: 100%;
+      /* hide native calendar icon — we supply our own */
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .date-picker input[type="date"]::-webkit-calendar-picker-indicator {
+      display: none;
+    }
+
+    .date-picker__icon {
+      width: 20px; height: 20px;
+      flex-shrink: 0;
+      pointer-events: none;
+    }
+
+    .date-group-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray-text);
+    }
+
+    .date-remove-btn {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      border: 1px solid var(--gray-border);
+      background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: var(--gray-text);
+      font-size: 14px;
+      line-height: 1;
+      transition: background .12s, color .12s, border-color .12s;
+    }
+    .date-remove-btn:hover { background: #fee2e2; border-color: #fca5a5; color: #dc2626; }
+
+    .add-date-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--green);
+      background: var(--green-light);
+      border: 1px solid var(--green-border);
+      border-radius: 3px;
+      padding: 6px 14px;
+      cursor: pointer;
+      margin-top: 4px;
+      transition: opacity .15s;
+      flex-shrink: 0;
+    }
+    .add-date-btn:hover { opacity: .85; }
+    .add-date-btn:disabled { opacity: .4; cursor: default; }
+
+    .photo-grid-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      position: relative;
+    }
+
+    .photo-scroll-container {
+      flex: 1;
+      overflow: hidden;
+      cursor: grab;
+    }
+    .photo-scroll-container.dragging {
+      cursor: grabbing;
+      user-select: none;
+    }
+
+    .carousel-btn {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      color: #374151;
+      font-size: 16px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 2;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+      transition: background .15s, opacity .15s;
+    }
+    .carousel-btn:hover { background: #f3f4f6; }
+    .carousel-btn:disabled { opacity: .3; cursor: default; }
+    .carousel-btn.prev { margin-right: 8px; }
+    .carousel-btn.next { margin-left: 8px; }
+
+    .photo-grid {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 14px;
+    }
+
+    .photo-card {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: var(--photo-size, 200px);
+    }
+
+    .photo-thumb {
+      width: var(--photo-size, 200px);
+      height: var(--photo-size, 200px);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      background: var(--gray-mid);
+      flex-shrink: 0;
+    }
+    .photo-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .photo-thumb .photo-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      white-space: nowrap;
+    }
+    .photo-thumb .rework-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 20px;
+      padding: 4px 10px 4px 4px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #1a56db;
+    }
+    .rework-badge .rework-icon {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: #1a56db;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .rework-badge .rework-icon svg { color: #fff; }
+
+    .photo-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    /* ── Right sidebar ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      border-left: 1px solid var(--gray-border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      flex-shrink: 0;
+      min-height: 0;
+    }
+
+    .sidebar-section {
+      border-bottom: 1px solid var(--gray-border);
+      padding: 14px 14px;
+      flex: 1 1 0;
+      overflow: hidden;
+      transition: flex 0.3s ease;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-section.expanded {
+      flex: 1 1 auto;
+    }
+    .sidebar-section.collapsed {
+      flex: 0 0 auto;
+      min-height: fit-content;
+    }
+    .sidebar-section.collapsed .sidebar-section-content,
+    .sidebar-section.collapsed .sidebar-see-all {
+      display: none;
+    }
+
+    .sidebar-section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .sidebar-section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+    .sidebar-section-title span {
+      font-weight: 400;
+      color: var(--gray-text);
+      margin-left: 4px;
+    }
+    .sidebar-see-all {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--green);
+      cursor: pointer;
+      text-decoration: none;
+      margin-top: 12px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-section-content {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+
+    /* Activity items */
+    .activity-item {
+      margin-bottom: 14px;
+    }
+    .activity-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 3px;
+    }
+    .activity-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    .activity-title .green { color: var(--green); }
+    .activity-time {
+      font-size: 10px;
+      color: var(--gray-text);
+      white-space: nowrap;
+    }
+    .activity-author {
+      font-size: 11px;
+      color: var(--gray-text);
+      margin-bottom: 6px;
+    }
+    .activity-details {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .activity-detail-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--gray-text-mid);
+    }
+    .activity-detail-row .val { font-weight: 600; }
+    .activity-detail-row .val.green { color: var(--green); }
+    .view-scope {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--green);
+      cursor: pointer;
+      margin-top: 4px;
+      display: inline-block;
+    }
+
+    /* Note items */
+    .note-item {
+      margin-bottom: 14px;
+    }
+    .note-badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      padding: 2px 6px;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .note-badge.scope-group   { background: #1a3a22; }
+    .note-badge.change-order  { background: #c4600a; }
+    .note-badge.progress      { background: var(--green); }
+    .note-badge.close-out     { background: #1a3a22; }
+
+    .note-text {
+      font-size: 12px;
+      color: var(--dark);
+      line-height: 1.5;
+      margin-bottom: 4px;
+    }
+    .note-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--gray-text);
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background: var(--gray-border);
+      margin-bottom: 12px;
+      flex-shrink: 0;
+    }
+
+    /* ── Detail Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1000;
+      backdrop-filter: blur(2px);
+      animation: fadeIn 0.2s ease;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-content {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      display: flex;
+      max-width: 1200px;
+      width: 90%;
+      height: 85vh;
+      max-height: 85vh;
+      overflow: hidden;
+      animation: slideUp 0.3s ease;
+      position: relative;
+    }
+
+    .modal-photo {
+      flex-shrink: 0;
+      width: 50%;
+      background: var(--modal-photo-bg, var(--gray-mid));
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .modal-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .modal-photo-content {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      padding: 20px;
+      min-height: 0;
+    }
+
+    .modal-photo-label {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.3);
+      padding: 8px 12px;
+      border-radius: 6px;
+      display: none;
+    }
+
+    .modal-photo-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 34px;
+      height: 34px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.55);
+      color: #fff;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 3;
+      transition: background 0.15s, opacity 0.15s;
+    }
+
+    .modal-photo-nav-btn:hover {
+      background: rgba(0, 0, 0, 0.75);
+    }
+
+    .modal-photo-nav-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-photo-nav-btn.prev {
+      left: 12px;
+    }
+
+    .modal-photo-nav-btn.next {
+      right: 12px;
+    }
+
+    .modal-photo-gallery {
+      flex-shrink: 0;
+      display: flex;
+      overflow-x: auto;
+      gap: 8px;
+      padding: 12px;
+      background: #fafafa;
+      border-top: 1px solid var(--gray-border);
+      min-height: 80px;
+    }
+
+    .modal-photo-gallery-thumb {
+      width: 64px;
+      height: 64px;
+      border-radius: 6px;
+      flex-shrink: 0;
+      background: var(--gray-mid);
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+
+    .modal-photo-gallery-thumb:hover {
+      transform: scale(1.05);
+    }
+
+    .modal-photo-gallery-thumb.active {
+      border-color: var(--green);
+    }
+
+    .modal-photo-thumb-date {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      font-size: 10px;
+      text-align: center;
+      padding: 2px;
+      border-radius: 0 0 4px 4px;
+      display: none;
+    }
+
+    .modal-photo-gallery-thumb:hover .modal-photo-thumb-date {
+      display: block;
+    }
+
+    .modal-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 32px;
+    }
+
+    .modal-header {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-top: 16px;
+      margin-bottom: 24px;
+    }
+
+    .modal-nav-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: center;
+      width: 100%;
+      padding-right: 56px;
+      column-gap: 16px;
+    }
+
+    .modal-nav-spacer {
+      display: none;
+    }
+
+    .modal-nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 12px;
+      border: none;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--gray-text);
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+      min-width: 0;
+      justify-content: flex-start;
+      text-align: left;
+    }
+
+    #modalPrevBtn {
+      width: max-content;
+      justify-content: flex-start;
+      text-align: left;
+      justify-self: start;
+    }
+
+    #modalNextBtn {
+      width: max-content;
+      justify-content: flex-end;
+      text-align: right;
+      justify-self: end;
+      margin-left: 0;
+    }
+
+    .modal-nav-btn:hover {
+      background: #fff;
+      color: var(--dark);
+    }
+
+    .modal-nav-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .nav-arrow {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .nav-text {
+      font-weight: 500;
+    }
+
+    .modal-nav-btn.group-jump {
+      background: rgba(255, 255, 255, 0.9);
+      color: #111;
+    }
+
+    .modal-nav-btn.group-jump:hover {
+      background: #fff;
+      color: #000;
+    }
+
+    .modal-nav-btn.group-jump .nav-text {
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .modal-title-section {
+      flex: 1;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: var(--gray-text);
+      z-index: 10;
+      transition: background 0.15s;
+    }
+    .modal-close:hover {
+      background: #fff;
+    }
+
+    .modal-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+
+    .modal-subtitle {
+      font-size: 14px;
+      color: var(--gray-text);
+      margin-bottom: 0;
+    }
+
+    .modal-task-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .modal-task-action-btn {
+      border: none;
+      border-radius: 8px;
+      padding: 9px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: #fff;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+
+    .modal-task-action-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .modal-task-action-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+      transform: none;
+    }
+
+    .modal-task-action-btn.approve {
+      background: #2f855a;
+    }
+
+    .modal-task-action-btn.request-edit {
+      background: #c4600a;
+    }
+
+    .modal-task-action-btn.delete {
+      background: #b42318;
+    }
+
+    .modal-task-action-btn.approved-locked {
+      background: #1f6f45;
+      opacity: 1;
+    }
+
+    .confirm-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.36);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1100;
+      padding: 24px;
+    }
+
+    .confirm-overlay.active {
+      display: flex;
+    }
+
+    .confirm-dialog {
+      width: min(420px, 100%);
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18);
+      padding: 24px;
+    }
+
+    .confirm-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+
+    .confirm-copy {
+      font-size: 14px;
+      color: var(--gray-text);
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    .confirm-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .confirm-btn {
+      border: none;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .confirm-btn.cancel {
+      background: #eef2f7;
+      color: #334155;
+    }
+
+    .confirm-btn.delete {
+      background: #b42318;
+      color: #fff;
+    }
+
+    .details-section {
+      margin-bottom: 24px;
+    }
+
+    .details-section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-text-mid);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 24px;
+    }
+
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .detail-item.editable {
+      gap: 6px;
+    }
+
+    .detail-label {
+      font-size: 11px;
+      color: var(--gray-text);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-weight: 600;
+    }
+
+    .detail-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .detail-value.accent {
+      color: var(--green);
+    }
+
+    .detail-edit-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--gray-border);
+      border-radius: 6px;
+      background: #fff;
+      padding: 0 10px;
+      min-height: 40px;
+    }
+
+    .detail-input {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dark);
+      font-family: inherit;
+      padding: 10px 0;
+    }
+
+    .detail-input::placeholder {
+      color: var(--gray-text);
+    }
+
+    .detail-select {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dark);
+      font-family: inherit;
+      padding: 10px 0;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      cursor: pointer;
+    }
+
+    .detail-input-unit {
+      font-size: 12px;
+      color: var(--gray-text);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .detail-multi-select {
+      flex: 1;
+      min-width: 0;
+      position: relative;
+    }
+
+    .detail-multi-select summary {
+      list-style: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dark);
+      padding: 10px 0;
+      outline: none;
+      white-space: normal;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .detail-edit-row.modifier-row {
+      align-items: flex-start;
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+
+    .detail-edit-row.modifier-row .detail-edit-btn {
+      margin-top: 6px;
+    }
+
+    .detail-multi-select summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .detail-multi-options {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1px solid var(--gray-border);
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+      padding: 8px;
+      display: grid;
+      gap: 6px;
+      z-index: 5;
+    }
+
+    .detail-modifier-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .detail-modifier-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      min-height: 0;
+    }
+
+    .detail-modifier-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--gray-text-mid);
+      cursor: pointer;
+      padding: 4px 2px;
+    }
+
+    .detail-modifier-option:hover { background: #f3f4f6; border-radius: 4px; }
+
+    .detail-modifier-option input {
+      margin: 0;
+    }
+
+    .detail-edit-btn {
+      border: none;
+      background: transparent;
+      color: var(--gray-text);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      flex-shrink: 0;
+      padding: 0;
+    }
+
+    .detail-edit-btn:hover {
+      color: var(--dark);
+    }
+
+    .detail-edit-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Task activities in modal */
+    .activity-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .activity-card {
+      border: 1px solid var(--gray-border);
+      border-radius: 8px;
+      padding: 16px;
+      background: #fafafa;
+    }
+
+    .activity-card-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .activity-card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .activity-card-title .accent {
+      color: var(--green);
+    }
+
+    .activity-card-title .accent-orange {
+      color: #c4600a;
+    }
+
+    .activity-card-time {
+      font-size: 11px;
+      color: var(--gray-text);
+      white-space: nowrap;
+    }
+
+    .activity-card-author {
+      font-size: 12px;
+      color: var(--gray-text-mid);
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    .activity-card-notes {
+      font-size: 13px;
+      color: var(--gray-text-mid);
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+
+    .activity-card-details {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .activity-card-detail-item {
+      font-size: 12px;
+      color: var(--gray-text-mid);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .activity-card-detail-value {
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .activity-card-detail-value.green {
+      color: var(--green);
+    }
+
+    .activity-card-photos {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .activity-card-photo-thumb {
+      width: 60px;
+      height: 60px;
+      border-radius: 6px;
+      background: var(--gray-mid);
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.15s;
+      border: 2px solid transparent;
+    }
+
+    .activity-card-photo-thumb:hover {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+
+    .activity-card-photo-thumb.active {
+      border-color: var(--green);
+    }
+
+    .modal-photo-overlay {
+      padding: 10px 12px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.45));
+      color: #fff;
+      border-top: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+    .modal-photo-overlay-old {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
+      padding: 20px;
+      color: #fff;
+    }
+
+    .modal-photo-overlay-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .modal-photo-date {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 500;
+    }
+
+    .modal-photo-photographer {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .modal-photo-upload-source {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 500;
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- ── Top nav ── -->
+<nav class="topnav">
+  <a class="topnav__back">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back
+  </a>
+  <div class="topnav__address">4310 Alysheba Drive, Fairburn, GA 30213</div>
+  <div class="topnav__tabs">
+    <div class="topnav__tab active">Scope Review</div>
+    <div class="topnav__tab">Project Details</div>
+    <div class="topnav__tab">Contractors</div>
+  </div>
+  <div class="topnav__right">
+    <!-- AI badge -->
+    <div class="icon-btn" style="border-color:#30803d;background:#f4f9f6;">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <circle cx="9" cy="9" r="7" stroke="#30803d" stroke-width="1.5"/>
+        <path d="M6 9l2 2 4-4" stroke="#30803d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="icon-btn">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="7" cy="7" r="4.5" stroke="#898989" stroke-width="1.4"/>
+        <path d="M11 11l2.5 2.5" stroke="#898989" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="icon-btn">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M2 4h12M2 8h12M2 12h12" stroke="#898989" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="icon-btn">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="8" cy="5" r="2.5" stroke="#898989" stroke-width="1.4"/>
+        <path d="M2.5 13.5c0-2.485 2.462-4.5 5.5-4.5s5.5 2.015 5.5 4.5" stroke="#898989" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <button class="btn-primary">Complete Review</button>
+  </div>
+</nav>
+
+<!-- ── Layout ── -->
+<div class="layout">
+
+  <!-- ── Main content ── -->
+  <div class="main">
+
+    <!-- ── Table Container ── -->
+    <div class="table-container">
+      <!-- Group header -->
+      <div class="group-header">
+        <div class="group-title-wrap">
+          <div class="group-title">Kitchen Group</div>
+          <details id="groupDropdown" class="group-dropdown">
+            <summary aria-label="Select scope group" title="Select group">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 6.5L8 10.5L12 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </summary>
+            <div id="groupDropdownMenu" class="group-dropdown-menu"></div>
+          </details>
+        </div>
+        <div class="group-header__right">
+          <span class="cost-label">Cost</span>
+          <span class="cost-value">$12,504.00</span>
+          <button class="btn-approve">Approve Group</button>
+          <button class="nav-arrow">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M11 13L7 9l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="nav-arrow">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M7 13l4-4-4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Task table -->
+      <table class="scope-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th class="col-id">ID</th>
+          <th class="col-desc">Task Description</th>
+          <th class="col-contr">Contractor</th>
+          <th class="col-modifier">Modifier</th>
+          <th class="col-qty">Qty</th>
+          <th class="col-price">Unit Price</th>
+          <th class="col-total">Total</th>
+          <th class="col-note">Note</th>
+          <th class="col-photos">Photos</th>
+        </tr>
+      </thead>
+      <tbody id="scopeTableBody"></tbody>
+    </table>
+    </div><!-- /table-container -->
+
+    <div class="scroll-indicator">≡</div>
+
+    <!-- ── Date pills + Photos ── -->
+    <div class="photos-section" id="photosSection">
+
+      <!-- Date group 1 — Jan 20 (shown by default) -->
+      <div class="date-group" id="group-0">
+        <div class="date-group-header">
+          <div class="date-picker" onclick="this.querySelector('input').showPicker()">
+            <input type="date" value="2025-01-20" aria-label="Select date"/>
+            <img class="date-picker__icon" src="https://www.figma.com/api/mcp/asset/9315f051-52b4-45a3-a710-d9b796f3e8f6" alt="calendar"/>
+          </div>
+          <span class="date-group-label">R. Garcia · Initial Walk</span>
+          <button class="date-remove-btn" onclick="removeGroup(0)" title="Remove date">×</button>
+        </div>
+        <div class="photo-grid-row">
+          <button class="carousel-btn prev" onclick="carouselScroll(this,-1)" disabled>&#8249;</button>
+          <div class="photo-scroll-container">
+            <div class="photo-grid">
+              <div class="photo-card" data-task-id="10003"><div class="photo-thumb" style="background:#c9d8e8;"></div><div class="photo-label">Counter</div></div>
+              <div class="photo-card" data-task-id="10003"><div class="photo-thumb" style="background:#d4e8d4;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Appliances</div></div>
+              <div class="photo-card" data-task-id="10003"><div class="photo-thumb" style="background:#e8d4c9;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Flooring</div></div>
+              <div class="photo-card" data-task-id="10003"><div class="photo-thumb" style="background:#d4cce8;"><span class="photo-badge photo-tag rework">Rework</span></div><div class="photo-label">Cabinets</div></div>
+              <div class="photo-card" data-task-id="10005"><div class="photo-thumb" style="background:#e8e4c9;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Electrical</div></div>
+              <div class="photo-card" data-task-id="10005"><div class="photo-thumb" style="background:#c9e8e2;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Plumbing</div></div>
+              <div class="photo-card" data-task-id="10004"><div class="photo-thumb" style="background:#e8c9d4;"></div><div class="photo-label">Drywall</div></div>
+              <div class="photo-card" data-task-id="10004"><div class="photo-thumb" style="background:#ccd8e8;"><span class="photo-badge photo-tag rework">Rework</span></div><div class="photo-label">Window</div></div>
+              <div class="photo-card" data-task-id="10004"><div class="photo-thumb" style="background:#e8d9c9;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Backsplash</div></div>
+              <div class="photo-card" data-task-id="10003"><div class="photo-thumb" style="background:#d4e8c9;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Lighting</div></div>
+              <div class="photo-card" data-task-id="10005"><div class="photo-thumb" style="background:#e8c9e4;"></div><div class="photo-label">Sink</div></div>
+              <div class="photo-card" data-task-id="10003"><div class="photo-thumb" style="background:#c9e8d0;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Trim</div></div>
+            </div>
+          </div>
+          <button class="carousel-btn next" onclick="carouselScroll(this,1)">&#8250;</button>
+        </div>
+      </div>
+
+      <!-- Date group 2 — hidden until added -->
+      <div class="date-group" id="group-1" style="display:none;">
+        <div class="date-group-header">
+          <div class="date-picker" onclick="this.querySelector('input').showPicker()">
+            <input type="date" value="2025-02-20" aria-label="Select date"/>
+            <img class="date-picker__icon" src="https://www.figma.com/api/mcp/asset/9315f051-52b4-45a3-a710-d9b796f3e8f6" alt="calendar"/>
+          </div>
+          <span class="date-group-label">R. Garcia · Progress Walk</span>
+          <button class="date-remove-btn" onclick="removeGroup(1)" title="Remove date">×</button>
+        </div>
+        <div class="photo-grid-row">
+          <button class="carousel-btn prev" onclick="carouselScroll(this,-1)" disabled>&#8249;</button>
+          <div class="photo-scroll-container">
+            <div class="photo-grid">
+              <div class="photo-card" data-task-id="10003"><div class="photo-thumb" style="background:#dce8c9;"><span class="photo-badge photo-tag rework">Rework</span></div><div class="photo-label">Counter</div></div>
+              <div class="photo-card" data-task-id="10005"><div class="photo-thumb" style="background:#c9e0e8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Appliances</div></div>
+              <div class="photo-card" data-task-id="10004"><div class="photo-thumb" style="background:#e8c9ce;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Flooring</div></div>
+              <div class="photo-card" data-task-id="10003"><div class="photo-thumb" style="background:#d8c9e8;"></div><div class="photo-label">Cabinets</div></div>
+              <div class="photo-card" data-task-id="10005"><div class="photo-thumb" style="background:#e8e8c9;"><span class="photo-badge photo-tag rework">Rework</span></div><div class="photo-label">Electrical</div></div>
+              <div class="photo-card" data-task-id="10004"><div class="photo-thumb" style="background:#c9e8d8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Plumbing</div></div>
+              <div class="photo-card" data-task-id="10005"><div class="photo-thumb" style="background:#e8d0c9;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Drywall</div></div>
+              <div class="photo-card" data-task-id="10003"><div class="photo-thumb" style="background:#c9cce8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Lighting</div></div>
+              <div class="photo-card" data-task-id="10004"><div class="photo-thumb" style="background:#e8c9e8;"></div><div class="photo-label">Window</div></div>
+              <div class="photo-card" data-task-id="10005"><div class="photo-thumb" style="background:#c9e8c4;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Trim</div></div>
+              <div class="photo-card" data-task-id="10003"><div class="photo-thumb" style="background:#e8d8c9;"><span class="photo-badge photo-tag rework">Rework</span></div><div class="photo-label">Sink</div></div>
+              <div class="photo-card" data-task-id="10004"><div class="photo-thumb" style="background:#c9e4e8;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Backsplash</div></div>
+            </div>
+          </div>
+          <button class="carousel-btn next" onclick="carouselScroll(this,1)">&#8250;</button>
+        </div>
+      </div>
+
+      <!-- Add date button -->
+      <button class="add-date-btn" id="addDateBtn" onclick="addGroup()">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Add date comparison
+      </button>
+
+    </div><!-- /photos-section -->
+
+  </div><!-- /main -->
+
+  <!-- ── Right sidebar ── -->
+  <aside class="sidebar">
+
+    <!-- Activities -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-head">
+        <div class="sidebar-section-title">Activities <span>11</span></div>
+      </div>
+
+      <div class="sidebar-section-content">
+        <div class="activity-item">
+          <div class="activity-head">
+            <div class="activity-title"><span class="green">Change Order</span> submitted</div>
+            <div class="activity-time">Mar 20 10:07</div>
+          </div>
+          <div class="activity-author">Shane D.</div>
+          <div class="activity-details">
+            <div class="activity-detail-row">
+              <span>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="vertical-align:middle;margin-right:3px;">
+                  <path d="M6 2v4l2.5 2.5" stroke="#f59e0b" stroke-width="1.3" stroke-linecap="round"/>
+                  <circle cx="6" cy="6" r="4.5" stroke="#f59e0b" stroke-width="1.3"/>
+                </svg>
+                Budget change
+              </span>
+              <span class="val green">+$842.00</span>
+            </div>
+            <div class="activity-detail-row">
+              <span>Line items updated</span>
+              <span class="val">22</span>
+            </div>
+            <div class="activity-detail-row">
+              <span>Notes added</span>
+              <span class="val">6</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="activity-item">
+          <div class="activity-head">
+            <div class="activity-title">Scope approved</div>
+            <div class="activity-time">Mar 18 10:07</div>
+          </div>
+          <div class="activity-author">You</div>
+          <div class="activity-details">
+            <div class="activity-detail-row">
+              <span>Budget</span>
+              <span class="val green">$12,500.00</span>
+            </div>
+          </div>
+          <a class="view-scope">View Scope</a>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="activity-item">
+          <div class="activity-head">
+            <div class="activity-title"><span class="green">Progress Walk</span> submitted</div>
+            <div class="activity-time">Mar 17 16:42</div>
+          </div>
+          <div class="activity-author">R. Garcia</div>
+          <div class="activity-details">
+            <div class="activity-detail-row">
+              <span>Photos uploaded</span>
+              <span class="val">14</span>
+            </div>
+            <div class="activity-detail-row">
+              <span>Tasks reviewed</span>
+              <span class="val">5</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="activity-item">
+          <div class="activity-head">
+            <div class="activity-title"><span class="green">Contractor</span> assigned</div>
+            <div class="activity-time">Mar 16 09:18</div>
+          </div>
+          <div class="activity-author">You</div>
+          <div class="activity-details">
+            <div class="activity-detail-row">
+              <span>Assigned to</span>
+              <span class="val">Summit Ridge</span>
+            </div>
+            <div class="activity-detail-row">
+              <span>Tasks assigned</span>
+              <span class="val">3</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="activity-item">
+          <div class="activity-head">
+            <div class="activity-title"><span class="green">Deferred</span> task flagged</div>
+            <div class="activity-time">Mar 15 13:26</div>
+          </div>
+          <div class="activity-author">Eric L.</div>
+          <div class="activity-details">
+            <div class="activity-detail-row">
+              <span>Deferred items</span>
+              <span class="val">2</span>
+            </div>
+            <div class="activity-detail-row">
+              <span>Reason</span>
+              <span class="val">Budget hold</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="activity-item">
+          <div class="activity-head">
+            <div class="activity-title">Closeout review scheduled</div>
+            <div class="activity-time">Mar 14 08:55</div>
+          </div>
+          <div class="activity-author">Shane D.</div>
+          <div class="activity-details">
+            <div class="activity-detail-row">
+              <span>Walk date</span>
+              <span class="val">Mar 22</span>
+            </div>
+            <div class="activity-detail-row">
+              <span>Attendees</span>
+              <span class="val">4</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a class="sidebar-see-all">See all</a>
+    </div>
+
+    <!-- Notes -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-head">
+        <div class="sidebar-section-title">Notes <span>31</span></div>
+      </div>
+
+      <div class="sidebar-section-content">
+        <div class="note-item">
+          <div class="note-badge scope-group">Scope Group Note</div>
+          <div class="note-text">Crew arrived on site; demolition of old cabinets and countertops is complete.</div>
+          <div class="note-meta"><span>Shane D.</span><span>Mar 20 10:07</span></div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="note-item">
+          <div class="note-badge change-order">Change Order Task</div>
+          <div class="note-text">Plumbing and electrical work has been started; expect inspection by Tuesday.</div>
+          <div class="note-meta"><span>Shane D.</span><span>Mar 20 10:07</span></div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="note-item">
+          <div class="note-badge progress">Progress Note</div>
+          <div class="note-text">New cabinets are scheduled to arrive Thursday; countertop install on Friday.</div>
+          <div class="note-meta"><span>Shane D.</span><span>Mar 20 10:07</span></div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="note-item">
+          <div class="note-badge progress">Progress Note</div>
+          <div class="note-text">Countertop template confirmed and slab selection is locked for fabrication.</div>
+          <div class="note-meta"><span>R. Garcia</span><span>Mar 19 15:22</span></div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="note-item">
+          <div class="note-badge close-out">Close Out Task Note</div>
+          <div class="note-text">Homeowner confirm by Wednesday.</div>
+          <div class="note-meta"><span>Shane D.</span><span>Mar 20 10:07</span></div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="note-item">
+          <div class="note-badge progress">Progress Note</div>
+          <div class="note-text">Appliance delivery window moved to Friday morning to coordinate with flooring protection setup.</div>
+          <div class="note-meta"><span>You</span><span>Mar 18 11:40</span></div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="note-item">
+          <div class="note-badge change-order">Change Order Task</div>
+          <div class="note-text">Requested pricing for upgraded quartz edge profile and extended backsplash return at sink wall.</div>
+          <div class="note-meta"><span>Eric L.</span><span>Mar 17 14:05</span></div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="note-item">
+          <div class="note-badge scope-group">Scope Group Note</div>
+          <div class="note-text">Deferred items should remain visible in review so the owner can revisit them after budget approval.</div>
+          <div class="note-meta"><span>You</span><span>Mar 16 09:50</span></div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="note-item">
+          <div class="note-badge progress">Progress Note</div>
+          <div class="note-text">Cabinet hardware alignment still needs one final punch-list pass at the pantry door bank.</div>
+          <div class="note-meta"><span>Shane D.</span><span>Mar 15 16:18</span></div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="note-item">
+          <div class="note-badge close-out">Close Out Task Note</div>
+          <div class="note-text">Final walkthrough packet should include updated appliance serial numbers and signed acceptance photos.</div>
+          <div class="note-meta"><span>R. Garcia</span><span>Mar 14 08:31</span></div>
+        </div>
+      </div>
+
+      <a class="sidebar-see-all">See all</a>
+    </div>
+
+  </aside>
+
+</div><!-- /layout -->
+
+<!-- ── Detail Modal ── -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-photo" id="modalPhoto">
+      <button class="modal-photo-nav-btn prev" id="modalPhotoPrevBtn" onclick="navigateModalPhoto(-1)" aria-label="Previous photo">‹</button>
+      <button class="modal-photo-nav-btn next" id="modalPhotoNextBtn" onclick="navigateModalPhoto(1)" aria-label="Next photo">›</button>
+      <div class="modal-photo-content">
+        <div class="modal-photo-label" id="modalPhotoLabel">Photo</div>
+      </div>
+      <div class="modal-photo-overlay">
+        <div class="modal-photo-overlay-content">
+          <div class="modal-photo-date" id="modalPhotoDate">Jan 20, 2025</div>
+          <div class="modal-photo-photographer" id="modalPhotoPhotographer">R. Garcia</div>
+          <div class="modal-photo-upload-source" id="modalPhotoUploadSource">Uploaded from computer</div>
+        </div>
+      </div>
+      <div class="modal-photo-gallery" id="modalPhotoGallery">
+        <!-- Photo thumbnails will be populated here -->
+      </div>
+    </div>
+    <div class="modal-details" id="modalDetails">
+      <div class="modal-header">
+        <div class="modal-nav-row">
+          <button class="modal-nav-btn" id="modalPrevBtn" onclick="navigateTask(-1)" title="Previous task">
+            <span class="nav-arrow">‹</span>
+            <span class="nav-text" id="modalPrevText">Previous task</span>
+          </button>
+          <div class="modal-nav-spacer"></div>
+          <button class="modal-nav-btn" id="modalNextBtn" onclick="navigateTask(1)" title="Next task">
+            <span class="nav-text" id="modalNextText">Next task</span>
+            <span class="nav-arrow">›</span>
+          </button>
+        </div>
+        <div class="modal-title-section">
+          <div class="modal-title" id="modalTitle">Task Name</div>
+          <div class="modal-subtitle" id="modalSubtitle">Task details</div>
+        </div>
+        <div class="modal-task-actions">
+          <button class="modal-task-action-btn approve" id="approveTaskBtn" type="button" onclick="approveCurrentTask()">Approve Task</button>
+          <button class="modal-task-action-btn request-edit" id="requestEditTaskBtn" type="button" onclick="requestEditCurrentTask()">Request Edit</button>
+          <button class="modal-task-action-btn delete" id="deleteTaskBtn" type="button" onclick="promptDeleteCurrentTask()">Delete Task</button>
+        </div>
+      </div>
+
+      <div class="details-section">
+        <div class="details-section-title">Details</div>
+        <div class="details-grid">
+          <div class="detail-item editable">
+            <span class="detail-label">Contractor</span>
+            <div class="detail-edit-row">
+              <select class="detail-select" id="detailContractor" data-detail-field="contractor"></select>
+              <button class="detail-edit-btn" type="button" data-focus-target="detailContractor" aria-label="Edit contractor">
+                <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.9 2.1a1.5 1.5 0 1 1 2.1 2.1L6 11.2 3 12l.8-3 7.1-6.9Z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Total</span>
+            <span class="detail-value accent" id="detailTotal">—</span>
+          </div>
+          <div class="detail-item editable">
+            <span class="detail-label">Qty</span>
+            <div class="detail-edit-row">
+              <input class="detail-input" id="detailQty" data-detail-field="qty" type="number" step="any" inputmode="decimal" value="" />
+              <span class="detail-input-unit" id="detailQtyUnit">ea</span>
+              <button class="detail-edit-btn" type="button" data-focus-target="detailQty" aria-label="Edit quantity">
+                <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.9 2.1a1.5 1.5 0 1 1 2.1 2.1L6 11.2 3 12l.8-3 7.1-6.9Z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="detail-item editable">
+            <span class="detail-label">Modifier</span>
+            <div class="detail-edit-row modifier-row">
+              <div class="detail-modifier-area">
+                <div class="detail-modifier-pills" id="detailModifierPills"></div>
+                <details class="detail-multi-select" id="detailModifierSelect">
+                  <summary id="detailModifierSummary">+ Add Modifier</summary>
+                  <div class="detail-multi-options">
+                    <label class="detail-modifier-option"><input class="detail-modifier-checkbox" type="checkbox" value="Resident Responsible" />Resident Responsible</label>
+                    <label class="detail-modifier-option"><input class="detail-modifier-checkbox" type="checkbox" value="Deferred" />Deferred</label>
+                    <label class="detail-modifier-option"><input class="detail-modifier-checkbox" type="checkbox" value="Future Phase" />Future Phase</label>
+                  </div>
+                </details>
+              </div>
+              <button class="detail-edit-btn" type="button" data-focus-target="detailModifierSummary" aria-label="Edit modifier">
+                <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.9 2.1a1.5 1.5 0 1 1 2.1 2.1L6 11.2 3 12l.8-3 7.1-6.9Z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="detail-item editable">
+            <span class="detail-label">Unit Price</span>
+            <div class="detail-edit-row">
+              <input class="detail-input" id="detailUnitPrice" data-detail-field="unitPrice" type="text" value="" />
+              <button class="detail-edit-btn" type="button" data-focus-target="detailUnitPrice" aria-label="Edit unit price">
+                <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.9 2.1a1.5 1.5 0 1 1 2.1 2.1L6 11.2 3 12l.8-3 7.1-6.9Z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">ID</span>
+            <span class="detail-value" id="detailId">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="details-section">
+        <div class="details-section-title">Task Activities</div>
+        <div id="detailActivities" class="activity-list">
+          <!-- Activities will be populated here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="confirm-overlay" id="deleteTaskConfirm">
+  <div class="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="deleteTaskConfirmTitle">
+    <div class="confirm-title" id="deleteTaskConfirmTitle">Delete task?</div>
+    <div class="confirm-copy" id="deleteTaskConfirmCopy">This action cannot be undone.</div>
+    <div class="confirm-actions">
+      <button class="confirm-btn cancel" type="button" onclick="closeDeleteTaskConfirm()">Cancel</button>
+      <button class="confirm-btn delete" type="button" onclick="confirmDeleteCurrentTask()">Delete Task</button>
+    </div>
+  </div>
+</div>
+
+<script src="./scope-import-data.js"></script>
+<script>
+  // ── Carousel helpers ──────────────────────────────────────────
+  const SCROLL_STEP = 642; // ~3 cards
+
+  function updateCarouselBtns(container) {
+    const row = container.closest('.photo-grid-row');
+    const prev = row.querySelector('.carousel-btn.prev');
+    const next = row.querySelector('.carousel-btn.next');
+    prev.disabled = container.scrollLeft <= 0;
+    next.disabled = container.scrollLeft + container.clientWidth >= container.scrollWidth - 1;
+  }
+
+  function carouselScroll(btn, dir) {
+    const container = btn.closest('.photo-grid-row').querySelector('.photo-scroll-container');
+    container.scrollBy({ left: dir * SCROLL_STEP, behavior: 'smooth' });
+    setTimeout(() => updateCarouselBtns(container), 350);
+  }
+
+  // Drag-to-scroll
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.photo-scroll-container').forEach(initDrag);
+  });
+
+  function initDrag(el) {
+    let isDown = false, startX, startScroll;
+    el.addEventListener('mousedown', e => {
+      isDown = true; startX = e.pageX; startScroll = el.scrollLeft;
+      el.classList.add('dragging');
+    });
+    document.addEventListener('mouseup', () => {
+      if (!isDown) return;
+      isDown = false;
+      el.classList.remove('dragging');
+      updateCarouselBtns(el);
+    });
+    el.addEventListener('mousemove', e => {
+      if (!isDown) return;
+      e.preventDefault();
+      el.scrollLeft = startScroll - (e.pageX - startX);
+      updateCarouselBtns(el);
+    });
+    el.addEventListener('scroll', () => updateCarouselBtns(el));
+  }
+
+  // ── Date group helpers ────────────────────────────────────────
+  function updateAddBtn() {
+    const visible = Array.from(document.querySelectorAll('.date-group'))
+      .filter(g => g.style.display !== 'none').length;
+    document.getElementById('addDateBtn').disabled = visible >= 2;
+  }
+
+  function addGroup() {
+    const g1 = document.getElementById('group-1');
+    if (g1.style.display === 'none') {
+      g1.style.display = '';
+      g1.querySelectorAll('.photo-scroll-container').forEach(initDrag);
+    }
+    updateAddBtn();
+  }
+
+  function removeGroup(idx) {
+    const g = document.getElementById('group-' + idx);
+    if (idx === 0) {
+      // Move group-1 content into group-0 if group-1 is visible, else just hide section
+      const g1 = document.getElementById('group-1');
+      if (g1.style.display !== 'none') {
+        // Swap: copy group-1's date input value and photos into group-0
+        const srcInput = g1.querySelector('input[type="date"]');
+        const srcLabel = g1.querySelector('.date-group-label');
+        const srcGrid  = g1.querySelector('.photo-grid');
+        const dstInput = g.querySelector('input[type="date"]');
+        const dstLabel = g.querySelector('.date-group-label');
+        const dstGrid  = g.querySelector('.photo-grid');
+        dstInput.value = srcInput.value;
+        dstLabel.textContent = srcLabel.textContent;
+        dstGrid.innerHTML = srcGrid.innerHTML;
+        g1.style.display = 'none';
+      } else {
+        // Only one group — nothing to remove (keep at least 1)
+        g.querySelector('.date-remove-btn').style.opacity = '0.3';
+        setTimeout(() => g.querySelector('.date-remove-btn').style.opacity = '', 400);
+        return;
+      }
+    } else {
+      g.style.display = 'none';
+    }
+    updateAddBtn();
+  }
+
+  // ── Draggable separator ────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    const separator = document.querySelector('.scroll-indicator');
+    const tableContainer = document.querySelector('.table-container');
+    const photosSection = document.querySelector('.photos-section');
+    const main = document.querySelector('.main');
+
+    let isDragging = false;
+    let startY = 0;
+    let startTableHeight = 0;
+
+    // Function to update photo sizes based on available height
+    function updatePhotoSizes() {
+      const photosHeight = photosSection.offsetHeight;
+      // Calculate optimal photo size: leave room for padding (32px top+bottom), labels, gaps, and scrollbar
+      // Rough calculation: assume ~50px per row for text + gaps, so we have (photosHeight - 50) / 2 for ~2 rows visible
+      // This gives us: (availableHeight - textAndGaps) / rowsVisible
+      const availableForPhotos = photosHeight - 100; // Account for padding and text labels
+      const photoSize = Math.max(150, Math.min(400, Math.floor(availableForPhotos / 1.5))); // Scale for ~1.5 rows
+      document.documentElement.style.setProperty('--photo-size', `${photoSize}px`);
+    }
+
+    separator.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startY = e.clientY;
+      startTableHeight = tableContainer.offsetHeight;
+      separator.classList.add('dragging');
+      document.body.style.userSelect = 'none';
+      document.body.style.cursor = 'ns-resize';
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+
+      const deltaY = e.clientY - startY;
+      const mainHeight = main.offsetHeight;
+      const separatorHeight = separator.offsetHeight;
+      
+      // Calculate new table height (minimum 100px)
+      let newTableHeight = Math.max(100, startTableHeight + deltaY);
+      let newPhotosHeight = mainHeight - newTableHeight - separatorHeight;
+      
+      // Prevent photos section from being too small (minimum 100px)
+      if (newPhotosHeight < 100) {
+        newPhotosHeight = 100;
+        newTableHeight = mainHeight - newPhotosHeight - separatorHeight;
+      }
+
+      tableContainer.style.flex = `0 0 ${newTableHeight}px`;
+      photosSection.style.flex = `0 0 ${newPhotosHeight}px`;
+      
+      // Update photo sizes as user drags
+      updatePhotoSizes();
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (!isDragging) return;
+      isDragging = false;
+      separator.classList.remove('dragging');
+      document.body.style.userSelect = '';
+      document.body.style.cursor = '';
+    });
+
+    // Initialize photo sizes
+    updatePhotoSizes();
+    
+    // Update on window resize
+    window.addEventListener('resize', updatePhotoSizes);
+  });
+
+  // ── Modal navigation ─────────────────────────────────────────────
+  let currentModalTask = null;
+  let currentModalTaskIndex = null;
+  let currentModalRow = null;
+  let currentModalPhotos = [];
+  let currentModalPhotoIndex = 0;
+  let pendingDeleteTaskId = null;
+  const importedScopeData = window.importedScopeData || { groups: [] };
+  const taskActionState = {};
+  let contractorOptions = [''];
+  const modifierOptions = ['Resident Responsible', 'Deferred', 'Future Phase'];
+  const modifierDefs = {
+    'Resident Responsible': 'Billed separately to resident, included in purchase orders',
+    'Future Phase': 'Budgeted but excluded from purchase orders',
+  };
+  let taskIds = [];
+  let taskGroups = {};
+  let groups = [];
+  let groupTasks = {};
+  let groupCosts = {};
+  let currentGroup = '';
+
+  function normalizeUnit(unit) {
+    const trimmed = String(unit || '').trim();
+    return trimmed || 'each';
+  }
+
+  function buildScopeDataMaps() {
+    const contractors = new Set();
+    taskIds = [];
+    taskGroups = {};
+    groups = [];
+    groupTasks = {};
+    groupCosts = {};
+
+    (importedScopeData.groups || []).forEach((group) => {
+      const groupName = String(group.name || '').trim();
+      if (!groupName) return;
+
+      groups.push(groupName);
+      const ids = [];
+      let computedTotal = 0;
+
+      (group.tasks || []).forEach((task) => {
+        const id = String(task.id || '').trim();
+        if (!id) return;
+        ids.push(id);
+        taskIds.push(id);
+        taskGroups[id] = groupName;
+
+        const qty = parseNumericValue(task.qty);
+        const price = parseNumericValue(task.unitPrice);
+        const amount = parseNumericValue(task.amount) || (qty * price);
+        computedTotal += amount;
+
+        const contractor = String(task.contractor || '').trim();
+        if (contractor) contractors.add(contractor);
+      });
+
+      groupTasks[groupName] = ids;
+      groupCosts[groupName] = formatCurrency(computedTotal);
+    });
+
+    contractorOptions = ['', ...Array.from(contractors).sort((a, b) => a.localeCompare(b))];
+    currentGroup = groups[0] || '';
+  }
+
+  function populateGroupDropdown() {
+    const menu = document.getElementById('groupDropdownMenu');
+    if (!menu) return;
+
+    menu.innerHTML = '';
+    groups.forEach((groupName, index) => {
+      const item = document.createElement('button');
+      item.type = 'button';
+      item.className = 'group-dropdown-item';
+      item.dataset.groupName = groupName;
+      item.textContent = `${index + 1}. ${groupName}`;
+      item.addEventListener('click', () => {
+        renderGroup(groupName);
+        const dropdown = document.getElementById('groupDropdown');
+        if (dropdown) dropdown.open = false;
+      });
+      menu.appendChild(item);
+    });
+  }
+
+  function formatCurrency(value) {
+    return '$' + value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function parseNumericValue(raw) {
+    return parseFloat(String(raw || '').replace(/[^0-9.-]/g, '')) || 0;
+  }
+
+  function getTaskIdFromRow(row) {
+    return String(row?.dataset.taskId || row?.querySelector('.task-id')?.textContent || '').trim();
+  }
+
+  function getTaskActionState(taskId) {
+    const normalizedId = String(taskId || '').trim();
+    if (!normalizedId) return { approved: false, editRequested: false };
+    if (!taskActionState[normalizedId]) {
+      taskActionState[normalizedId] = { approved: false, editRequested: false };
+    }
+    return taskActionState[normalizedId];
+  }
+
+  function trimTaskLabel(label, maxLength = 28) {
+    const normalized = String(label || '').trim();
+    if (!normalized) return 'Task';
+    return normalized.length > maxLength ? `${normalized.slice(0, maxLength).trim()}...` : normalized;
+  }
+
+  function updateTaskActionBadges(row) {
+    if (!row) return;
+
+    const descriptionCell = row.querySelector('.task-name')?.closest('td');
+    if (!descriptionCell) return;
+
+    descriptionCell.querySelectorAll('.badge-approved, .badge-edit-requested').forEach((badge) => badge.remove());
+
+    const taskId = getTaskIdFromRow(row);
+    const state = getTaskActionState(taskId);
+    if (!state.approved && !state.editRequested) return;
+
+    if (state.approved) {
+      const approvedBadge = document.createElement('span');
+      approvedBadge.className = 'badge badge-approved';
+      approvedBadge.textContent = 'Approved';
+      descriptionCell.appendChild(approvedBadge);
+      return;
+    }
+
+    if (state.editRequested) {
+      const editBadge = document.createElement('span');
+      editBadge.className = 'badge badge-edit-requested';
+      editBadge.textContent = 'Edit Requested';
+      descriptionCell.appendChild(editBadge);
+    }
+  }
+
+  function syncModalTaskActionButtons() {
+    const approveBtn = document.getElementById('approveTaskBtn');
+    const requestEditBtn = document.getElementById('requestEditTaskBtn');
+    const deleteBtn = document.getElementById('deleteTaskBtn');
+    if (!approveBtn || !requestEditBtn || !deleteBtn) return;
+
+    const taskId = getTaskIdFromRow(currentModalRow) || currentModalTask?.id || '';
+    if (!taskId || !currentModalRow) {
+      approveBtn.disabled = true;
+      requestEditBtn.disabled = true;
+      deleteBtn.disabled = true;
+      approveBtn.textContent = 'Approve Task';
+      approveBtn.classList.remove('approved-locked');
+      requestEditBtn.textContent = 'Request Edit';
+      return;
+    }
+
+    const state = getTaskActionState(taskId);
+    approveBtn.textContent = state.approved ? '✓ Approved Task' : 'Approve Task';
+    approveBtn.classList.toggle('approved-locked', state.approved);
+    approveBtn.disabled = state.approved;
+
+    requestEditBtn.textContent = state.editRequested ? 'Edit Requested' : 'Request Edit';
+    requestEditBtn.disabled = state.approved || state.editRequested;
+    deleteBtn.disabled = state.approved;
+  }
+
+  function refreshTaskUiState(row) {
+    if (!row) return;
+    updateTaskActionBadges(row);
+    if (currentModalRow === row) {
+      syncModalTaskActionButtons();
+    }
+  }
+
+  function approveCurrentTask() {
+    if (!currentModalRow) return;
+    const taskId = getTaskIdFromRow(currentModalRow);
+    if (!taskId) return;
+
+    taskActionState[taskId] = { approved: true, editRequested: false };
+    refreshTaskUiState(currentModalRow);
+  }
+
+  function requestEditCurrentTask() {
+    if (!currentModalRow) return;
+    const taskId = getTaskIdFromRow(currentModalRow);
+    if (!taskId) return;
+
+    const currentState = getTaskActionState(taskId);
+    if (currentState.approved) return;
+    taskActionState[taskId] = { ...currentState, editRequested: true };
+    refreshTaskUiState(currentModalRow);
+  }
+
+  function openDeleteTaskConfirm() {
+    const confirmEl = document.getElementById('deleteTaskConfirm');
+    if (confirmEl) confirmEl.classList.add('active');
+  }
+
+  function closeDeleteTaskConfirm() {
+    pendingDeleteTaskId = null;
+    const confirmEl = document.getElementById('deleteTaskConfirm');
+    if (confirmEl) confirmEl.classList.remove('active');
+  }
+
+  function promptDeleteCurrentTask() {
+    const taskId = getTaskIdFromRow(currentModalRow);
+    if (!taskId) return;
+
+    pendingDeleteTaskId = taskId;
+    const taskName = currentModalRow?.querySelector('.task-name')?.textContent.trim() || currentModalTask?.name || 'this task';
+    const copy = document.getElementById('deleteTaskConfirmCopy');
+    if (copy) copy.textContent = `Delete ${taskName}? This action cannot be undone.`;
+    openDeleteTaskConfirm();
+  }
+
+  function refreshPhotoCardsForTaskRemoval(taskId) {
+    const fallbackTaskId = taskIds[0] || '';
+    document.querySelectorAll(`.photo-card[data-task-id="${taskId}"]`).forEach((card) => {
+      if (!fallbackTaskId) {
+        card.setAttribute('data-task-id', '');
+        return;
+      }
+      card.setAttribute('data-task-id', fallbackTaskId);
+      const labelEl = card.querySelector('.photo-label');
+      if (labelEl) {
+        labelEl.textContent = trimTaskLabel(getTaskNameById(fallbackTaskId), 24);
+      }
+    });
+  }
+
+  function confirmDeleteCurrentTask() {
+    const taskId = String(pendingDeleteTaskId || '').trim();
+    if (!taskId) {
+      closeDeleteTaskConfirm();
+      return;
+    }
+
+    const row = currentModalRow && getTaskIdFromRow(currentModalRow) === taskId
+      ? currentModalRow
+      : Array.from(document.querySelectorAll('.scope-table .task-row')).find((candidate) => getTaskIdFromRow(candidate) === taskId);
+    if (!row) {
+      closeDeleteTaskConfirm();
+      return;
+    }
+
+    const groupName = taskGroups[taskId] || currentGroup;
+    const sourceGroups = importedScopeData.groups || [];
+    const sourceGroup = sourceGroups.find((group) => String(group.name || '').trim() === groupName);
+    if (sourceGroup) {
+      sourceGroup.tasks = (sourceGroup.tasks || []).filter((task) => String(task.id || '').trim() !== taskId);
+      if (!sourceGroup.tasks.length) {
+        importedScopeData.groups = sourceGroups.filter((group) => String(group.name || '').trim() !== groupName);
+      }
+    }
+
+    row.remove();
+    delete taskActionState[taskId];
+
+    const desiredGroup = currentGroup;
+    buildScopeDataMaps();
+    populateGroupDropdown();
+    currentGroup = groups.includes(desiredGroup) ? desiredGroup : (groups[0] || '');
+    refreshPhotoCardsForTaskRemoval(taskId);
+    if (currentGroup) {
+      renderGroup(currentGroup);
+    }
+
+    closeDeleteTaskConfirm();
+    closeModal();
+  }
+
+  function getRowModifierText(row) {
+    const fromDropdown = Array.from(row?.querySelectorAll('.modifier-add-dropdown input:checked') || [])
+      .map(input => input.value)
+      .filter(Boolean);
+    if (fromDropdown.length || row?.querySelector('.modifier-add-dropdown')) {
+      return fromDropdown.join(', ') || '—';
+    }
+    // Legacy fallback
+    const selectedFromColumn = Array.from(row?.querySelectorAll('.table-modifier-checkbox:checked') || [])
+      .map(input => input.value)
+      .filter(Boolean);
+    if (selectedFromColumn.length) return selectedFromColumn.join(', ');
+    return row?.querySelector('.task-status-text')?.textContent.trim() || '—';
+  }
+
+  function parseModifierValues(value) {
+    if (Array.isArray(value)) {
+      return value
+        .map(v => String(v || '').trim())
+        .filter(v => modifierOptions.includes(v));
+    }
+
+    return String(value || '')
+      .split(',')
+      .map(token => token.trim())
+      .map(token => token.toLowerCase() === 'tenant responsible' ? 'Resident Responsible' : token)
+      .filter(token => modifierOptions.includes(token));
+  }
+
+  function getSelectedModifierValues() {
+    return Array.from(document.querySelectorAll('.detail-modifier-checkbox:checked'))
+      .map(input => input.value);
+  }
+
+  function updateModifierSummary() {
+    const summary = document.getElementById('detailModifierSummary');
+    if (summary) summary.textContent = '+ Add Modifier';
+    const pillsContainer = document.getElementById('detailModifierPills');
+    if (!pillsContainer) return;
+    pillsContainer.innerHTML = '';
+    getSelectedModifierValues().forEach(val => {
+      const pill = createModifierPill(val, (removed) => {
+        const cb = document.querySelector(`.detail-modifier-checkbox[value="${removed}"]`);
+        if (cb) cb.checked = false;
+        updateModifierSummary();
+        applyModalFieldChange('modifier', getSelectedModifierValues());
+      });
+      pillsContainer.appendChild(pill);
+    });
+  }
+
+  function setModifierSelections(value) {
+    const selected = new Set(parseModifierValues(value));
+    document.querySelectorAll('.detail-modifier-checkbox').forEach((input) => {
+      input.checked = selected.has(input.value);
+    });
+    updateModifierSummary();
+  }
+
+  function createModifierPill(value, onRemove) {
+    const tooltip = modifierDefs[value] || '';
+    const pill = document.createElement('span');
+    pill.className = 'modifier-pill';
+    pill.dataset.value = value;
+    if (tooltip) pill.dataset.tooltip = tooltip;
+    pill.innerHTML = `<span class="pill-label">${value}</span><button class="pill-x" type="button" aria-label="Remove ${value}">×</button>`;
+    pill.querySelector('.pill-x').addEventListener('click', (e) => {
+      e.stopPropagation();
+      onRemove(value);
+    });
+    return pill;
+  }
+
+  function createTableModifierCell(row) {
+    const initialValues = parseModifierValues(getRowModifierText(row));
+
+    const cell = document.createElement('td');
+    cell.className = 'modifier-cell';
+
+    const pillArea = document.createElement('div');
+    pillArea.className = 'modifier-pill-area';
+
+    const addDropdown = document.createElement('details');
+    addDropdown.className = 'modifier-add-dropdown';
+    addDropdown.innerHTML = `
+      <summary class="modifier-add-btn">+ Add</summary>
+      <div class="modifier-add-options">
+        ${modifierOptions.map(opt => `
+          <label class="modifier-add-option">
+            <input type="checkbox" value="${opt}" ${initialValues.includes(opt) ? 'checked' : ''}/>
+            ${opt}
+          </label>
+        `).join('')}
+      </div>
+    `;
+
+    const rebuildPills = () => {
+      pillArea.querySelectorAll('.modifier-pill').forEach(p => p.remove());
+      const checked = Array.from(addDropdown.querySelectorAll('input:checked')).map(cb => cb.value);
+      checked.forEach(val => {
+        const pill = createModifierPill(val, (removed) => {
+          const cb = addDropdown.querySelector(`input[value="${removed}"]`);
+          if (cb) cb.checked = false;
+          rebuildPills();
+        });
+        pillArea.insertBefore(pill, addDropdown);
+      });
+      setRowModifierText(row, checked);
+      if (currentModalRow === row) syncModalInputsFromRow(row);
+    };
+
+    initialValues.forEach(val => {
+      const pill = createModifierPill(val, (removed) => {
+        const cb = addDropdown.querySelector(`input[value="${removed}"]`);
+        if (cb) cb.checked = false;
+        rebuildPills();
+      });
+      pillArea.appendChild(pill);
+    });
+
+    addDropdown.querySelectorAll('input').forEach(cb => {
+      cb.addEventListener('change', rebuildPills);
+      cb.addEventListener('click', e => e.stopPropagation());
+    });
+    addDropdown.addEventListener('click', e => e.stopPropagation());
+    addDropdown.addEventListener('mousedown', e => e.stopPropagation());
+
+    pillArea.appendChild(addDropdown);
+    cell.appendChild(pillArea);
+    return cell;
+  }
+
+  function initTableModifierColumn() {
+    const headerRow = document.querySelector('.scope-table thead tr');
+    if (headerRow && !headerRow.querySelector('.col-modifier')) {
+      const modifierHeader = document.createElement('th');
+      modifierHeader.className = 'col-modifier';
+      modifierHeader.textContent = 'Modifier';
+      const contractorHeader = headerRow.querySelector('.col-contr');
+      if (contractorHeader) {
+        contractorHeader.insertAdjacentElement('afterend', modifierHeader);
+      }
+    }
+
+    document.querySelectorAll('.scope-table .task-row').forEach((row) => {
+      if (row.querySelector('.modifier-cell')) return;
+      const contractorCell = row.querySelectorAll('td')[3];
+      if (!contractorCell) return;
+      contractorCell.insertAdjacentElement('afterend', createTableModifierCell(row));
+    });
+  }
+
+  function setSelectValue(select, value) {
+    if (!select) return;
+    const normalized = value || '';
+    const existingOption = Array.from(select.options).find(option => option.value === normalized);
+    if (!existingOption && normalized) {
+      const customOption = document.createElement('option');
+      customOption.value = normalized;
+      customOption.textContent = normalized;
+      select.appendChild(customOption);
+    }
+    select.value = normalized;
+    select.classList.toggle('unassigned', !normalized);
+
+    const row = select.closest('.task-row');
+    if (row) {
+      updateUnassignedContractorBadge(row);
+    }
+  }
+
+  function updateUnassignedContractorBadge(row) {
+    if (!row) return;
+
+    const contractorEl = row.querySelector('.contractor-select');
+    const contractorValue = contractorEl
+      ? (contractorEl.tagName === 'SELECT'
+        ? contractorEl.value
+        : contractorEl.textContent.trim().split('\n')[0])
+      : '';
+    const hasContractor = Boolean(String(contractorValue || '').trim()) && String(contractorValue || '').trim() !== 'Select one';
+
+    const taskName = row.querySelector('.task-name');
+    const descriptionCell = taskName?.closest('td');
+    if (!descriptionCell) return;
+
+    const existingBadge = descriptionCell.querySelector('.badge-unassigned');
+    if (hasContractor) {
+      existingBadge?.remove();
+      return;
+    }
+
+    if (!existingBadge) {
+      const badge = document.createElement('span');
+      badge.className = 'badge badge-unassigned';
+      badge.textContent = 'Unassigned Contractor';
+      descriptionCell.appendChild(badge);
+    }
+  }
+
+  function getRowEditableState(row) {
+    const contractorEl = row?.querySelector('.contractor-select');
+    const contractor = contractorEl
+      ? (contractorEl.tagName === 'SELECT'
+        ? contractorEl.value
+        : contractorEl.textContent.trim().split('\n')[0])
+      : '';
+
+    return {
+      contractor: String(contractor || '').trim(),
+      qty: String(row?.querySelector('.qty-input')?.value || '').trim(),
+      unitPrice: String(row?.querySelector('.price-input')?.value || '').trim(),
+      modifier: parseModifierValues(getRowModifierText(row))
+    };
+  }
+
+  function getRowStateKey(row) {
+    const state = getRowEditableState(row);
+    return JSON.stringify({
+      contractor: state.contractor,
+      qty: state.qty,
+      unitPrice: state.unitPrice,
+      modifier: state.modifier.join('|')
+    });
+  }
+
+  function refreshRowUndoState(row) {
+    if (!row) return;
+    const undoBtn = row.querySelector('.row-undo-btn');
+    if (!undoBtn) return;
+    const originalState = row.dataset.originalEditableStateKey || '';
+    const currentState = getRowStateKey(row);
+    undoBtn.classList.toggle('visible', Boolean(originalState) && originalState !== currentState);
+  }
+
+  function setRowTotalText(row, formattedTotal) {
+    if (!row) return;
+    const totalCell = row.querySelector('.total-val');
+    if (!totalCell) return;
+    totalCell.textContent = formattedTotal;
+  }
+
+  function createTaskRow(task) {
+    const row = document.createElement('tr');
+    row.className = 'task-row';
+
+    const id = String(task.id || '').trim();
+    const taskName = String(task.task || 'Task').trim();
+    const product = String(task.product || '').trim();
+    const contractor = String(task.contractor || '').trim();
+    const qty = parseNumericValue(task.qty);
+    const unit = normalizeUnit(task.unit);
+    const unitPrice = parseNumericValue(task.unitPrice);
+    const amount = parseNumericValue(task.amount) || (qty * unitPrice);
+    const hasContractor = Boolean(contractor);
+
+    row.dataset.taskId = id;
+
+    row.innerHTML = `
+      <td><input type="checkbox" class="task-check"/></td>
+      <td class="task-id">${id}</td>
+      <td>
+        <div class="task-name"></div>
+        ${hasContractor ? '' : '<span class="badge badge-unassigned">Unassigned Contractor</span>'}
+      </td>
+      <td></td>
+      <td><div class="qty-wrap"><input class="qty-input" type="number" step="any" inputmode="decimal" value="${qty}"/><span class="qty-unit">${unit}</span></div></td>
+      <td><input class="price-input" type="number" step="any" inputmode="decimal" value="${unitPrice}"/></td>
+      <td class="total-val">${formatCurrency(amount)}</td>
+      <td><div class="note-wrap">0 <img src="https://www.figma.com/api/mcp/asset/03a8e96d-a7c3-4fe2-9423-c38dd347f76b" alt="notes"/></div></td>
+      <td><div class="photo-wrap">0 <img src="https://www.figma.com/api/mcp/asset/65dc39c4-726d-4933-8c3b-f0faae884b95" alt="cam"/></div></td>
+    `;
+
+    const nameEl = row.querySelector('.task-name');
+    if (nameEl) {
+      nameEl.textContent = taskName;
+      if (product && product !== '-') {
+        const productLine = document.createElement('div');
+        productLine.className = 'task-product-line';
+        productLine.textContent = product;
+        nameEl.insertAdjacentElement('afterend', productLine);
+      }
+    }
+
+    const contractorCell = row.querySelectorAll('td')[3];
+    if (contractorCell) {
+      const select = document.createElement('select');
+      select.className = 'contractor-select';
+      contractorOptions.forEach((optionValue) => {
+        const option = document.createElement('option');
+        option.value = optionValue;
+        option.textContent = optionValue || 'Select one';
+        select.appendChild(option);
+      });
+      setSelectValue(select, contractor);
+      select.addEventListener('change', () => {
+        setSelectValue(select, select.value);
+      });
+      contractorCell.appendChild(select);
+    }
+
+    updateTaskActionBadges(row);
+
+    return row;
+  }
+
+  function buildAllTableRows() {
+    const tbody = document.getElementById('scopeTableBody');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+    (importedScopeData.groups || []).forEach((group) => {
+      (group.tasks || []).forEach((task) => {
+        const row = createTaskRow(task);
+        tbody.appendChild(row);
+      });
+    });
+  }
+
+  function initRowUndoTracking() {
+    document.querySelectorAll('.scope-table .task-row').forEach((row) => {
+      const taskName = row.querySelector('.task-name');
+      const descriptionCell = taskName?.closest('td');
+      if (!descriptionCell) return;
+
+      let undoAnchor = descriptionCell.querySelector('.row-undo-anchor');
+      if (!undoAnchor) {
+        undoAnchor = document.createElement('div');
+        undoAnchor.className = 'row-undo-anchor';
+        descriptionCell.appendChild(undoAnchor);
+      }
+
+      let undoBtn = row.querySelector('.row-undo-btn');
+      if (!undoBtn) {
+        undoBtn = document.createElement('button');
+        undoBtn.type = 'button';
+        undoBtn.className = 'row-undo-btn';
+        undoBtn.textContent = 'Undo changes';
+        undoBtn.addEventListener('click', (event) => {
+          event.stopPropagation();
+          const originalStateRaw = row.dataset.originalEditableState;
+          if (!originalStateRaw) return;
+          const originalState = JSON.parse(originalStateRaw);
+
+          setSelectValue(row.querySelector('.contractor-select'), originalState.contractor || '');
+
+          const qtyInput = row.querySelector('.qty-input');
+          const priceInput = row.querySelector('.price-input');
+          if (qtyInput) qtyInput.value = originalState.qty || '';
+          if (priceInput) priceInput.value = originalState.unitPrice || '';
+
+          setRowModifierText(row, originalState.modifier || []);
+
+          const qty = parseNumericValue(qtyInput?.value || '');
+          const price = parseNumericValue(priceInput?.value || '');
+          setRowTotalText(row, formatCurrency(qty * price));
+
+          recalculateCurrentGroupTotal();
+          syncOpenModalPricingFromRow(row);
+          if (currentModalRow === row) {
+            syncModalInputsFromRow(row);
+          }
+
+          refreshRowUndoState(row);
+        });
+        undoAnchor.appendChild(undoBtn);
+      }
+
+      if (!row.dataset.originalEditableState) {
+        const state = getRowEditableState(row);
+        row.dataset.originalEditableState = JSON.stringify(state);
+        row.dataset.originalEditableStateKey = getRowStateKey(row);
+      }
+
+      row.addEventListener('input', (event) => {
+        if (event.target.matches('.qty-input, .price-input')) {
+          refreshRowUndoState(row);
+        }
+      });
+
+      row.addEventListener('change', (event) => {
+        if (event.target.matches('.contractor-select, .modifier-add-dropdown input, .table-modifier-checkbox')) {
+          refreshRowUndoState(row);
+        }
+      });
+
+      refreshRowUndoState(row);
+    });
+  }
+
+  function populateDetailContractorSelect() {
+    const select = document.getElementById('detailContractor');
+    if (!select || select.options.length > 0) return;
+
+    contractorOptions.forEach((contractor) => {
+      const option = document.createElement('option');
+      option.value = contractor;
+      option.textContent = contractor || 'Select one';
+      select.appendChild(option);
+    });
+  }
+
+  function setRowModifierText(row, value) {
+    if (!row) return;
+    const normalizedValues = parseModifierValues(value);
+    const cell = row.querySelector('.modifier-cell');
+
+    if (cell) {
+      const pillArea = cell.querySelector('.modifier-pill-area');
+      const addDropdown = cell.querySelector('.modifier-add-dropdown');
+      if (pillArea && addDropdown) {
+        addDropdown.querySelectorAll('input').forEach(cb => {
+          cb.checked = normalizedValues.includes(cb.value);
+        });
+        pillArea.querySelectorAll('.modifier-pill').forEach(p => p.remove());
+        normalizedValues.forEach(val => {
+          const pill = createModifierPill(val, (removed) => {
+            const cb = addDropdown.querySelector(`input[value="${removed}"]`);
+            if (cb) cb.checked = false;
+            setRowModifierText(row, Array.from(addDropdown.querySelectorAll('input:checked')).map(c => c.value));
+          });
+          pillArea.insertBefore(pill, addDropdown);
+        });
+      }
+    }
+
+    // Remove legacy text under task description now that Modifier has its own column.
+    row.querySelector('.task-status-text')?.remove();
+  }
+
+  function syncModalInputsFromRow(row) {
+    if (!row) return;
+    const contractorSelect = row.querySelector('.contractor-select');
+    const qtyValue = row.querySelector('.qty-input')?.value || '';
+    const qtyUnit = row.querySelector('.qty-unit')?.textContent || '';
+    const priceValue = row.querySelector('.price-input')?.value || '';
+
+    const detailContractor = document.getElementById('detailContractor');
+    const detailQty = document.getElementById('detailQty');
+    const detailQtyUnit = document.getElementById('detailQtyUnit');
+    const detailUnitPrice = document.getElementById('detailUnitPrice');
+
+    if (detailContractor) detailContractor.value = contractorSelect?.value || contractorSelect?.textContent.trim().split('\n')[0] || '';
+    if (detailQty) detailQty.value = qtyValue;
+    if (detailQtyUnit) detailQtyUnit.textContent = qtyUnit || 'ea';
+    setModifierSelections(getRowModifierText(row) === '—' ? '' : getRowModifierText(row));
+    if (detailUnitPrice) detailUnitPrice.value = priceValue ? formatCurrency(parseNumericValue(priceValue)) : '';
+  }
+
+  function applyModalFieldChange(field, value) {
+    if (!currentModalRow) return;
+
+    if (field === 'contractor') {
+      setSelectValue(currentModalRow.querySelector('.contractor-select'), String(value || '').trim());
+    }
+
+    if (field === 'qty') {
+      const qtyInput = currentModalRow.querySelector('.qty-input');
+      const rawValue = String(value || '').trim();
+      const numericValue = parseNumericValue(rawValue);
+      if (qtyInput) qtyInput.value = rawValue === '' ? '' : String(numericValue);
+    }
+
+    if (field === 'modifier') {
+      setRowModifierText(currentModalRow, value);
+    }
+
+    if (field === 'unitPrice') {
+      const priceInput = currentModalRow.querySelector('.price-input');
+      const numericValue = parseNumericValue(value);
+      if (priceInput) priceInput.value = numericValue ? String(numericValue) : '';
+    }
+
+    const qty = parseNumericValue(currentModalRow.querySelector('.qty-input')?.value);
+    const price = parseNumericValue(currentModalRow.querySelector('.price-input')?.value);
+    const rowTotal = qty * price;
+    setRowTotalText(currentModalRow, formatCurrency(rowTotal));
+
+    recalculateCurrentGroupTotal();
+    syncOpenModalPricingFromRow(currentModalRow);
+    syncModalInputsFromRow(currentModalRow);
+    refreshRowUndoState(currentModalRow);
+  }
+
+  function recalculateCurrentGroupTotal() {
+    const visibleTaskRows = Array.from(document.querySelectorAll('.scope-table .task-row'))
+      .filter(row => row.style.display !== 'none');
+
+    const total = visibleTaskRows.reduce((sum, row) => {
+      const qty = parseNumericValue(row.querySelector('.qty-input')?.value);
+      const price = parseNumericValue(row.querySelector('.price-input')?.value);
+      return sum + (qty * price);
+    }, 0);
+
+    const formattedTotal = formatCurrency(total);
+    const headerCost = document.querySelector('.group-header .cost-value');
+    const groupRowCostCell = document.querySelector('.scope-table .group-row td:nth-child(7)');
+
+    if (currentGroup) {
+      groupCosts[currentGroup] = formattedTotal;
+    }
+
+    if (headerCost) headerCost.textContent = formattedTotal;
+    if (groupRowCostCell) groupRowCostCell.textContent = formattedTotal;
+  }
+
+  function syncOpenModalPricingFromRow(row) {
+    if (!currentModalTask) return;
+
+    const rowId = row.querySelector('.task-id')?.textContent.trim() || '';
+    const rowName = row.querySelector('.task-name')?.textContent.trim() || '';
+    if (rowId !== (currentModalTask.id || '') || rowName !== (currentModalTask.name || '')) return;
+
+    const qtyValue = row.querySelector('.qty-input')?.value || '—';
+    const qtyUnit = row.querySelector('.qty-unit')?.textContent || 'ea';
+    const unitPriceValue = parseNumericValue(row.querySelector('.price-input')?.value);
+    const rowTotal = row.querySelector('.total-val')?.textContent.trim() || '—';
+
+    const detailQty = document.getElementById('detailQty');
+    const detailQtyUnit = document.getElementById('detailQtyUnit');
+    const detailUnitPrice = document.getElementById('detailUnitPrice');
+    const detailTotal = document.getElementById('detailTotal');
+
+    if (detailQty) detailQty.value = qtyValue;
+    if (detailQtyUnit) detailQtyUnit.textContent = qtyUnit;
+    if (detailUnitPrice) detailUnitPrice.value = formatCurrency(unitPriceValue);
+    if (detailTotal) detailTotal.textContent = rowTotal;
+
+    currentModalTask.qty = `${qtyValue} ${qtyUnit}`;
+    currentModalTask.unitPrice = formatCurrency(unitPriceValue);
+    currentModalTask.total = rowTotal;
+  }
+
+  function renderGroup(groupName) {
+    currentGroup = groupName;
+
+    // Header text
+    const groupTitle = document.querySelector('.group-title');
+    if (groupTitle) {
+      const groupIndex = groups.indexOf(groupName);
+      const displayIndex = groupIndex >= 0 ? groupIndex + 1 : 0;
+      const totalGroups = groups.length;
+      groupTitle.textContent = totalGroups > 0 && displayIndex > 0
+        ? `${groupName} (${displayIndex}/${totalGroups})`
+        : groupName;
+    }
+    document.querySelector('.group-header .cost-value').textContent = groupCosts[groupName] || '—';
+
+    document.querySelectorAll('.group-dropdown-item').forEach((item) => {
+      item.classList.toggle('active', item.dataset.groupName === groupName);
+    });
+
+    // Group row summary
+    const groupRow = document.querySelector('.scope-table .group-row');
+    if (groupRow) {
+      const titleSpan = groupRow.querySelector('td:nth-child(2) span');
+      if (titleSpan) titleSpan.textContent = groupName.replace(' Group', '');
+      const costCell = groupRow.querySelector('td:nth-child(7)');
+      if (costCell) costCell.textContent = groupCosts[groupName] || '—';
+    }
+
+    const validIds = new Set(groupTasks[groupName] || []);
+    document.querySelectorAll('.scope-table .task-row').forEach(row => {
+      const id = row.querySelector('.task-id')?.textContent.trim();
+      row.style.display = validIds.has(id) ? '' : 'none';
+    });
+
+    recalculateCurrentGroupTotal();
+  }
+
+  function navigateGroup(direction) {
+    const index = groups.indexOf(currentGroup);
+    if (index === -1) return;
+    const nextIndex = (index + direction + groups.length) % groups.length;
+    renderGroup(groups[nextIndex]);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const navButtons = document.querySelectorAll('.group-header .nav-arrow');
+    if (navButtons.length >= 2) {
+      navButtons[0].addEventListener('click', () => navigateGroup(-1));
+      navButtons[1].addEventListener('click', () => navigateGroup(1));
+    }
+
+    if (currentGroup) {
+      renderGroup(currentGroup);
+    }
+  });
+
+  function getBoundaryGroupNames() {
+    if (!groups.length) {
+      return { previous: 'Previous Group', next: 'Next Group' };
+    }
+    const currentIndex = Math.max(groups.indexOf(currentGroup), 0);
+    const previous = groups[(currentIndex - 1 + groups.length) % groups.length];
+    const next = groups[(currentIndex + 1) % groups.length];
+    return { previous, next };
+  }
+
+  function updateModalNavigation() {
+    const prevBtn = document.getElementById('modalPrevBtn');
+    const nextBtn = document.getElementById('modalNextBtn');
+    const prevText = document.getElementById('modalPrevText');
+    const nextText = document.getElementById('modalNextText');
+
+    function setNavLabel(button, textEl, text, isGroupJump) {
+      textEl.textContent = text;
+      button.classList.toggle('group-jump', !!isGroupJump);
+    }
+
+    function formatGroupJumpLabel(groupName) {
+      const label = String(groupName || '').trim();
+      if (!label) return 'Next group';
+      return /\bgroup$/i.test(label) ? label : `${label} group`;
+    }
+
+    if (currentModalTaskIndex === null) {
+      setNavLabel(prevBtn, prevText, 'Previous task', false);
+      setNavLabel(nextBtn, nextText, 'Next task', false);
+      return;
+    }
+
+    const totalTasks = taskIds.length;
+    if (!totalTasks) {
+      setNavLabel(prevBtn, prevText, 'Previous task', false);
+      setNavLabel(nextBtn, nextText, 'Next task', false);
+      return;
+    }
+
+    const currentTaskId = currentModalTask?.id || '';
+    const currentTaskGroup = taskGroups[currentTaskId] || currentGroup;
+
+    const prevTaskId = taskIds[(currentModalTaskIndex - 1 + totalTasks) % totalTasks];
+    const prevTaskGroup = taskGroups[prevTaskId] || currentGroup;
+    const prevCrossGroup = !!(currentTaskGroup && prevTaskGroup && prevTaskGroup !== currentTaskGroup);
+    setNavLabel(prevBtn, prevText, prevCrossGroup ? formatGroupJumpLabel(prevTaskGroup) : 'Previous task', prevCrossGroup);
+
+    const nextTaskId = taskIds[(currentModalTaskIndex + 1) % totalTasks];
+    const nextTaskGroup = taskGroups[nextTaskId] || currentGroup;
+    const nextCrossGroup = !!(currentTaskGroup && nextTaskGroup && nextTaskGroup !== currentTaskGroup);
+    setNavLabel(nextBtn, nextText, nextCrossGroup ? formatGroupJumpLabel(nextTaskGroup) : 'Next task', nextCrossGroup);
+  }
+
+  function getTaskNameById(taskId) {
+    const taskRow = Array.from(document.querySelectorAll('.scope-table .task-row')).find(row => {
+      const idCell = row.querySelector('.task-id');
+      return idCell && idCell.textContent.trim() === taskId;
+    });
+    
+    if (taskRow) {
+      const nameEl = taskRow.querySelector('.task-name');
+      return nameEl ? nameEl.textContent.trim() : 'Task';
+    }
+    return 'Task';
+  }
+
+  function navigateTask(direction) {
+    if (!currentModalTask) return;
+
+    if (currentModalTaskIndex === null) {
+      const inferredIndex = taskIds.indexOf(currentModalTask.id || '');
+      currentModalTaskIndex = inferredIndex >= 0 ? inferredIndex : (taskIds.length ? 0 : null);
+    }
+
+    if (currentModalTaskIndex === null) return;
+    
+    let newIndex = currentModalTaskIndex + direction;
+    
+    // Handle boundary navigation - wrap around within the group
+    if (newIndex < 0) {
+      newIndex = taskIds.length - 1; // Go to last task
+    } else if (newIndex >= taskIds.length) {
+      newIndex = 0; // Go to first task
+    }
+    
+    // Find the task row and simulate click
+    const taskRows = document.querySelectorAll('.scope-table .task-row');
+    const targetRow = Array.from(taskRows).find(row => {
+      const idCell = row.querySelector('.task-id');
+      return idCell && idCell.textContent.trim() === taskIds[newIndex];
+    });
+    
+    if (targetRow) {
+      targetRow.click();
+    }
+  }
+  function renderActivityCard(activity, activityIndex) {
+    return `
+      <div class="activity-card">
+        <div class="activity-card-head">
+          <div class="activity-card-title">
+            ${activity.type ? `<span class="accent${activity.typeClass ? '-' + activity.typeClass : ''}">${activity.type}</span>` : ''}
+            ${activity.title}
+          </div>
+          <div class="activity-card-time">${activity.time}</div>
+        </div>
+        <div class="activity-card-author">${activity.author}</div>
+        ${activity.notes ? `<div class="activity-card-notes">${activity.notes}</div>` : ''}
+        ${activity.details ? `
+          <div class="activity-card-details">
+            ${activity.details.map(detail => `
+              <div class="activity-card-detail-item">
+                <span>${detail.label}</span>
+                <span class="activity-card-detail-value${detail.accent ? ' ' + detail.accent : ''}">${detail.value}</span>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+        ${activity.photos ? `
+          <div class="activity-card-photos">
+            ${activity.photos.map((photo, idx) => `
+              <div class="activity-card-photo-thumb" 
+                   onclick="selectModalPhotoByActivity(${activityIndex}, ${idx})"
+                   data-activity="${activityIndex}"
+                   data-photo="${idx}"
+                   style="background-color: ${photo.bg || '#e0e0e0'};"></div>
+            `).join('')}
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }
+
+  function updateModalPhoto(bgColor, label, date, photographer, uploadSource = '') {
+    const photoDiv = document.getElementById('modalPhoto');
+    const photoLabel = document.getElementById('modalPhotoLabel');
+    const photoDate = document.getElementById('modalPhotoDate');
+    const photoPhotographer = document.getElementById('modalPhotoPhotographer');
+    const photoUploadSource = document.getElementById('modalPhotoUploadSource');
+    
+    photoDiv.style.setProperty('--modal-photo-bg', bgColor);
+    photoLabel.textContent = label;
+    photoDate.textContent = date;
+    photoPhotographer.textContent = photographer;
+    if (uploadSource) {
+      photoUploadSource.textContent = uploadSource;
+      photoUploadSource.style.display = '';
+    } else {
+      photoUploadSource.textContent = '';
+      photoUploadSource.style.display = 'none';
+    }
+  }
+
+  function setActiveModalPhotoThumbs(activityIdx, photoIdx) {
+    document.querySelectorAll('.activity-card-photo-thumb.active, .modal-photo-gallery-thumb.active').forEach((thumb) => {
+      thumb.classList.remove('active');
+    });
+    if (activityIdx === null || photoIdx === null) return;
+
+    const galleryThumb = document.querySelector(`.modal-photo-gallery-thumb[data-activity="${activityIdx}"][data-photo="${photoIdx}"]`);
+    if (galleryThumb) {
+      galleryThumb.classList.add('active');
+    }
+
+    const activityThumb = document.querySelector(`.activity-card-photo-thumb[data-activity="${activityIdx}"][data-photo="${photoIdx}"]`);
+    if (activityThumb) {
+      activityThumb.classList.add('active');
+    }
+  }
+
+  function updateModalPhotoNavButtons() {
+    const prevBtn = document.getElementById('modalPhotoPrevBtn');
+    const nextBtn = document.getElementById('modalPhotoNextBtn');
+    if (!prevBtn || !nextBtn) return;
+
+    const hasPhotos = currentModalPhotos.length > 0;
+    prevBtn.disabled = !hasPhotos || currentModalPhotoIndex <= 0;
+    nextBtn.disabled = !hasPhotos || currentModalPhotoIndex >= currentModalPhotos.length - 1;
+  }
+
+  function showModalPhotoByIndex(index, shouldScrollActivity = false) {
+    if (!currentModalPhotos.length) {
+      updateModalPhotoNavButtons();
+      return;
+    }
+
+    currentModalPhotoIndex = Math.max(0, Math.min(index, currentModalPhotos.length - 1));
+    const photo = currentModalPhotos[currentModalPhotoIndex];
+
+    updateModalPhoto(
+      photo.bg || '#e0e0e0',
+      photo.label || 'Photo',
+      photo.date || '',
+      photo.photographer || '',
+      photo.uploadSource || (photo.uploadedFromComputer ? 'Uploaded from computer' : '') || ''
+    );
+
+    setActiveModalPhotoThumbs(photo.activityIdx, photo.photoIdx);
+    updateModalPhotoNavButtons();
+
+    if (shouldScrollActivity && photo.activityIdx !== null) {
+      const activityCards = document.querySelectorAll('.activity-card');
+      if (activityCards[photo.activityIdx]) {
+        activityCards[photo.activityIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  }
+
+  function navigateModalPhoto(direction) {
+    if (!currentModalPhotos.length) return;
+    const nextIndex = currentModalPhotoIndex + direction;
+    if (nextIndex < 0 || nextIndex >= currentModalPhotos.length) {
+      updateModalPhotoNavButtons();
+      return;
+    }
+    showModalPhotoByIndex(nextIndex, true);
+  }
+
+  function selectModalPhotoByActivity(activityIdx, photoIdx) {
+    const flatIndex = currentModalPhotos.findIndex((photo) => (
+      photo.activityIdx === activityIdx && photo.photoIdx === photoIdx
+    ));
+    if (flatIndex >= 0) {
+      showModalPhotoByIndex(flatIndex, true);
+    }
+  }
+
+  function updateModalPhotoFromGallery(bgColor, date, photographer) {
+    const photoDiv = document.getElementById('modalPhoto');
+    photoDiv.style.setProperty('--modal-photo-bg', bgColor);
+    document.getElementById('modalPhotoBrowseDate').textContent = date;
+    document.getElementById('modalPhotoBrowsePhotographer').textContent = photographer;
+    
+    // Update gallery thumbnail active state
+    document.querySelectorAll('.modal-photo-gallery-thumb.active').forEach(thumb => {
+      thumb.classList.remove('active');
+    });
+    if (event && event.currentTarget) {
+      event.currentTarget.classList.add('active');
+    }
+  }
+
+  function openModal(data, taskIndex = null, row = null) {
+    const modal = document.getElementById('detailModal');
+    populateDetailContractorSelect();
+    
+    // Store current task data for navigation
+    currentModalTask = data;
+    currentModalTaskIndex = taskIndex;
+    currentModalRow = row;
+    currentModalPhotos = [];
+    currentModalPhotoIndex = 0;
+    
+    // Set title and subtitle with group name
+    const groupName = taskGroups[data.id] || currentGroup || groups[0] || 'Scope Group';
+    document.getElementById('modalTitle').textContent = `${groupName} · ${data.name || 'Task Name'}`;
+    document.getElementById('modalSubtitle').textContent = data.id ? `ID: ${data.id}` : 'Task details';
+    syncModalTaskActionButtons();
+    
+    // Update navigation buttons
+    updateModalNavigation();
+    
+    // Set details
+    setSelectValue(document.getElementById('detailContractor'), data.contractor === 'Unassigned' ? '' : (data.contractor || ''));
+    document.getElementById('detailTotal').textContent = data.total || '—';
+    document.getElementById('detailQty').value = String(data.qty || '').trim() === '' ? '' : String(parseNumericValue(data.qty || ''));
+    document.getElementById('detailQtyUnit').textContent = (String(data.qty || '').trim().split(/\s+/).slice(1).join(' ') || 'ea');
+    setModifierSelections(data.modifier === '—' ? '' : (data.modifier || ''));
+    document.getElementById('detailUnitPrice').value = data.unitPrice || '';
+    document.getElementById('detailId').textContent = data.id || '—';
+
+    if (row) {
+      syncModalInputsFromRow(row);
+    }
+    
+    // Set photo with metadata
+    const photoDiv = document.getElementById('modalPhoto');
+    const photoLabel = document.getElementById('modalPhotoLabel');
+    const photoDate = document.getElementById('modalPhotoDate');
+    const photoPhotographer = document.getElementById('modalPhotoPhotographer');
+    const photoUploadSource = document.getElementById('modalPhotoUploadSource');
+    const firstActivityPhoto = data.activities && data.activities.length > 0
+      ? (data.activities.find(activity => activity.photos && activity.photos.length > 0)?.photos?.[0] || null)
+      : null;
+    const initialDate = firstActivityPhoto?.date || data.photoDate || 'Jan 20, 2025';
+    const initialPhotographer = firstActivityPhoto?.photographer || data.photoPhotographer || 'R. Garcia';
+    const initialUploadSource = firstActivityPhoto
+      ? (firstActivityPhoto.uploadSource || (firstActivityPhoto.uploadedFromComputer ? 'Uploaded from computer' : '') || '')
+      : (data.photoUploadSource || '');
+    
+    if (data.photoBg) {
+      photoDiv.style.setProperty('--modal-photo-bg', data.photoBg);
+      photoLabel.textContent = data.photoLabel || 'Photo';
+      photoDate.textContent = initialDate;
+      photoPhotographer.textContent = initialPhotographer;
+      if (initialUploadSource) {
+        photoUploadSource.textContent = initialUploadSource;
+        photoUploadSource.style.display = '';
+      } else {
+        photoUploadSource.textContent = '';
+        photoUploadSource.style.display = 'none';
+      }
+    } else {
+      photoDiv.style.setProperty('--modal-photo-bg', '#e0e0e0');
+      photoLabel.textContent = 'No photo';
+      photoDate.textContent = '';
+      photoPhotographer.textContent = '';
+      photoUploadSource.textContent = '';
+      photoUploadSource.style.display = 'none';
+    }
+    
+    // Populate photo gallery from all activities
+    const galleryDiv = document.getElementById('modalPhotoGallery');
+    galleryDiv.innerHTML = '';
+    
+    if (data.activities && data.activities.length > 0) {
+      let photoIndex = 0;
+      data.activities.forEach((activity, activityIdx) => {
+        if (activity.photos && activity.photos.length > 0) {
+          activity.photos.forEach((photo, photoIdx) => {
+            currentModalPhotos.push({
+              activityIdx,
+              photoIdx,
+              bg: photo.bg || '#e0e0e0',
+              label: photo.label || 'Photo',
+              date: photo.date || '',
+              photographer: photo.photographer || '',
+              uploadSource: photo.uploadSource || (photo.uploadedFromComputer ? 'Uploaded from computer' : '') || ''
+            });
+            const flatPhotoIndex = currentModalPhotos.length - 1;
+
+            const thumb = document.createElement('div');
+            thumb.className = `modal-photo-gallery-thumb${photoIndex === 0 ? ' active' : ''}`;
+            thumb.style.backgroundColor = photo.bg || '#e0e0e0';
+            thumb.setAttribute('data-activity', activityIdx);
+            thumb.setAttribute('data-photo', photoIdx);
+            
+            // Add date label
+            const dateDiv = document.createElement('div');
+            dateDiv.className = 'modal-photo-thumb-date';
+            dateDiv.textContent = (photo.date || '').split(',')[0];
+            thumb.appendChild(dateDiv);
+            
+            thumb.addEventListener('click', () => {
+              showModalPhotoByIndex(flatPhotoIndex, true);
+            });
+            
+            galleryDiv.appendChild(thumb);
+            photoIndex++;
+          });
+        }
+      });
+    }
+
+    if (!currentModalPhotos.length && data.photoBg) {
+      currentModalPhotos.push({
+        activityIdx: null,
+        photoIdx: null,
+        bg: data.photoBg,
+        label: data.photoLabel || 'Photo',
+        date: initialDate,
+        photographer: initialPhotographer,
+        uploadSource: initialUploadSource
+      });
+    }
+    
+    // Set activities
+    const activitiesDiv = document.getElementById('detailActivities');
+    if (data.activities && data.activities.length > 0) {
+      activitiesDiv.innerHTML = data.activities.map((activity, idx) => renderActivityCard(activity, idx)).join('');
+    } else {
+      activitiesDiv.innerHTML = '<div style="font-size: 13px; color: var(--gray-text); font-style: italic;">No activities yet</div>';
+    }
+
+    if (currentModalPhotos.length > 0) {
+      showModalPhotoByIndex(0, false);
+    } else {
+      updateModalPhotoNavButtons();
+    }
+    
+    // Show modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('detailModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+    currentModalPhotos = [];
+    currentModalPhotoIndex = 0;
+    currentModalRow = null;
+    currentModalTask = null;
+    currentModalTaskIndex = null;
+  }
+
+  // Close modal when clicking outside
+  document.getElementById('detailModal').addEventListener('click', (e) => {
+    if (e.target.id === 'detailModal') {
+      closeModal();
+    }
+  });
+
+  // Close modal with Escape key
+  document.addEventListener('keydown', (e) => {
+    const modal = document.getElementById('detailModal');
+    const isModalOpen = !!modal?.classList.contains('active');
+    const confirmEl = document.getElementById('deleteTaskConfirm');
+
+    if (e.key === 'Escape') {
+      if (confirmEl?.classList.contains('active')) {
+        closeDeleteTaskConfirm();
+        return;
+      }
+      closeModal();
+      return;
+    }
+
+    if (!isModalOpen || confirmEl?.classList.contains('active')) {
+      return;
+    }
+
+    const activeTag = String(document.activeElement?.tagName || '').toLowerCase();
+    const isEditableTarget = ['input', 'textarea', 'select'].includes(activeTag) || document.activeElement?.isContentEditable;
+    if (isEditableTarget) {
+      return;
+    }
+
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      navigateModalPhoto(-1);
+      return;
+    }
+
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      navigateModalPhoto(1);
+    }
+  });
+
+  document.getElementById('deleteTaskConfirm')?.addEventListener('click', (e) => {
+    if (e.target.id === 'deleteTaskConfirm') {
+      closeDeleteTaskConfirm();
+    }
+  });
+
+  // ── Add click handlers to table rows ────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    // Sample activities data
+    const activitiesData = {
+      '10003': [ // Cabinet Replacement
+        {
+          type: 'Progress walk',
+          title: 'submitted',
+          author: 'Shane D.',
+          time: 'Mar 20 10:07',
+          notes: 'Floating door will not stay open. This is a longer note etc etc. This is a longer note etc. This is a longer note etc.',
+          details: [
+            { label: 'Status', value: 'Rework', accent: 'green' }
+          ],
+          photos: [
+            { bg: '#c9d8e8', label: 'Front View', date: 'Mar 20, 2025 2:15 PM', photographer: 'Shane D.', uploadedFromComputer: true },
+            { bg: '#d4e8d4', label: 'Side View', date: 'Mar 20, 2025 2:18 PM', photographer: 'Shane D.' },
+            { bg: '#e8d4c9', label: 'Detail', date: 'Mar 20, 2025 2:22 PM', photographer: 'Shane D.' }
+          ]
+        },
+        {
+          type: 'Progress walk',
+          title: 'submitted',
+          author: 'Shane D.',
+          time: 'Mar 18 09:30',
+          notes: 'Cabinet installation progressing well. Hardware installation scheduled for tomorrow.',
+          details: [
+            { label: 'Status', value: 'In Progress', accent: 'green' }
+          ],
+          photos: [
+            { bg: '#d4cce8', label: 'Cabinet Frame', date: 'Mar 18, 2025 9:30 AM', photographer: 'Shane D.' },
+            { bg: '#e8e4c9', label: 'Hardware Prep', date: 'Mar 18, 2025 9:45 AM', photographer: 'Shane D.', uploadedFromComputer: true },
+            { bg: '#c9e8e2', label: 'Level Check', date: 'Mar 18, 2025 10:00 AM', photographer: 'Shane D.' }
+          ]
+        },
+        {
+          type: 'Progress walk',
+          title: 'submitted',
+          author: 'Shane D.',
+          time: 'Mar 15 14:20',
+          notes: 'Cabinet delivery completed. All pieces accounted for and in good condition.',
+          details: [
+            { label: 'Status', value: 'Completed', accent: 'green' }
+          ],
+          photos: [
+            { bg: '#e8c9d4', label: 'Delivery Truck', date: 'Mar 15, 2025 2:20 PM', photographer: 'Shane D.' },
+            { bg: '#ccd8e8', label: 'Unloading', date: 'Mar 15, 2025 2:35 PM', photographer: 'Shane D.' },
+            { bg: '#e8d9c9', label: 'Inventory Check', date: 'Mar 15, 2025 2:50 PM', photographer: 'Shane D.' }
+          ]
+        },
+        {
+          type: 'Progress walk',
+          title: 'submitted',
+          author: 'Shane D.',
+          time: 'Mar 12 11:45',
+          notes: 'Site preparation complete. Ready for cabinet installation.',
+          details: [
+            { label: 'Status', value: 'Ready', accent: 'green' }
+          ],
+          photos: [
+            { bg: '#d4e8c9', label: 'Site Prep', date: 'Mar 12, 2025 11:45 AM', photographer: 'Shane D.' },
+            { bg: '#c9cce8', label: 'Wall Prep', date: 'Mar 12, 2025 12:00 PM', photographer: 'Shane D.' },
+            { bg: '#e8d8c9', label: 'Floor Protection', date: 'Mar 12, 2025 12:15 PM', photographer: 'Shane D.' }
+          ]
+        },
+        {
+          type: 'Progress walk',
+          title: 'submitted',
+          author: 'Shane D.',
+          time: 'Mar 10 08:15',
+          notes: 'Initial site assessment completed. Measurements taken and plans reviewed.',
+          details: [
+            { label: 'Status', value: 'Assessment', accent: 'green' }
+          ],
+          photos: [
+            { bg: '#e8c9e8', label: 'Site Overview', date: 'Mar 10, 2025 8:15 AM', photographer: 'Shane D.' }
+          ]
+        },
+        {
+          type: 'Change order',
+          typeClass: 'orange',
+          title: 'approved',
+          author: 'Eric L.',
+          time: 'Mar 10 10:07',
+          notes: 'New cabinets are scheduled to arrive Thursday; countertop install on Friday. New cabinets are scheduled to arrive Thursday; counter...',
+          details: [
+            { label: 'Line item cost', value: '$120.00', accent: 'green' }
+          ]
+        },
+        {
+          type: 'Change order',
+          typeClass: 'orange',
+          title: 'submitted',
+          author: 'Shane D.',
+          time: 'Mar 8 10:07',
+          notes: 'Color did not match.',
+          details: [
+            { label: 'New item cost', value: '$120.00', accent: 'green' },
+            { label: 'Approved line item cost', value: '$120.00', accent: 'green' }
+          ]
+        }
+      ],
+      '10004': [ // Countertop Replacement
+        {
+          type: 'Progress walk',
+          title: 'submitted',
+          author: 'Shane D.',
+          time: 'Mar 19 14:30',
+          notes: 'Countertop measurements confirmed. Ready for installation scheduling.',
+          details: [
+            { label: 'Status', value: 'In Progress', accent: 'green' }
+          ],
+          photos: [
+            { bg: '#d4cce8', label: 'Measurement 1', date: 'Mar 19, 2025 2:30 PM', photographer: 'Shane D.' },
+            { bg: '#e8e4c9', label: 'Measurement 2', date: 'Mar 19, 2025 2:35 PM', photographer: 'Shane D.', uploadedFromComputer: true }
+          ]
+        },
+        {
+          type: 'Scope approved',
+          title: 'by homeowner',
+          author: 'You',
+          time: 'Mar 15 09:00',
+          notes: '',
+          details: [
+            { label: 'Approved budget', value: '$3,990.00', accent: 'green' }
+          ]
+        }
+      ],
+      '10005': [ // Appliance Package
+        {
+          type: 'Progress walk',
+          title: 'submitted',
+          author: 'Shane D.',
+          time: 'Mar 21 11:15',
+          notes: 'Appliances delivered and inspected. No damage noted.',
+          details: [
+            { label: 'Status', value: 'Completed', accent: 'green' }
+          ],
+          photos: [
+            { bg: '#c9e8e2', label: 'Delivery', date: 'Mar 21, 2025 10:00 AM', photographer: 'Shane D.' },
+            { bg: '#e8c9d4', label: 'Inspection 1', date: 'Mar 21, 2025 11:15 AM', photographer: 'Shane D.' },
+            { bg: '#ccd8e8', label: 'Inspection 2', date: 'Mar 21, 2025 11:20 AM', photographer: 'Shane D.' },
+            { bg: '#e8d9c9', label: 'Final Check', date: 'Mar 21, 2025 11:30 AM', photographer: 'Shane D.' }
+          ]
+        }
+      ]
+    };
+
+    const mockPhotoPalette = ['#c9d8e8', '#d4e8d4', '#e8d4c9', '#d4cce8', '#e8e4c9', '#c9e8e2', '#e8c9d4', '#ccd8e8', '#e8d9c9', '#d4e8c9'];
+
+    function getSeededPaletteColor(seed) {
+      const idx = Math.abs(seed) % mockPhotoPalette.length;
+      return mockPhotoPalette[idx];
+    }
+
+    function createMockActivities(taskId, taskName, groupName, index) {
+      const normalizedName = String(taskName || 'Task').trim() || 'Task';
+      const normalizedGroup = String(groupName || 'Scope').trim() || 'Scope';
+      const baseSeed = Number(String(taskId).replace(/\D/g, '')) || index + 1;
+
+      return [
+        {
+          type: 'Progress walk',
+          title: 'submitted',
+          author: 'Shane D.',
+          time: 'Mar 22 09:15',
+          notes: `${normalizedName} walkthrough completed. Crew captured updated condition photos and confirmed next actions.`,
+          details: [
+            { label: 'Status', value: 'In Progress', accent: 'green' }
+          ],
+          photos: [
+            { bg: getSeededPaletteColor(baseSeed + 1), label: 'Overview', date: 'Mar 22, 2025 9:15 AM', photographer: 'Shane D.', uploadedFromComputer: true },
+            { bg: getSeededPaletteColor(baseSeed + 2), label: 'Detail', date: 'Mar 22, 2025 9:20 AM', photographer: 'Shane D.' },
+            { bg: getSeededPaletteColor(baseSeed + 3), label: 'Progress', date: 'Mar 22, 2025 9:28 AM', photographer: 'Shane D.' }
+          ]
+        },
+        {
+          type: 'Change order',
+          typeClass: 'orange',
+          title: 'submitted',
+          author: 'Shane D.',
+          time: 'Mar 20 13:40',
+          notes: `Material and labor adjustment proposed for ${normalizedName.toLowerCase()} in ${normalizedGroup}.`,
+          details: [
+            { label: 'Line item cost', value: '$120.00', accent: 'green' }
+          ]
+        },
+        {
+          type: 'Scope approved',
+          title: 'by homeowner',
+          author: 'You',
+          time: 'Mar 18 16:05',
+          notes: `${normalizedGroup} scope confirmed for ${normalizedName}.`,
+          details: [
+            { label: 'Approved budget', value: '$250.00', accent: 'green' }
+          ]
+        }
+      ];
+    }
+
+    function ensureMockActivitiesForAllTasks() {
+      taskIds.forEach((taskId, index) => {
+        if (activitiesData[taskId] && activitiesData[taskId].length > 0) return;
+        const taskName = getTaskNameById(taskId);
+        const groupName = taskGroups[taskId] || currentGroup || groups[0] || 'Scope';
+        activitiesData[taskId] = createMockActivities(taskId, taskName, groupName, index);
+      });
+    }
+
+    function remapTimelinePhotoCardsToCurrentTasks() {
+      const photoCards = Array.from(document.querySelectorAll('.photo-card'));
+      if (!photoCards.length || !taskIds.length) return;
+
+      photoCards.forEach((card, index) => {
+        const taskId = taskIds[index % taskIds.length];
+        card.setAttribute('data-task-id', taskId);
+
+        const labelEl = card.querySelector('.photo-label');
+        if (labelEl) {
+          const taskName = getTaskNameById(taskId);
+          const trimmed = String(taskName || '').trim();
+          if (trimmed) {
+            labelEl.textContent = trimmed.length > 24 ? `${trimmed.slice(0, 24).trim()}...` : trimmed;
+          }
+        }
+      });
+    }
+
+    buildScopeDataMaps();
+    populateGroupDropdown();
+    buildAllTableRows();
+    ensureMockActivitiesForAllTasks();
+    remapTimelinePhotoCardsToCurrentTasks();
+    initTableModifierColumn();
+    initRowUndoTracking();
+    renderGroup(currentGroup);
+
+    // Add click handler to task rows
+    document.querySelectorAll('.scope-table .task-row').forEach((row, index) => {
+      row.style.cursor = 'pointer';
+      row.addEventListener('click', (event) => {
+        if (event.target.closest('select, input, .table-modifier-select, .modifier-add-dropdown, .modifier-pill, .row-undo-btn')) return;
+
+        const id = row.querySelector('.task-id')?.textContent.trim() || '';
+        const nameEl = row.querySelector('.task-name');
+        const name = nameEl?.textContent.trim() || 'Task';
+        const contractorEl = row.querySelector('.contractor-select');
+        let contractor = 'Unassigned';
+        if (contractorEl) {
+          if (contractorEl.tagName === 'SELECT') {
+            contractor = contractorEl.value || 'Unassigned';
+          } else {
+            contractor = contractorEl.textContent.trim().split('\n')[0] || 'Unassigned';
+          }
+        }
+        const qtyEl = row.querySelector('.qty-input');
+        const qty = qtyEl?.value || '—';
+        const priceEl = row.querySelector('.price-input');
+        const price = priceEl?.value || '—';
+        const totalEl = row.querySelector('.total-val');
+        const total = totalEl?.textContent.trim() || '—';
+
+        // Find corresponding photo by matching task ID
+        let photoBg = '#c9d8e8';
+        let photoLabel = 'Photo';
+        
+        // Try to find a photo card that matches this task ID
+        const photoCard = document.querySelector(`.photo-card[data-task-id="${id}"]`);
+        if (photoCard) {
+          const thumb = photoCard.querySelector('.photo-thumb');
+          photoBg = window.getComputedStyle(thumb).backgroundColor;
+          const label = photoCard.querySelector('.photo-label');
+          if (label) photoLabel = label.textContent.trim();
+        }
+
+        // Find task index in the ordered list
+        const taskIndex = taskIds.indexOf(id);
+
+        openModal({
+          id,
+          name,
+          contractor,
+          qty: qty + ' ' + (row.querySelector('.qty-unit')?.textContent || 'ea'),
+          unitPrice: formatCurrency(parseNumericValue(price)),
+          total,
+          modifier: getRowModifierText(row),
+          photoBg,
+          photoLabel,
+          photoDate: 'Mar 20, 2025',
+          photoPhotographer: 'Shane D.',
+          activities: activitiesData[id] || []
+        }, taskIndex, row);
+      });
+    });
+
+    // Add click handler to photo cards
+    document.querySelectorAll('.photo-card').forEach((card) => {
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', (e) => {
+        const taskId = card.getAttribute('data-task-id');
+        const label = card.querySelector('.photo-label')?.textContent || 'Photo';
+        const thumb = card.querySelector('.photo-thumb');
+        const bgColor = window.getComputedStyle(thumb).backgroundColor;
+
+        // Find the task data from the table
+        const taskRow = Array.from(document.querySelectorAll('.scope-table .task-row')).find(row => {
+          const idCell = row.querySelector('.task-id');
+          return idCell && idCell.textContent.trim() === taskId;
+        });
+
+        if (taskRow) {
+          const nameEl = taskRow.querySelector('.task-name');
+          const name = nameEl?.textContent.trim() || 'Task';
+          const contractorEl = taskRow.querySelector('.contractor-select');
+          let contractor = 'Unassigned';
+          if (contractorEl) {
+            if (contractorEl.tagName === 'SELECT') {
+              contractor = contractorEl.value || 'Unassigned';
+            } else {
+              contractor = contractorEl.textContent.trim().split('\n')[0] || 'Unassigned';
+            }
+          }
+          const qtyEl = taskRow.querySelector('.qty-input');
+          const qty = qtyEl?.value || '—';
+          const priceEl = taskRow.querySelector('.price-input');
+          const price = priceEl?.value || '—';
+          const totalEl = taskRow.querySelector('.total-val');
+          const total = totalEl?.textContent.trim() || '—';
+
+          // Find task index in the ordered list
+          const taskIndex = taskIds.indexOf(taskId);
+
+          openModal({
+            id: taskId,
+            name,
+            contractor,
+            qty: qty + ' ' + (taskRow.querySelector('.qty-unit')?.textContent || 'ea'),
+            unitPrice: formatCurrency(parseNumericValue(price)),
+            total,
+            modifier: getRowModifierText(taskRow),
+            photoBg: bgColor,
+            photoLabel: label,
+            photoDate: 'Mar 20, 2025',
+            photoPhotographer: 'Shane D.',
+            activities: activitiesData[taskId] || []
+          }, taskIndex, taskRow);
+        } else {
+          const fallbackVisibleRow = Array.from(document.querySelectorAll('.scope-table .task-row'))
+            .find((row) => row.style.display !== 'none');
+          const fallbackRow = fallbackVisibleRow || document.querySelector('.scope-table .task-row');
+
+          if (fallbackRow) {
+            const fallbackTaskId = fallbackRow.querySelector('.task-id')?.textContent.trim() || taskId;
+            const fallbackQty = fallbackRow.querySelector('.qty-input')?.value || '—';
+            const fallbackPrice = fallbackRow.querySelector('.price-input')?.value || '—';
+            const fallbackTotal = fallbackRow.querySelector('.total-val')?.textContent.trim() || '—';
+            const fallbackTaskIndex = taskIds.indexOf(fallbackTaskId);
+
+            openModal({
+              id: fallbackTaskId,
+              name: label,
+              contractor: 'Unassigned',
+              qty: fallbackQty + ' ' + (fallbackRow.querySelector('.qty-unit')?.textContent || 'ea'),
+              unitPrice: formatCurrency(parseNumericValue(fallbackPrice)),
+              total: fallbackTotal,
+              modifier: getRowModifierText(fallbackRow),
+              photoBg: bgColor,
+              photoLabel: label,
+              photoDate: 'Mar 20, 2025',
+              photoPhotographer: 'Shane D.',
+              activities: activitiesData[fallbackTaskId] || []
+            }, fallbackTaskIndex >= 0 ? fallbackTaskIndex : null, fallbackRow);
+            return;
+          }
+
+          // No matching task row found — open modal with photo card data only
+          openModal({
+            id: taskId,
+            name: label,
+            contractor: 'Unassigned',
+            qty: '—',
+            unitPrice: '—',
+            total: '—',
+            modifier: '',
+            photoBg: bgColor,
+            photoLabel: label,
+            photoDate: 'Mar 20, 2025',
+            photoPhotographer: 'Shane D.',
+            activities: activitiesData[taskId] || []
+          }, null, null);
+        }
+      });
+    });
+
+    // Add recalculation for totals when qty or price changes
+    document.querySelectorAll('.qty-input, .price-input').forEach(input => {
+      input.addEventListener('input', () => {
+        const row = input.closest('.task-row');
+        const qtyEl = row.querySelector('.qty-input');
+        const priceEl = row.querySelector('.price-input');
+        const totalEl = row.querySelector('.total-val');
+
+        const qty = parseFloat(qtyEl.value) || 0;
+        const price = parseFloat(priceEl.value) || 0;
+        const total = qty * price;
+
+        setRowTotalText(row, formatCurrency(total));
+        recalculateCurrentGroupTotal();
+        syncOpenModalPricingFromRow(row);
+      });
+    });
+
+    // Prevent modal opening on contractor selects and inputs
+    document.querySelectorAll('select.contractor-select, .qty-input, .price-input').forEach(el => {
+      el.addEventListener('click', (e) => e.stopPropagation());
+      el.addEventListener('mousedown', (e) => e.stopPropagation());
+    });
+
+    document.querySelectorAll('.detail-edit-btn').forEach((button) => {
+      button.addEventListener('click', () => {
+        const target = document.getElementById(button.dataset.focusTarget || '');
+        if (!target) return;
+        if (target.tagName === 'SUMMARY') {
+          target.parentElement.open = true;
+        }
+        target.focus();
+      });
+    });
+
+    document.querySelectorAll('.detail-input').forEach((input) => {
+      input.addEventListener('input', () => {
+        applyModalFieldChange(input.dataset.detailField, input.value);
+      });
+      input.addEventListener('click', (e) => e.stopPropagation());
+      input.addEventListener('mousedown', (e) => e.stopPropagation());
+    });
+
+    document.querySelectorAll('.detail-select').forEach((select) => {
+      select.addEventListener('change', () => {
+        applyModalFieldChange(select.dataset.detailField, select.value);
+      });
+      select.addEventListener('click', (e) => e.stopPropagation());
+      select.addEventListener('mousedown', (e) => e.stopPropagation());
+    });
+
+    document.querySelectorAll('.detail-modifier-checkbox').forEach((checkbox) => {
+      checkbox.addEventListener('change', () => {
+        updateModifierSummary();
+        applyModalFieldChange('modifier', getSelectedModifierValues());
+      });
+      checkbox.addEventListener('click', (e) => e.stopPropagation());
+      checkbox.addEventListener('mousedown', (e) => e.stopPropagation());
+    });
+
+    const modifierSelect = document.getElementById('detailModifierSelect');
+    if (modifierSelect) {
+      modifierSelect.addEventListener('click', (e) => e.stopPropagation());
+      modifierSelect.addEventListener('mousedown', (e) => e.stopPropagation());
+    }
+
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+
+      document.querySelectorAll('.modifier-add-dropdown[open]').forEach((dropdown) => {
+        if (!dropdown.contains(target)) {
+          dropdown.open = false;
+        }
+      });
+
+      const detailModifierDropdown = document.getElementById('detailModifierSelect');
+      if (detailModifierDropdown?.open && !detailModifierDropdown.contains(target)) {
+        detailModifierDropdown.open = false;
+      }
+    });
+
+    // Toggle expand for sidebar sections
+    document.querySelectorAll('.sidebar-see-all').forEach(link => {
+      link.addEventListener('click', () => {
+        const section = link.closest('.sidebar-section');
+        const allSections = document.querySelectorAll('.sidebar-section');
+        const isExpanding = !section.classList.contains('expanded');
+
+        allSections.forEach((currentSection) => {
+          currentSection.classList.remove('expanded', 'collapsed');
+          const currentLink = currentSection.querySelector('.sidebar-see-all');
+          if (currentLink) currentLink.textContent = 'See all';
+        });
+
+        if (isExpanding) {
+          section.classList.add('expanded');
+          link.textContent = 'See less';
+
+          allSections.forEach((currentSection) => {
+            if (currentSection !== section) {
+              currentSection.classList.add('collapsed');
+            }
+          });
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
