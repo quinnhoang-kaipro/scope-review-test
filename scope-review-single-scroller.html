@@ -273,6 +273,22 @@
       vertical-align: -1px;
     }
 
+    .photo-group-overlay {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 20px;
+      height: 20px;
+      color: #6c73ff;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(124, 131, 255, 0.35);
+      border-radius: 999px;
+      box-shadow: 0 2px 6px rgba(17, 24, 39, 0.16);
+      padding: 3px;
+      z-index: 3;
+      pointer-events: none;
+    }
+
     .group-title-wrap {
       display: flex;
       align-items: center;
@@ -576,6 +592,7 @@
     .photo-tag {
       display: inline-flex;
       align-items: center;
+      gap: 4px;
       font-size: 11px;
       line-height: 1;
       font-weight: 700;
@@ -588,6 +605,28 @@
       border-width: 1px;
       border-style: solid;
     }
+
+    .photo-tag::before {
+      content: none;
+    }
+
+    .photo-tag.not-started::before,
+    .photo-tag.in-progress::before,
+    .photo-tag.rework::before,
+    .photo-tag.completed::before {
+      content: '';
+      width: 14px;
+      height: 14px;
+      flex: 0 0 14px;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+    }
+
+    .photo-tag.not-started::before { background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M16.0498 28C22.6772 28 28.0498 22.6274 28.0498 16C28.0498 9.37258 22.6772 4 16.0498 4C9.42239 4 4.0498 9.37258 4.0498 16C4.0498 22.6274 9.42239 28 16.0498 28Z' stroke='%234b5563' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' stroke-dasharray='5 5'/%3E%3C/svg%3E"); }
+    .photo-tag.in-progress::before { background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M16 28C22.6274 28 28 22.6274 28 16C28 9.37258 22.6274 4 16 4C9.37258 4 4 9.37258 4 16C4 22.6274 9.37258 28 16 28Z' stroke='%238a5a00' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M16 8V16L21.3333 18.6667' stroke='%238a5a00' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+    .photo-tag.rework::before { background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.8833 16.4499C5.8833 13.7978 6.93687 11.2542 8.81223 9.37888C10.6876 7.50352 13.2311 6.44995 15.8833 6.44995C18.6789 6.46047 21.3622 7.55131 23.3722 9.49439L25.8833 12.0055' stroke='%232d44a8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M25.8834 6.44995V12.0055H20.3279' stroke='%232d44a8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M25.8833 16.4499C25.8833 19.1021 24.8297 21.6456 22.9543 23.521C21.079 25.3964 18.5354 26.4499 15.8833 26.4499C13.0877 26.4394 10.4044 25.3486 8.39441 23.4055L5.8833 20.8944' stroke='%232d44a8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M11.4388 20.8944H5.8833V26.45' stroke='%232d44a8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+    .photo-tag.completed::before { background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15.8252 26.45C21.348 26.45 25.8252 21.9728 25.8252 16.45C25.8252 10.9271 21.348 6.44995 15.8252 6.44995C10.3023 6.44995 5.8252 10.9271 5.8252 16.45C5.8252 21.9728 10.3023 26.45 15.8252 26.45Z' stroke='%231e5a2a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12.075 16.45L14.575 18.95L19.575 13.95' stroke='%231e5a2a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
     .photo-tag.unassigned  { background: #ffe6e6; border-color: #8c1a1a; color: #8c1a1a; }
     .photo-tag.not-started { background: #f3f4f6; border-color: #9ca3af; color: #4b5563; }
     .photo-tag.in-progress { background: #fff3cd; border-color: #c47f00; color: #8a5a00; }
@@ -875,12 +914,29 @@
       min-height: 0;
     }
 
+    .photos-section.two-date-rows {
+      padding-bottom: 10px;
+    }
+
     .date-group {
       border-top: 1px solid var(--gray-border);
       padding: 16px 0 24px;
       flex-shrink: 0;
     }
     .date-group:first-child { border-top: none; padding-top: 0; }
+
+    .photos-section.two-date-rows .date-group {
+      border-top: none;
+      padding: 4px 0 4px;
+    }
+
+    .photos-section.two-date-rows .date-group:first-child {
+      padding-top: 0;
+    }
+
+    .photos-section.two-date-rows .date-group-header {
+      margin-bottom: 4px;
+    }
 
     .date-group-header {
       display: flex;
@@ -1053,6 +1109,10 @@
       flex-shrink: 0;
     }
 
+    .photos-section.two-date-rows .photo-scrollbar {
+      margin-top: 2px;
+    }
+
     .photo-scrollbar-thumb {
       position: absolute;
       top: 0;
@@ -1100,6 +1160,7 @@
     .photo-grid {
       display: flex;
       flex-wrap: nowrap;
+      align-items: flex-start;
       gap: calc(var(--photo-size, 200px) * 0.05);
     }
 
@@ -1108,6 +1169,7 @@
       flex-direction: column;
       gap: 8px;
       width: var(--photo-size, 200px);
+      flex: 0 0 auto;
     }
 
     .photo-thumb {
@@ -1167,6 +1229,9 @@
       font-size: 14px;
       font-weight: 700;
       color: var(--dark);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     /* ── Right sidebar ── */
@@ -1379,10 +1444,10 @@
       border-radius: 12px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
       display: flex;
-      max-width: 1200px;
-      width: 90%;
-      height: 85vh;
-      max-height: 85vh;
+      max-width: 1500px;
+      width: 95%;
+      height: 92vh;
+      max-height: 92vh;
       overflow: hidden;
       animation: slideUp 0.3s ease;
       position: relative;
@@ -1396,6 +1461,10 @@
       flex-direction: column;
       position: relative;
       overflow: hidden;
+    }
+
+    #detailModal .modal-photo {
+      width: 40.32%;
     }
 
     .modal-photo img {
@@ -1431,6 +1500,9 @@
       top: 14px;
       left: 14px;
       z-index: 4;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       font-size: 14px;
       font-weight: 700;
       letter-spacing: 0.03em;
@@ -1439,6 +1511,25 @@
       padding: 5px 10px;
       white-space: nowrap;
     }
+
+    .modal-photo-status-badge::before {
+      content: '';
+      width: 16px;
+      height: 16px;
+      flex: 0 0 16px;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+    }
+
+    .modal-photo-status-badge.hidden::before {
+      display: none;
+    }
+
+    .modal-photo-status-badge.not-started::before { background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M16.0498 28C22.6772 28 28.0498 22.6274 28.0498 16C28.0498 9.37258 22.6772 4 16.0498 4C9.42239 4 4.0498 9.37258 4.0498 16C4.0498 22.6274 9.42239 28 16.0498 28Z' stroke='%234b5563' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' stroke-dasharray='5 5'/%3E%3C/svg%3E"); }
+    .modal-photo-status-badge.in-progress::before { background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M16 28C22.6274 28 28 22.6274 28 16C28 9.37258 22.6274 4 16 4C9.37258 4 4 9.37258 4 16C4 22.6274 9.37258 28 16 28Z' stroke='%238a5a00' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M16 8V16L21.3333 18.6667' stroke='%238a5a00' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+    .modal-photo-status-badge.rework::before { background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.8833 16.4499C5.8833 13.7978 6.93687 11.2542 8.81223 9.37888C10.6876 7.50352 13.2311 6.44995 15.8833 6.44995C18.6789 6.46047 21.3622 7.55131 23.3722 9.49439L25.8833 12.0055' stroke='%232d44a8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M25.8834 6.44995V12.0055H20.3279' stroke='%232d44a8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M25.8833 16.4499C25.8833 19.1021 24.8297 21.6456 22.9543 23.521C21.079 25.3964 18.5354 26.4499 15.8833 26.4499C13.0877 26.4394 10.4044 25.3486 8.39441 23.4055L5.8833 20.8944' stroke='%232d44a8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M11.4388 20.8944H5.8833V26.45' stroke='%232d44a8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+    .modal-photo-status-badge.completed::before { background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15.8252 26.45C21.348 26.45 25.8252 21.9728 25.8252 16.45C25.8252 10.9271 21.348 6.44995 15.8252 6.44995C10.3023 6.44995 5.8252 10.9271 5.8252 16.45C5.8252 21.9728 10.3023 26.45 15.8252 26.45Z' stroke='%231e5a2a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12.075 16.45L14.575 18.95L19.575 13.95' stroke='%231e5a2a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
 
     .modal-photo-status-badge.hidden {
       display: none;
@@ -1560,14 +1651,92 @@
       display: flex;
       flex-direction: column;
       overflow-y: auto;
-      padding: 32px;
+      padding: 14px 32px 32px;
+    }
+
+    .modal-group-gallery-panel {
+      width: 300px;
+      border-left: 1px solid var(--gray-border);
+      background: #f8fafc;
+      display: none;
+      flex-direction: column;
+      min-height: 0;
+      flex-shrink: 0;
+    }
+
+    .modal-group-gallery-panel.visible {
+      display: flex;
+    }
+
+    .modal-group-gallery-head {
+      padding: 14px 12px 10px;
+      border-bottom: 1px solid var(--gray-border);
+      background: #ffffff;
+      flex-shrink: 0;
+    }
+
+    .modal-group-gallery-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--gray-text);
+      font-weight: 700;
+    }
+
+    .modal-group-gallery-count {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--gray-text-mid);
+      font-weight: 600;
+    }
+
+    .modal-group-gallery-grid {
+      padding: 12px;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-auto-flow: row;
+      grid-auto-rows: max-content;
+      gap: 10px;
+      min-height: 0;
+      align-content: start;
+      align-items: start;
+    }
+
+    .modal-group-gallery-thumb {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 6px;
+      border: 2px solid transparent;
+      background: var(--gray-mid);
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.12s, border-color 0.12s;
+      padding: 0;
+    }
+
+    .modal-group-gallery-thumb:hover {
+      border-color: #94a3b8;
+    }
+
+    .modal-group-gallery-thumb.active {
+      border-color: #2563eb;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.75);
+    }
+
+    .modal-group-gallery-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .modal-header {
       display: flex;
       flex-direction: column;
       gap: 16px;
-      padding-top: 16px;
+      padding-top: 0;
       margin-bottom: 24px;
     }
 
@@ -1834,6 +2003,69 @@
     .confirm-btn.delete {
       background: #b42318;
       color: #fff;
+    }
+
+    .group-photo-details-copy {
+      font-size: 13px;
+      color: var(--gray-text-mid);
+      line-height: 1.45;
+      margin-bottom: 16px;
+    }
+
+    .group-photo-assign-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .group-photo-assign-row .detail-select {
+      min-width: 240px;
+      border: 1px solid var(--gray-border);
+      border-radius: 6px;
+      padding: 9px 10px;
+      background: #fff;
+    }
+
+    .group-photo-assign-btn {
+      border: none;
+      border-radius: 8px;
+      padding: 9px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: #fff;
+      background: #2f855a;
+      cursor: pointer;
+    }
+
+    .group-photo-assign-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .app-toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 1200;
+      background: #1f6f45;
+      color: #fff;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.25);
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .app-toast.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .details-section {
@@ -2349,11 +2581,10 @@
 
     .photos-section .photo-label {
       font-size: 13px !important;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      line-clamp: 2;
-      -webkit-box-orient: vertical;
+      display: block;
+      white-space: nowrap;
       overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .activity-detail-row {
@@ -2647,6 +2878,23 @@
               <!-- Task 50058: Snake drain - Progress -->
               <div class="photo-card" data-task-id="50058"><div class="photo-thumb" style="background:#d4e2e8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Drain - Cleared</div></div>
               <div class="photo-card" data-task-id="50058"><div class="photo-thumb" style="background:#e8d8d4;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Drain - Verified</div></div>
+
+              <!-- Additional photos for Feb 20 comparison density -->
+              <div class="photo-card" data-task-id="50048"><div class="photo-thumb" style="background:#d0e8c9;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Cabinet Base - Edge Detail</div></div>
+              <div class="photo-card" data-task-id="50048"><div class="photo-thumb" style="background:#d9d1e8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Cabinet Base - Final Pass</div></div>
+              <div class="photo-card" data-task-id="50049"><div class="photo-thumb" style="background:#e8d1cc;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Cabinet Repair - Corner</div></div>
+              <div class="photo-card" data-task-id="50049"><div class="photo-thumb" style="background:#cfe4e8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Cabinet Repair - Seam Check</div></div>
+              <div class="photo-card" data-task-id="50050"><div class="photo-thumb" style="background:#e8dec9;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Hardware - Alignment Check</div></div>
+              <div class="photo-card" data-task-id="50050"><div class="photo-thumb" style="background:#d2e8d9;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Hardware - Latch Test</div></div>
+              <div class="photo-card" data-task-id="50051"><div class="photo-thumb" style="background:#e8ccd5;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">GFCI - Voltage Verification</div></div>
+              <div class="photo-card" data-task-id="50052"><div class="photo-thumb" style="background:#d7e8cf;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Outlets - Faceplate Flush</div></div>
+              <div class="photo-card" data-task-id="50053"><div class="photo-thumb" style="background:#cfd8e8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Switches - Panel Photo</div></div>
+              <div class="photo-card" data-task-id="50054"><div class="photo-thumb" style="background:#e8d5c9;"><span class="photo-badge photo-tag in-progress">In Progress</span></div><div class="photo-label">Floor - Reflection Test</div></div>
+              <div class="photo-card" data-task-id="50054"><div class="photo-thumb" style="background:#cfe8df;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Floor - Transition Strip</div></div>
+              <div class="photo-card" data-task-id="50055"><div class="photo-thumb" style="background:#e8cfd9;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Register - Airflow Check</div></div>
+              <div class="photo-card" data-task-id="50056"><div class="photo-thumb" style="background:#d3e5e8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Hood - Filter Fitment</div></div>
+              <div class="photo-card" data-task-id="50057"><div class="photo-thumb" style="background:#e8dbcf;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Caulk - Edge Continuity</div></div>
+              <div class="photo-card" data-task-id="50058"><div class="photo-thumb" style="background:#d6dde8;"><span class="photo-badge photo-tag completed">Completed</span></div><div class="photo-label">Drain - Flow Confirmation</div></div>
             </div>
           </div>
           <button class="carousel-btn next" onclick="carouselScroll(this,1)">&#8250;</button>
@@ -3278,6 +3526,68 @@
         </div>
       </div>
     </div>
+    <aside class="modal-group-gallery-panel" id="modalGroupGalleryPanel">
+      <div class="modal-group-gallery-head">
+        <div class="modal-group-gallery-title" id="modalGroupGalleryTitle">Group Photos</div>
+        <div class="modal-group-gallery-count" id="modalGroupGalleryCount">0 photos</div>
+      </div>
+      <div class="modal-group-gallery-grid" id="modalGroupGalleryGrid"></div>
+    </aside>
+  </div>
+</div>
+
+<div class="modal-overlay" id="groupPhotoModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeGroupPhotoModal()">×</button>
+    <div class="modal-photo" id="groupPhotoModalPhoto">
+      <div class="modal-photo-content"></div>
+      <div class="modal-photo-overlay">
+        <div class="modal-photo-overlay-content">
+          <div class="modal-photo-date" id="groupPhotoModalDate">—</div>
+          <div class="modal-photo-photographer" id="groupPhotoModalPhotographer">—</div>
+          <div class="modal-photo-upload-source" id="groupPhotoModalUploadSource">Uploaded from computer</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-details">
+      <div class="modal-header">
+        <div class="modal-title-section">
+          <div class="modal-subtitle">Group photo details</div>
+          <div class="modal-title" id="groupPhotoModalTitle">Group Name</div>
+        </div>
+      </div>
+
+      <div class="details-section">
+        <div class="details-section-title">Details</div>
+        <div class="details-grid">
+          <div class="detail-item">
+            <span class="detail-label">Group</span>
+            <span class="detail-value" id="groupPhotoModalGroupName">—</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Photo Date</span>
+            <span class="detail-value" id="groupPhotoModalDateValue">—</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Captured By</span>
+            <span class="detail-value" id="groupPhotoModalCapturedBy">—</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Current Assignment</span>
+            <span class="detail-value" id="groupPhotoModalCurrentAssignment">Unassigned</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="details-section">
+        <div class="details-section-title">Assign To Task</div>
+        <div class="group-photo-details-copy">Assign this group-level photo to a task so it appears in task-specific review and opens the task modal on click.</div>
+        <div class="group-photo-assign-row">
+          <select id="groupPhotoAssignTaskSelect" class="detail-select"></select>
+          <button type="button" id="groupPhotoAssignTaskBtn" class="group-photo-assign-btn" onclick="assignGroupPhotoToTask()">Assign Photo</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -3292,11 +3602,14 @@
   </div>
 </div>
 
+<div class="app-toast" id="appToast" role="status" aria-live="polite"></div>
+
 <script src="./scope-import-data.js"></script>
 <script>
   // ── Carousel helpers ──────────────────────────────────────────
   const SCROLL_STEP = 642; // ~3 cards
   let refreshPhotoSizes = () => {};
+  let isSyncingSharedPhotoScroll = false;
 
   function updateCarouselBtns(container) {
     const row = container.closest('.photo-grid-row');
@@ -3317,6 +3630,167 @@
     document.querySelectorAll('.photo-scroll-container').forEach(initDrag);
     initPersistentPhotoScrollbars();
   });
+
+  function getVisiblePhotoScrollContainers() {
+    return Array.from(document.querySelectorAll('.date-group'))
+      .filter((group) => group.style.display !== 'none')
+      .map((group) => group.querySelector('.photo-scroll-container'))
+      .filter(Boolean);
+  }
+
+  function isSharedPhotoScrollbarMode() {
+    return getVisiblePhotoScrollContainers().length >= 2;
+  }
+
+  function ensureSharedPhotoScrollbar() {
+    const photosSection = document.getElementById('photosSection');
+    if (!photosSection) return null;
+
+    let bar = document.getElementById('sharedPhotoScrollbar');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.id = 'sharedPhotoScrollbar';
+      bar.className = 'photo-scrollbar';
+      bar.innerHTML = '<div class="photo-scrollbar-thumb"></div>';
+
+      const addBtn = document.getElementById('addDateBtn');
+      if (addBtn) {
+        photosSection.insertBefore(bar, addBtn);
+      } else {
+        photosSection.appendChild(bar);
+      }
+    }
+
+    const thumb = bar.querySelector('.photo-scrollbar-thumb');
+    if (!thumb) return bar;
+
+    if (!bar.dataset.sharedScrollbarBound) {
+      bar.dataset.sharedScrollbarBound = '1';
+
+      bar.addEventListener('click', (event) => {
+        if (event.target === thumb) return;
+        const containers = getVisiblePhotoScrollContainers();
+        if (!containers.length) return;
+
+        const rect = bar.getBoundingClientRect();
+        const clickX = event.clientX - rect.left;
+        const ratio = Math.max(0, Math.min(1, clickX / Math.max(rect.width, 1)));
+        setSharedPhotoScrollRatio(ratio);
+      });
+
+      thumb.addEventListener('mousedown', (event) => {
+        event.preventDefault();
+        const trackWidth = bar.clientWidth;
+        const thumbWidth = thumb.offsetWidth;
+        const maxThumbLeft = Math.max(trackWidth - thumbWidth, 0);
+        const startX = event.clientX;
+        const startLeft = (thumb.getBoundingClientRect().left - bar.getBoundingClientRect().left);
+
+        bar.classList.add('dragging');
+        document.body.style.userSelect = 'none';
+
+        const onMove = (moveEvent) => {
+          const delta = moveEvent.clientX - startX;
+          const nextLeft = Math.max(0, Math.min(maxThumbLeft, startLeft + delta));
+          const ratio = maxThumbLeft > 0 ? (nextLeft / maxThumbLeft) : 0;
+          setSharedPhotoScrollRatio(ratio);
+        };
+
+        const onUp = () => {
+          bar.classList.remove('dragging');
+          document.body.style.userSelect = '';
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup', onUp);
+        };
+
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      });
+    }
+
+    return bar;
+  }
+
+  function setSharedPhotoScrollRatio(ratio) {
+    const containers = getVisiblePhotoScrollContainers();
+    if (!containers.length) return;
+
+    isSyncingSharedPhotoScroll = true;
+    containers.forEach((container) => {
+      const maxScroll = Math.max(container.scrollWidth - container.clientWidth, 0);
+      container.scrollLeft = ratio * maxScroll;
+      updateCarouselBtns(container);
+    });
+    isSyncingSharedPhotoScroll = false;
+
+    updateSharedPhotoScrollbar();
+  }
+
+  function updateSharedPhotoScrollbar() {
+    const bar = ensureSharedPhotoScrollbar();
+    if (!bar) return;
+
+    const sharedMode = isSharedPhotoScrollbarMode();
+    bar.style.display = sharedMode ? '' : 'none';
+    if (!sharedMode) return;
+
+    const containers = getVisiblePhotoScrollContainers();
+    if (!containers.length) return;
+
+    const reference = containers[0];
+    const thumb = bar.querySelector('.photo-scrollbar-thumb');
+    if (!thumb) return;
+
+    const total = reference.scrollWidth;
+    const visible = reference.clientWidth;
+    const maxScroll = Math.max(total - visible, 0);
+    const track = bar.clientWidth;
+    if (track <= 0) return;
+
+    if (maxScroll <= 1) {
+      thumb.style.width = `${track}px`;
+      thumb.style.transform = 'translateX(0px)';
+      bar.style.opacity = '0.45';
+      return;
+    }
+
+    bar.style.opacity = '1';
+    const thumbWidth = Math.max(36, Math.round((visible / total) * track));
+    const maxThumbLeft = Math.max(track - thumbWidth, 0);
+    const thumbLeft = maxThumbLeft * (reference.scrollLeft / maxScroll);
+
+    thumb.style.width = `${thumbWidth}px`;
+    thumb.style.transform = `translateX(${thumbLeft}px)`;
+  }
+
+  function syncSharedPhotoScrollbarFromContainer(sourceContainer) {
+    if (!isSharedPhotoScrollbarMode()) return;
+    if (isSyncingSharedPhotoScroll) return;
+
+    const maxScroll = Math.max(sourceContainer.scrollWidth - sourceContainer.clientWidth, 0);
+    const ratio = maxScroll > 0 ? (sourceContainer.scrollLeft / maxScroll) : 0;
+
+    isSyncingSharedPhotoScroll = true;
+    getVisiblePhotoScrollContainers().forEach((container) => {
+      if (container === sourceContainer) return;
+      const targetMax = Math.max(container.scrollWidth - container.clientWidth, 0);
+      container.scrollLeft = ratio * targetMax;
+      updateCarouselBtns(container);
+    });
+    isSyncingSharedPhotoScroll = false;
+
+    updateSharedPhotoScrollbar();
+  }
+
+  function refreshPhotoScrollbarMode() {
+    const sharedMode = isSharedPhotoScrollbarMode();
+
+    document.querySelectorAll('.photo-grid-row + .photo-scrollbar').forEach((bar) => {
+      bar.style.display = sharedMode ? 'none' : '';
+    });
+
+    updateSharedPhotoScrollbar();
+  }
 
   function updatePersistentPhotoScrollbar(container) {
     const row = container.closest('.photo-grid-row');
@@ -3368,7 +3842,10 @@
 
     if (!container.dataset.persistentScrollbarBound) {
       container.dataset.persistentScrollbarBound = '1';
-      container.addEventListener('scroll', () => updatePersistentPhotoScrollbar(container));
+      container.addEventListener('scroll', () => {
+        updatePersistentPhotoScrollbar(container);
+        syncSharedPhotoScrollbarFromContainer(container);
+      });
     }
 
     if (!bar.dataset.persistentScrollbarBound) {
@@ -3422,6 +3899,7 @@
       ensurePersistentPhotoScrollbar(container);
       updatePersistentPhotoScrollbar(container);
     });
+    refreshPhotoScrollbarMode();
   }
 
   function initDrag(el) {
@@ -3587,13 +4065,13 @@
         const paddingBottom = parseFloat(groupStyle.paddingBottom || '0');
         const borderTop = index === 0 ? 0 : parseFloat(groupStyle.borderTopWidth || '0');
         const headerHeight = group.querySelector('.date-group-header')?.offsetHeight || 0;
-        const headerGap = 16;
-        const labelAndGap = 34;
+        const headerGap = 6;
+        const labelAndGap = 20;
         return sum + paddingTop + paddingBottom + borderTop + headerHeight + headerGap + labelAndGap;
       }, 0);
 
       const availableForPhotos = photosHeight - sectionPadding - addBtnHeight - reservedHeight;
-      const photoSize = Math.max(96, Math.min(260, Math.floor(availableForPhotos / visibleGroupCount)));
+      const photoSize = Math.max(120, Math.min(420, Math.floor(availableForPhotos / visibleGroupCount)));
       document.documentElement.style.setProperty('--photo-size', `${photoSize}px`);
       initPersistentPhotoScrollbars();
     };
@@ -3650,8 +4128,12 @@
   let currentModalTask = null;
   let currentModalTaskIndex = null;
   let currentModalRow = null;
+  let currentGroupPhotoCard = null;
+  let currentModalGroupGalleryPhotos = [];
+  let currentModalGroupGalleryIndex = -1;
   let currentModalPhotos = [];
   let currentModalPhotoIndex = 0;
+  let appToastTimer = null;
   let pendingDeleteTaskId = null;
   const importedScopeData = window.importedScopeData || { groups: [] };
   const taskActionState = {};
@@ -4887,9 +5369,31 @@
   }
 
   function decorateGroupLevelPhotoLabels() {
-    document.querySelectorAll('.photo-card[data-task-id=""] .photo-label').forEach((labelEl) => {
-      if (labelEl.querySelector('.photo-group-icon')) return;
-      labelEl.insertAdjacentHTML('afterbegin', getGroupIconSvg('photo-group-icon'));
+    document.querySelectorAll('.photo-card').forEach((card) => {
+      const taskId = String(card.getAttribute('data-task-id') || '').trim();
+      const labelEl = card.querySelector('.photo-label');
+      const thumbEl = card.querySelector('.photo-thumb');
+      if (!labelEl || !thumbEl) return;
+
+      if (!taskId) {
+        labelEl.textContent = '';
+      }
+
+      thumbEl.querySelectorAll('.photo-group-overlay').forEach((el) => el.remove());
+    });
+  }
+
+  function updateDateGroupWalkLabels(activeGroupName) {
+    const groupSuffix = String(activeGroupName || '').trim();
+    const baseLabels = [
+      { id: 'group-0', base: 'R. Garcia · Initial Walk' },
+      { id: 'group-1', base: 'R. Garcia · Progress Walk' }
+    ];
+
+    baseLabels.forEach(({ id, base }) => {
+      const labelEl = document.querySelector(`#${id} .date-group-label`);
+      if (!labelEl) return;
+      labelEl.textContent = groupSuffix ? `${base} · ${groupSuffix}` : base;
     });
   }
 
@@ -4954,6 +5458,7 @@
     syncPhotoOrderingWithCurrentView(orderedTaskIds);
     syncPhotoVisibilityWithCurrentView(validIds, activeKey);
     decorateGroupLevelPhotoLabels();
+    updateDateGroupWalkLabels(activeKey);
     initPersistentPhotoScrollbars();
     initPhotoCardClickHandlers();
 
@@ -4971,6 +5476,11 @@
         const label = card.querySelector('.photo-label')?.textContent || 'Photo';
         const thumb = card.querySelector('.photo-thumb');
         const bgColor = window.getComputedStyle(thumb).backgroundColor;
+
+        if (!String(taskId || '').trim()) {
+          openGroupPhotoModal(card);
+          return;
+        }
 
         // Find the task data from the table
         const taskRow = Array.from(document.querySelectorAll('.scope-table .task-row')).find(row => {
@@ -5173,6 +5683,158 @@
       .replace(/'/g, '&#39;');
   }
 
+  function formatIsoDate(isoDate) {
+    const value = String(isoDate || '').trim();
+    if (!value) return '—';
+    const date = new Date(`${value}T00:00:00`);
+    if (Number.isNaN(date.getTime())) return value;
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  function showAppToast(message) {
+    const toast = document.getElementById('appToast');
+    if (!toast) return;
+
+    toast.textContent = String(message || '').trim() || 'Saved';
+    toast.classList.add('visible');
+
+    if (appToastTimer) {
+      window.clearTimeout(appToastTimer);
+    }
+
+    appToastTimer = window.setTimeout(() => {
+      toast.classList.remove('visible');
+      appToastTimer = null;
+    }, 1800);
+  }
+
+  function getVisibleTaskRows() {
+    return Array.from(document.querySelectorAll('.scope-table .task-row'))
+      .filter((row) => row.style.display !== 'none');
+  }
+
+  function populateGroupPhotoAssignTaskOptions() {
+    const select = document.getElementById('groupPhotoAssignTaskSelect');
+    const assignBtn = document.getElementById('groupPhotoAssignTaskBtn');
+    if (!select || !assignBtn) return;
+
+    const visibleRows = getVisibleTaskRows();
+    select.innerHTML = '';
+
+    const placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.textContent = visibleRows.length ? 'Select a task' : 'No tasks available in this view';
+    select.appendChild(placeholder);
+
+    visibleRows.forEach((row) => {
+      const taskId = getTaskIdFromRow(row);
+      const taskName = row.querySelector('.task-name')?.textContent.trim() || 'Task';
+      if (!taskId) return;
+
+      const option = document.createElement('option');
+      option.value = taskId;
+      option.textContent = `${taskId} - ${taskName}`;
+      select.appendChild(option);
+    });
+
+    select.value = '';
+    assignBtn.disabled = true;
+
+    if (!select.dataset.groupAssignBound) {
+      select.dataset.groupAssignBound = '1';
+      select.addEventListener('change', () => {
+        assignBtn.disabled = !String(select.value || '').trim();
+      });
+    }
+
+    if (!visibleRows.length) {
+      assignBtn.disabled = true;
+    }
+  }
+
+  function openGroupPhotoModal(card) {
+    if (!card) return;
+
+    currentGroupPhotoCard = card;
+    populateGroupPhotoAssignTaskOptions();
+
+    const modal = document.getElementById('groupPhotoModal');
+    const photoPane = document.getElementById('groupPhotoModalPhoto');
+    const dateText = document.getElementById('groupPhotoModalDate');
+    const photographerText = document.getElementById('groupPhotoModalPhotographer');
+    const uploadSourceText = document.getElementById('groupPhotoModalUploadSource');
+    const titleText = document.getElementById('groupPhotoModalTitle');
+    const groupNameText = document.getElementById('groupPhotoModalGroupName');
+    const dateValueText = document.getElementById('groupPhotoModalDateValue');
+    const capturedByText = document.getElementById('groupPhotoModalCapturedBy');
+    const currentAssignmentText = document.getElementById('groupPhotoModalCurrentAssignment');
+    if (!modal || !photoPane) return;
+
+    const thumb = card.querySelector('.photo-thumb');
+    const image = thumb?.querySelector('img');
+    if (image) {
+      const src = image.getAttribute('src') || '';
+      photoPane.style.backgroundImage = `url('${src.replace(/'/g, "\\'")}')`;
+      photoPane.style.backgroundSize = 'cover';
+      photoPane.style.backgroundPosition = 'center';
+      photoPane.style.backgroundRepeat = 'no-repeat';
+      photoPane.style.setProperty('--modal-photo-bg', '#d1d5db');
+    } else {
+      const bgColor = thumb ? window.getComputedStyle(thumb).backgroundColor : '#e5e7eb';
+      photoPane.style.backgroundImage = 'none';
+      photoPane.style.setProperty('--modal-photo-bg', bgColor);
+    }
+
+    const dateGroup = card.closest('.date-group');
+    const dateInputValue = dateGroup?.querySelector('input[type="date"]')?.value || '';
+    const formattedDate = formatIsoDate(dateInputValue);
+    const walkerLabel = dateGroup?.querySelector('.date-group-label')?.textContent.trim() || 'Unknown photographer';
+    const photographer = walkerLabel.split('·')[0]?.trim() || walkerLabel;
+    const groupName = getCurrentViewKey() || currentGroup || 'Scope Group';
+
+    if (dateText) dateText.textContent = formattedDate;
+    if (photographerText) photographerText.textContent = photographer;
+    if (uploadSourceText) uploadSourceText.textContent = 'Uploaded from computer';
+    if (titleText) titleText.textContent = groupName;
+    if (groupNameText) groupNameText.textContent = groupName;
+    if (dateValueText) dateValueText.textContent = formattedDate;
+    if (capturedByText) capturedByText.textContent = photographer;
+    if (currentAssignmentText) currentAssignmentText.textContent = 'Unassigned';
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGroupPhotoModal() {
+    currentGroupPhotoCard = null;
+    const modal = document.getElementById('groupPhotoModal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function assignGroupPhotoToTask() {
+    if (!currentGroupPhotoCard) return;
+
+    const select = document.getElementById('groupPhotoAssignTaskSelect');
+    const selectedTaskId = String(select?.value || '').trim();
+    if (!selectedTaskId) return;
+
+    currentGroupPhotoCard.setAttribute('data-task-id', selectedTaskId);
+
+    const labelEl = currentGroupPhotoCard.querySelector('.photo-label');
+    if (labelEl) {
+      const taskName = getTaskNameById(selectedTaskId);
+      labelEl.textContent = trimTaskLabel(taskName, 24);
+      showAppToast(`Photo assigned to ${taskName}`);
+    } else {
+      showAppToast('Photo assigned to task');
+    }
+
+    updatePhotoDatePickerAvailability();
+    closeGroupPhotoModal();
+  }
+
   function navigateTask(direction) {
     if (!currentModalTask) return;
 
@@ -5362,6 +6024,137 @@
         photoStatusBadge.className = 'modal-photo-status-badge hidden';
       }
     }
+  }
+
+  function setActiveModalGroupGalleryThumb(index) {
+    currentModalGroupGalleryIndex = index;
+    document.querySelectorAll('.modal-group-gallery-thumb').forEach((thumb) => {
+      thumb.classList.toggle('active', Number(thumb.dataset.groupGalleryIndex) === index);
+    });
+  }
+
+  function getPhotoStatusBadgeFromCard(card) {
+    const badge = card.querySelector('.photo-badge.photo-tag');
+    if (!badge) return null;
+
+    if (badge.classList.contains('in-progress')) return { text: 'In Progress', badgeClass: 'in-progress' };
+    if (badge.classList.contains('rework')) return { text: 'Rework', badgeClass: 'rework' };
+    if (badge.classList.contains('completed')) return { text: 'Completed', badgeClass: 'completed' };
+    if (badge.classList.contains('not-started')) return { text: 'Not started', badgeClass: 'not-started' };
+    return null;
+  }
+
+  function collectGroupPhotosForTask(taskId) {
+    const normalizedTaskId = String(taskId || '').trim();
+    if (!normalizedTaskId) return [];
+
+    const groupName = taskGroups[normalizedTaskId] || '';
+    const groupTaskIdSet = new Set((groupTasks[groupName] || []).map((id) => String(id || '').trim()));
+    const includeUnassignedGroupPhotos = groupName === 'Exterior General';
+
+    const entries = [];
+    let sequence = 0;
+
+    document.querySelectorAll('.date-group').forEach((groupEl) => {
+      if (groupEl.style.display === 'none') return;
+      const dateRaw = groupEl.querySelector('input[type="date"]')?.value || '';
+      const dateText = formatIsoDate(dateRaw);
+      const walkerText = groupEl.querySelector('.date-group-label')?.textContent.trim() || 'Unknown';
+      const photographer = walkerText.split('·')[0]?.trim() || walkerText;
+
+      groupEl.querySelectorAll('.photo-card').forEach((card) => {
+        if (card.style.display === 'none') return;
+
+        const cardTaskId = String(card.getAttribute('data-task-id') || '').trim();
+        const isGroupTaskPhoto = groupTaskIdSet.has(cardTaskId);
+        const isGroupOnlyPhoto = !cardTaskId && includeUnassignedGroupPhotos;
+        if (!isGroupTaskPhoto && !isGroupOnlyPhoto) return;
+
+        const thumb = card.querySelector('.photo-thumb');
+        const image = thumb?.querySelector('img');
+        const label = card.querySelector('.photo-label')?.textContent.trim()
+          || (cardTaskId ? getTaskNameById(cardTaskId) : 'Group Photo');
+
+        entries.push({
+          sequence: sequence++,
+          dateRaw,
+          src: image?.getAttribute('src') || '',
+          bg: thumb ? window.getComputedStyle(thumb).backgroundColor : '#e5e7eb',
+          label,
+          date: dateText,
+          photographer,
+          uploadSource: 'Uploaded from computer',
+          statusBadge: getPhotoStatusBadgeFromCard(card)
+        });
+      });
+    });
+
+    entries.sort((a, b) => {
+      const aTs = a.dateRaw ? new Date(`${a.dateRaw}T00:00:00`).getTime() : 0;
+      const bTs = b.dateRaw ? new Date(`${b.dateRaw}T00:00:00`).getTime() : 0;
+      if (aTs !== bTs) return bTs - aTs;
+      return a.sequence - b.sequence;
+    });
+
+    return entries;
+  }
+
+  function showModalGroupGalleryPhoto(index) {
+    const photo = currentModalGroupGalleryPhotos[index];
+    if (!photo) return;
+
+    updateModalPhoto(
+      photo.bg,
+      photo.label,
+      photo.date,
+      photo.photographer,
+      photo.uploadSource,
+      photo.statusBadge || null
+    );
+    setActiveModalGroupGalleryThumb(index);
+  }
+
+  function renderModalGroupGalleryForTask(taskId) {
+    const panel = document.getElementById('modalGroupGalleryPanel');
+    const grid = document.getElementById('modalGroupGalleryGrid');
+    const count = document.getElementById('modalGroupGalleryCount');
+    const title = document.getElementById('modalGroupGalleryTitle');
+    if (!panel || !grid || !count || !title) return;
+
+    const groupName = String(taskGroups[String(taskId)] || currentGroup || '').trim();
+    title.textContent = groupName ? `${groupName} Group Photos` : 'Group Photos';
+
+    currentModalGroupGalleryPhotos = collectGroupPhotosForTask(taskId);
+    grid.innerHTML = '';
+
+    if (!currentModalGroupGalleryPhotos.length) {
+      panel.classList.remove('visible');
+      count.textContent = '0 photos';
+      currentModalGroupGalleryIndex = -1;
+      return;
+    }
+
+    panel.classList.add('visible');
+    count.textContent = `${currentModalGroupGalleryPhotos.length} photos`;
+
+    currentModalGroupGalleryPhotos.forEach((photo, index) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'modal-group-gallery-thumb';
+      btn.dataset.groupGalleryIndex = String(index);
+
+      if (photo.src) {
+        btn.innerHTML = `<img src="${photo.src}" alt="${escapeHtml(photo.label)}" />`;
+      } else {
+        btn.style.background = photo.bg || '#e5e7eb';
+        btn.innerHTML = '';
+      }
+
+      btn.addEventListener('click', () => showModalGroupGalleryPhoto(index));
+      grid.appendChild(btn);
+    });
+
+    setActiveModalGroupGalleryThumb(0);
   }
 
   function setActiveModalPhotoThumbs(activityIdx, photoIdx) {
@@ -5636,6 +6429,8 @@
     } else {
       updateModalPhotoNavButtons();
     }
+
+    renderModalGroupGalleryForTask(data.id);
     
     // Show modal
     modal.classList.add('active');
@@ -5647,6 +6442,8 @@
     modal.classList.remove('active');
     document.body.style.overflow = '';
     currentModalPhotos = [];
+    currentModalGroupGalleryPhotos = [];
+    currentModalGroupGalleryIndex = -1;
     currentModalPhotoIndex = 0;
     currentModalRow = null;
     currentModalTask = null;
@@ -5660,10 +6457,18 @@
     }
   });
 
+  document.getElementById('groupPhotoModal')?.addEventListener('click', (e) => {
+    if (e.target.id === 'groupPhotoModal') {
+      closeGroupPhotoModal();
+    }
+  });
+
   // Close modal with Escape key
   document.addEventListener('keydown', (e) => {
     const modal = document.getElementById('detailModal');
     const isModalOpen = !!modal?.classList.contains('active');
+    const groupPhotoModal = document.getElementById('groupPhotoModal');
+    const isGroupPhotoModalOpen = !!groupPhotoModal?.classList.contains('active');
     const confirmEl = document.getElementById('deleteTaskConfirm');
 
     if (e.key === 'Escape') {
@@ -5671,7 +6476,13 @@
         closeDeleteTaskConfirm();
         return;
       }
-      closeModal();
+      if (isGroupPhotoModalOpen) {
+        closeGroupPhotoModal();
+        return;
+      }
+      if (isModalOpen) {
+        closeModal();
+      }
       return;
     }
 
@@ -6038,17 +6849,31 @@
       const notStartedBadge = '<span class="photo-badge photo-tag not-started">Not started</span>';
 
       group0Grid.innerHTML = cards.map((photo) =>
-        `<div class="photo-card" data-task-id="${photo.id}"><div class="photo-thumb"><img src="${basePath}/${photo.path}" alt="" style="width:100%;height:100%;object-fit:cover;">${notStartedBadge}</div><div class="photo-label">${photo.id ? '' : getGroupIconSvg('photo-group-icon')}${photo.label}</div></div>`
+        `<div class="photo-card" data-task-id="${photo.id}"><div class="photo-thumb"><img src="${basePath}/${photo.path}" alt="" style="width:100%;height:100%;object-fit:cover;">${notStartedBadge}</div><div class="photo-label">${photo.id ? photo.label : ''}</div></div>`
       ).join('');
 
       group1Grid.innerHTML = [
-        { id: '50001', label: 'Powerwash All (Siding, Trim, Porches, Deck, Windows, Doors, Mailbox, Garage Floor, Backside of Garage Door, All Flatwork, HVAC Pad, Sidewalks)', bg: '#c9d8e8' },
-        { id: '50001', label: 'Powerwash All (Siding, Trim, Porches, Deck, Windows, Doors, Mailbox, Garage Floor, Backside of Garage Door, All Flatwork, HVAC Pad, Sidewalks)', bg: '#d4e8d4' },
-        { id: '50002', label: 'Paint Mailbox Post', bg: '#e8d4c9' },
-        { id: '50003', label: 'Paint double doors to storage', bg: '#d4cce8' },
-        { id: '50004', label: 'Exterior plastic louvered exhaust vent', bg: '#d4e8c9' }
+        { id: '', label: 'Exterior General', bg: '#c9d8e8' },
+        { id: '', label: 'Exterior General', bg: '#d4e8d4' },
+        { id: '', label: 'Exterior General', bg: '#e8d4c9' },
+        { id: '', label: 'Exterior General', bg: '#d4cce8' },
+        { id: '', label: 'Exterior General', bg: '#d4e8c9' },
+        { id: '', label: 'Exterior General', bg: '#c9e8d0' },
+        { id: '', label: 'Exterior General', bg: '#c9dce8' },
+        { id: '', label: 'Exterior General', bg: '#e8d4e8' },
+        { id: '', label: 'Exterior General', bg: '#d4c9e8' },
+        { id: '', label: 'Exterior General', bg: '#e8dcc9' },
+        { id: '50001', label: 'Powerwash All (Siding, Trim, Porches, Deck, Windows, Doors, Mailbox, Garage Floor, Backside of Garage Door, All Flatwork, HVAC Pad, Sidewalks)', bg: '#d1e8d1' },
+        { id: '50001', label: 'Powerwash All (Siding, Trim, Porches, Deck, Windows, Doors, Mailbox, Garage Floor, Backside of Garage Door, All Flatwork, HVAC Pad, Sidewalks)', bg: '#cfe8e8' },
+        { id: '50001', label: 'Powerwash All (Siding, Trim, Porches, Deck, Windows, Doors, Mailbox, Garage Floor, Backside of Garage Door, All Flatwork, HVAC Pad, Sidewalks)', bg: '#e8e1cc' },
+        { id: '50002', label: 'Paint Mailbox Post', bg: '#e8d4cc' },
+        { id: '50002', label: 'Paint Mailbox Post', bg: '#d4e2e8' },
+        { id: '50003', label: 'Paint double doors to storage', bg: '#d8cce8' },
+        { id: '50003', label: 'Paint double doors to storage', bg: '#e8d8cc' },
+        { id: '50004', label: 'Exterior plastic louvered exhaust vent', bg: '#d4e8d8' },
+        { id: '50004', label: 'Exterior plastic louvered exhaust vent', bg: '#e8ccd8' }
       ].map((photo) =>
-        `<div class="photo-card" data-task-id="${photo.id}"><div class="photo-thumb" style="background:${photo.bg};">${notStartedBadge}</div><div class="photo-label">${photo.label}</div></div>`
+        `<div class="photo-card" data-task-id="${photo.id}"><div class="photo-thumb" style="background:${photo.bg};">${notStartedBadge}</div><div class="photo-label">${photo.id ? photo.label : ''}</div></div>`
       ).join('');
     };
 
