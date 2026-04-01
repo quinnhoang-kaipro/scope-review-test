@@ -1161,7 +1161,8 @@
       display: flex;
       flex-wrap: nowrap;
       align-items: flex-start;
-      gap: calc(var(--photo-size, 200px) * 0.05);
+      --photo-gap: calc(var(--photo-size, 200px) * 0.05);
+      gap: var(--photo-gap);
     }
 
     .photo-card {
@@ -1170,6 +1171,36 @@
       gap: 8px;
       width: var(--photo-size, 200px);
       flex: 0 0 auto;
+      position: relative;
+    }
+
+    .photo-card.task-cluster-member .photo-thumb {
+      box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.24);
+    }
+
+    .photo-card.task-cluster-member:not(.task-cluster-end)::after {
+      content: '';
+      position: absolute;
+      top: calc(var(--photo-size, 200px) + 3px);
+      right: calc((var(--photo-gap, 10px) * -1) + 2px);
+      width: calc(var(--photo-gap, 10px) - 4px);
+      height: 2px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.34);
+      pointer-events: none;
+    }
+
+    .photo-card.task-cluster-start .photo-label {
+      max-width: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      position: relative;
+      z-index: 1;
+    }
+
+    .photo-card.task-cluster-label-hidden .photo-label {
+      visibility: hidden;
     }
 
     .photo-thumb {
@@ -4073,6 +4104,7 @@
       const availableForPhotos = photosHeight - sectionPadding - addBtnHeight - reservedHeight;
       const photoSize = Math.max(120, Math.min(420, Math.floor(availableForPhotos / visibleGroupCount)));
       document.documentElement.style.setProperty('--photo-size', `${photoSize}px`);
+      applyGroupedPhotoTaskPresentation();
       initPersistentPhotoScrollbars();
     };
 
@@ -5383,6 +5415,64 @@
     });
   }
 
+  function applyGroupedPhotoTaskPresentation() {
+    document.querySelectorAll('.date-group .photo-grid').forEach((grid) => {
+      const cards = Array.from(grid.querySelectorAll('.photo-card'));
+      if (!cards.length) return;
+
+      cards.forEach((card) => {
+        card.classList.remove('task-cluster-member', 'task-cluster-start', 'task-cluster-end', 'task-cluster-label-hidden');
+        const label = card.querySelector('.photo-label');
+        if (!label) return;
+        label.style.width = '';
+        label.removeAttribute('title');
+      });
+
+      const visibleCards = cards.filter((card) => card.style.display !== 'none');
+      if (!visibleCards.length) return;
+
+      const gridStyle = window.getComputedStyle(grid);
+      const gridGap = parseFloat(gridStyle.columnGap || gridStyle.gap || '0') || 0;
+
+      let start = 0;
+      while (start < visibleCards.length) {
+        const startTaskId = String(visibleCards[start].getAttribute('data-task-id') || '').trim();
+        let end = start + 1;
+
+        while (end < visibleCards.length) {
+          const nextTaskId = String(visibleCards[end].getAttribute('data-task-id') || '').trim();
+          if (nextTaskId !== startTaskId) break;
+          end += 1;
+        }
+
+        const span = end - start;
+        if (startTaskId && span > 1) {
+          const startCard = visibleCards[start];
+          const endCard = visibleCards[end - 1];
+          startCard.classList.add('task-cluster-start');
+          endCard.classList.add('task-cluster-end');
+
+          for (let idx = start; idx < end; idx += 1) {
+            visibleCards[idx].classList.add('task-cluster-member');
+            if (idx !== start) {
+              visibleCards[idx].classList.add('task-cluster-label-hidden');
+            }
+          }
+
+          const startLabel = startCard.querySelector('.photo-label');
+          const cardWidth = startCard.getBoundingClientRect().width || startCard.offsetWidth || 0;
+          if (startLabel && cardWidth > 0) {
+            const spanWidth = (cardWidth * span) + (gridGap * (span - 1));
+            startLabel.style.width = `${Math.round(spanWidth)}px`;
+            startLabel.title = startLabel.textContent.trim();
+          }
+        }
+
+        start = end;
+      }
+    });
+  }
+
   function updateDateGroupWalkLabels(activeGroupName) {
     const groupSuffix = String(activeGroupName || '').trim();
     const baseLabels = [
@@ -5458,6 +5548,7 @@
     syncPhotoOrderingWithCurrentView(orderedTaskIds);
     syncPhotoVisibilityWithCurrentView(validIds, activeKey);
     decorateGroupLevelPhotoLabels();
+    applyGroupedPhotoTaskPresentation();
     updateDateGroupWalkLabels(activeKey);
     initPersistentPhotoScrollbars();
     initPhotoCardClickHandlers();

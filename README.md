@@ -41,7 +41,7 @@ bun run pack           # Package for Claude Desktop
 
 ### Scope Review Dashboard
 
-The main interactive prototype is `scope-review.html` — a single-file construction scope management interface with:
+The main interactive prototype is `scope-review-single-scroller.html` — a single-file construction scope management interface with:
 
 - **Task table** with contractor assignments, quantities, prices, and cost deltas
 - **Group/Trade view modes** with dynamic photo timeline rows
@@ -58,7 +58,7 @@ The main interactive prototype is `scope-review.html` — a single-file construc
 - Photo date filtering and task-based visibility
 
 **To use locally:**
-1. Open `scope-review.html` in a browser
+1. Open `scope-review-single-scroller.html` in a browser
 2. Interact with the table to modify costs, add/remove groups, manage photos
 3. Icons and property photos load from `images/` folder
 
